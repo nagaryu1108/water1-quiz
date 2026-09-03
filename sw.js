@@ -1,5 +1,5 @@
-const CACHE='water1-quiz-v7-enrichment';
-const ASSETS=['./manifest.webmanifest','./qbank_v3.js','./qbank_extra_v4.js','./qbank_patch_v5.js','./qbank_core_patch_v7.js','./qbank_detail_patch_v6.js','./qbank_enrichment_v7.js'];
+const CACHE='water1-quiz-v7-chem';
+const ASSETS=['./manifest.webmanifest','./qbank_v3.js','./qbank_extra_v4.js','./qbank_patch_v5.js','./qbank_core_patch_v7.js','./qbank_detail_patch_v6.js','./qbank_enrichment_v7.js','./qbank_chem_v7.js'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).catch(()=>{}));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;const isNav=e.request.mode==='navigate'||e.request.destination==='document';if(isNav){e.respondWith(fetch(e.request,{cache:'no-store'}).catch(()=>caches.match('./index.html')));return;}e.respondWith(fetch(e.request,{cache:'no-cache'}).then(resp=>{const copy=resp.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return resp;}).catch(()=>caches.match(e.request)));});
