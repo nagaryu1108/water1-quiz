@@ -1,0 +1,1 @@
+(function(){var bank=window.QBANK||[],q=bank.find(function(x){return x.id==='T18'});if(q)q.a=1;})();
