@@ -1,0 +1,15 @@
+(function(){
+var bank=window.QBANK||[],errors=[],choiceOK=0,totalChoices=0;
+function hasStatus(s){return /^【(正しい|誤り)】/.test(String(s||''));}
+function substantive(s){s=String(s||'');return s.length>=70&&(s.indexOf('【関連知識】')>=0||s.indexOf('【原理')>=0||s.indexOf('【試験')>=0||s.length>=120);}
+bank.forEach(function(x){if(!x||!Array.isArray(x.e))return;x.e.forEach(function(s,i){totalChoices++;if(hasStatus(s)&&substantive(s))choiceOK++;else errors.push(x.id+'-'+(i+1)+':詳細解説基準不足');});});
+function get(id){return bank.find(function(x){return x.id===id});}
+var rxExpected=['T03','T04','H04','H07','T08'];rxExpected.forEach(function(id){var x=get(id);if(!x||!Array.isArray(x.rxn)||!x.rxn.length)errors.push(id+':反応式付加漏れ');});
+var termExpected=['G01','G03','G04','W05','W07','T03','T04','T05','T07','H01','H04','H05','H06','H07','L03','L05'];termExpected.forEach(function(id){var x=get(id);if(!x||!Array.isArray(x.terms)||!x.terms.length)errors.push(id+':用語ミニ解説付加漏れ');});
+var preVisual=['G06','W06','T06','H06','L06','T08'];preVisual.forEach(function(id){var x=get(id);if(!x||!x.v)errors.push(id+':問題用図表付加漏れ');});
+var postVisual=['G04','W05'];postVisual.forEach(function(id){var x=get(id);if(!x||!x.av)errors.push(id+':解説補助グラフ付加漏れ');});
+var ids={};bank.forEach(function(x){if(ids[x.id])errors.push(x.id+':ID重複');ids[x.id]=1;});
+window.WATER1_QUALITY_AUDIT={questions:bank.length,totalChoices:totalChoices,choiceOK:choiceOK,errors:errors.slice(),reactionOK:rxExpected.filter(function(id){var x=get(id);return x&&x.rxn&&x.rxn.length}).length,reactionExpected:rxExpected.length,termOK:termExpected.filter(function(id){var x=get(id);return x&&x.terms&&x.terms.length}).length,termExpected:termExpected.length,visualOK:preVisual.filter(function(id){var x=get(id);return x&&x.v}).length+postVisual.filter(function(id){var x=get(id);return x&&x.av}).length,visualExpected:preVisual.length+postVisual.length};
+function paint(){var el=document.getElementById('audit');if(!el)return;var a=window.WATER1_QUALITY_AUDIT,base=el.textContent||'';var msg=' ｜ 詳細解説監査：'+a.choiceOK+'/'+a.totalChoices+'肢 '+(a.choiceOK===a.totalChoices?'合格':'要確認')+' ｜ 反応式 '+a.reactionOK+'/'+a.reactionExpected+' ｜ 用語 '+a.termOK+'/'+a.termExpected+' ｜ 図表 '+a.visualOK+'/'+a.visualExpected;if(base.indexOf('詳細解説監査')<0)el.textContent=base+msg;if(a.errors.length){var w=document.getElementById('warn');if(w){var d=document.createElement('div');d.className='warn';d.innerHTML='<b>v7品質監査：</b><br>'+a.errors.join('<br>');w.appendChild(d);}}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(paint,0)});else setTimeout(paint,0);
+})();
