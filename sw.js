@@ -1,4 +1,4 @@
-const CACHE='water1-quiz-v7-frequency-scheduler-20260904b';
+const CACHE='water1-quiz-v8-count-frequency-20260904';
 const ASSETS=['./manifest.webmanifest','./qbank_v3.js','./qbank_extra_v4.js','./qbank_patch_v5.js','./qbank_core_patch_v7.js','./qbank_detail_patch_v6.js','./qbank_enrichment_v7.js','./qbank_detail_round1_v7.js','./qbank_detail_complete_v7.js','./qbank_gap_batch1_v7.js','./qbank_gap_batch2_v7.js','./qbank_gap_batch3_v7.js','./qbank_gap_batch4_v7.js','./qbank_gap_batch4_fix_v7.js','./qbank_gap_batch5_v7.js','./qbank_gap_batch6_v7.js','./qbank_gap_batch6_fix_v7.js','./qbank_gap_batch7_v7.js','./qbank_frequency_scheduler_v7.js','./qbank_chem_v7.js','./qbank_quality_audit_v7.js'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).catch(()=>{}));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
