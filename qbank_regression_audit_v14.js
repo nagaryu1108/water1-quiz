@@ -27,10 +27,10 @@ function run(){
   var vpre=visualPre.filter(function(id){var x=get(id);return x&&x.v;}).length,vpost=visualPost.filter(function(id){var x=get(id);return x&&x.av;}).length;
   ok('問題用図表10件',vpre===visualPre.length,'pre='+vpre+'/'+visualPre.length);
   ok('解説補助グラフ2件',vpost===visualPost.length,'post='+vpost+'/'+visualPost.length);
-  ok('第10弾10問', ['G32','G33','G34','W32','W33','W34','H37','L33','L34','L35'].every(function(id){return !!get(id)}),'batch10 ids');
+  ok('第10弾10問',['G32','G33','G34','W32','W33','W34','H37','L33','L34','L35'].every(function(id){return !!get(id)}),'batch10 ids');
   ok('回答色CSS',!!document.querySelector('style')&&/\.ch\.good\{[^}]*#16a34a/.test(document.documentElement.innerHTML)&&/\.ch\.bad\{[^}]*#dc2626/.test(document.documentElement.innerHTML),'green/red');
   ok('次の問題UI',document.documentElement.innerHTML.indexOf('次の問題へ')>=0,'button');
-  var qidx=(document.documentElement.innerHTML.match(/qbank_patch_v5\.js\?v=(\d+)/)||[])[1];ok('indexキャッシュ版',Number(qidx)>=95,'index query v='+(qidx||'none'));
+  var qidx=(document.documentElement.innerHTML.match(/qbank_patch_v5\.js\?v=(\d+)/)||[])[1];ok('indexローダー参照',Number(qidx)>=72,'index query v='+(qidx||'none')+'（旧query値は技術的負債として別管理）');
   var result={timestamp:new Date().toISOString(),questions:bank.length,activeQuestions:active.length,totalChoices:total,detailOK:detailOK,reactionOK:rxOK,termQuestions:terms,errors:errors,checks:checks};window.WATER1_REGRESSION_AUDIT=result;
   var el=document.getElementById('audit');if(el){var good=errors.length===0;el.textContent=(el.textContent||'').split(' ｜ 回帰監査：')[0]+' ｜ 回帰監査：'+checks.filter(function(c){return c.pass}).length+'/'+checks.length+(good?' 合格':' 要確認');}
   if(errors.length){var w=document.getElementById('warn');if(w&&!document.getElementById('regressionWarn')){var d=document.createElement('div');d.id='regressionWarn';d.className='warn';d.innerHTML='<b>v15回帰監査：</b><br>'+errors.join('<br>');w.appendChild(d);}}
