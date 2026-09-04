@@ -4,7 +4,7 @@ on:
     paths:
       - 'qbank_*.js'
       - 'tools/canonical_audit_v22.js'
-      - 'tools/batch11_static_audit_v31.js'
+      - 'tools/batch12_final200_audit_v32.js'
       - 'index.html'
       - 'sw.js'
       - '.github/workflows/canonical-audit.yml'
@@ -19,5 +19,5 @@ jobs:
           node-version: '20'
       - name: Run canonical gap audit
         run: node tools/canonical_audit_v22.js
-      - name: Run Batch 11 static quality and UI regression audit
-        run: node tools/batch11_static_audit_v31.js
+      - name: Run Batch 12 final 200-question quality and UI regression audit
+        run: node tools/batch12_final200_audit_v32.js
