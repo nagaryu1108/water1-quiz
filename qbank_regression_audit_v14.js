@@ -3,22 +3,26 @@ function get(id){return (window.QBANK||[]).find(function(x){return x.id===id});}
 function run(){
   var bank=window.QBANK||[], active=window.Q||bank, checks=[], errors=[];
   function ok(name,pass,detail){checks.push({name:name,pass:!!pass,detail:detail||''});if(!pass)errors.push(name+(detail?'：'+detail:''));}
-  ok('問題数156',bank.length===156,'QBANK='+bank.length);
-  ok('出題対象156',active.length===156,'Q='+active.length+' / QBANK='+bank.length);
+  ok('問題数171',bank.length===171,'QBANK='+bank.length);
+  ok('出題対象171',active.length===171,'Q='+active.length+' / QBANK='+bank.length);
   var total=0,detailOK=0,terms=0;
   bank.forEach(function(x){
     if(Array.isArray(x.o))total+=x.o.length;
     if(Array.isArray(x.e)&&x.e.length===5&&x.e.every(function(e){return /^【(正しい|誤り)】/.test(String(e||''));}))detailOK+=5;
     if(Array.isArray(x.terms)&&x.terms.length)terms++;
   });
-  ok('780肢',total===780,'choices='+total);
-  ok('全5肢詳細解説',detailOK===780,'detail='+detailOK+'/780');
-  ok('用語ミニ解説',terms>=120,'termsQuestions='+terms);
-  var rxIds=['T03','T04','H04','H07','T08','T11','H09','T14','H26','T31','H29','H30','H31'];
+  ok('855肢',total===855,'choices='+total);
+  ok('全5肢詳細解説',detailOK===855,'detail='+detailOK+'/855');
+  ok('用語ミニ解説',terms>=135,'termsQuestions='+terms);
+  var rxIds=['T03','T04','H04','H07','T08','T11','H09','T14','H26','T31','H29','H30','H31','H32','H33','H34','H35','H36'];
   var rxOK=rxIds.filter(function(id){var x=get(id);return x&&Array.isArray(x.rxn)&&x.rxn.length;}).length;
-  ok('反応式13件',rxOK===13,'rxn='+rxOK+'/13');
+  ok('反応式18件',rxOK===18,'rxn='+rxOK+'/18');
   ok('T32=100 mg/L',!!get('T32')&&get('T32').a===3&&String(get('T32').p||'').indexOf('100 mg/L')>=0,'answerIndex='+(get('T32')&&get('T32').a));
   ok('L30≈0.23%',!!get('L30')&&String(get('L30').p||'').indexOf('0.23')>=0,'p='+(get('L30')&&get('L30').p));
+  ok('T33=24 mg/L',!!get('T33')&&get('T33').a===2&&String(get('T33').p||'').indexOf('24 mg/L')>=0,'answerIndex='+(get('T33')&&get('T33').a));
+  ok('T35=100 kg',!!get('T35')&&get('T35').a===2&&String(get('T35').p||'').indexOf('100 kg')>=0,'answerIndex='+(get('T35')&&get('T35').a));
+  ok('T39=100 mol',!!get('T39')&&get('T39').a===2&&String(get('T39').p||'').indexOf('100 mol')>=0,'answerIndex='+(get('T39')&&get('T39').a));
+  ok('T40=95%',!!get('T40')&&get('T40').a===3&&String(get('T40').p||'').indexOf('95%')>=0,'answerIndex='+(get('T40')&&get('T40').a));
   ok('頻度×弱点スケジューラ',!!(window.WATER1_FREQUENCY_SCHEDULER&&/frequency x personal weakness/.test(window.WATER1_FREQUENCY_SCHEDULER.method||'')),window.WATER1_FREQUENCY_SCHEDULER&&window.WATER1_FREQUENCY_SCHEDULER.version);
   var chem=window.water1ChemHTML;
   if(typeof chem==='function'){
@@ -28,7 +32,7 @@ function run(){
   try{
     var k='water1_regression_probe',v='ok-'+Date.now();localStorage.setItem(k,v);var same=localStorage.getItem(k)===v;localStorage.removeItem(k);ok('localStorage読み書き',same,'probe');
   }catch(e){ok('localStorage読み書き',false,String(e));}
-  var visualPre=['G06','W06','T06','H06','L06','T08'],visualPost=['G04','W05'];
+  var visualPre=['G06','W06','T06','H06','L06','T08','T36'],visualPost=['G04','W05'];
   var vpre=visualPre.filter(function(id){var x=get(id);return x&&x.v;}).length,vpost=visualPost.filter(function(id){var x=get(id);return x&&x.av;}).length;
   ok('既存問題用図表',vpre===visualPre.length,'pre='+vpre+'/'+visualPre.length);
   ok('解説補助グラフ',vpost===visualPost.length,'post='+vpost+'/'+visualPost.length);
