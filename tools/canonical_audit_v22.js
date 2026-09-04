@@ -8,4 +8,5 @@ for(const f of scripts){const p=path.join(root,f);if(!fs.existsSync(p))throw new
 vm.runInContext(fs.readFileSync(path.join(root,'qbank_canonical_gap_audit_v21.js'),'utf8'),ctx,{filename:'qbank_canonical_gap_audit_v21.js'});
 const a=ctx.window.WATER1_CANONICAL_GAP_AUDIT;if(!a)throw new Error('audit missing');
 console.log('BANK',a.bankQuestions);console.log('TOP15');for(const [i,r] of a.top15.entries())console.log(`${i+1}\t${r.canonical}\tyears>=${r.confirmedYearsMin}\tquestions>=${r.confirmedQuestionsMin}\tbank=${r.bankQuestions}\tratio=${r.gapRatio}\tscore=${r.score}\tids=${r.ids.join(',')}`);
+console.log('CATALOG');for(const x of ctx.window.QBANK){const terms=(x.terms||[]).map(z=>z&&z.name).filter(Boolean).join('/');console.log(`CAT\t${x.id}\t${x.s||''}\t${x.t||''}\t${String(x.q||'').replace(/\s+/g,' ')}\tTERMS=${terms}`)}
 console.log('ALLROWS_JSON='+JSON.stringify(a.rows));
