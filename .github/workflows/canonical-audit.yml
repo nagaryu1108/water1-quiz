@@ -1,0 +1,18 @@
+name: Canonical audit
+on:
+  push:
+    paths:
+      - 'qbank_*.js'
+      - 'tools/canonical_audit_v22.js'
+      - '.github/workflows/canonical-audit.yml'
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run canonical gap audit
+        run: node tools/canonical_audit_v22.js
