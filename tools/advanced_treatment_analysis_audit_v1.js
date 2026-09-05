@@ -1,0 +1,44 @@
+const fs=require('fs'),vm=require('vm'),path=require('path');
+const root=path.resolve(__dirname,'..');
+const file=path.join(root,'advanced-treatment-analysis.html');
+if(!fs.existsSync(file))throw new Error('advanced-treatment-analysis.html missing');
+const html=fs.readFileSync(file,'utf8');
+const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
+if(!scripts.length)throw new Error('inline script missing');
+let js=scripts[scripts.length-1];
+js=js.replace(/load\(\);render\(\);\s*$/,'globalThis.__Q=Q;globalThis.__KEY=KEY;');
+const stub=()=>({style:{},classList:{add(){}},appendChild(){},scrollIntoView(){},set innerHTML(v){this._html=v},get innerHTML(){return this._html||''},textContent:'',disabled:false,onclick:null});
+const ctx={console,localStorage:{getItem:()=>null,setItem(){}},document:{getElementById:stub,querySelectorAll:()=>[],createElement:stub},window:{scrollTo(){}},confirm:()=>false,Set,Map,Math,JSON,Number,String,Array,Object,RegExp,Date};
+vm.createContext(ctx);vm.runInContext(js,ctx,{filename:'advanced-treatment-analysis.html'});
+const Q=ctx.__Q||[];
+function assert(c,m){if(!c)throw new Error(m)}
+assert(ctx.__KEY==='water1_advanced_treatment_analysis_v1','localStorage key mismatch');
+assert(Q.length===5,'question count must be 5');
+const ids=new Set();
+for(const x of Q){
+ assert(x&&/^ADV0[1-5]$/.test(x.id),'bad id '+(x&&x.id));
+ assert(!ids.has(x.id),'duplicate id '+x.id);ids.add(x.id);
+ assert(Array.isArray(x.o)&&x.o.length===5,x.id+' choices !=5');
+ assert(Array.isArray(x.e)&&x.e.length===5,x.id+' explanations !=5');
+ assert(Number.isInteger(x.a)&&x.a>=0&&x.a<5,x.id+' answer invalid');
+ assert(new Set(x.o).size===5,x.id+' duplicate choices');
+ assert(new Set(x.e).size===5,x.id+' duplicate explanations');
+ assert(typeof x.svg==='string'&&x.svg.includes('<svg')&&x.svg.includes('viewBox'),x.id+' svg missing');
+ assert(Array.isArray(x.parts)&&x.parts.length>=4,x.id+' component explanations too few');
+ x.parts.forEach((p,i)=>assert(Array.isArray(p)&&p.length===3&&p.every(v=>String(v).length>=8),x.id+' bad part '+i));
+ assert(String(x.core||'').length>=55,x.id+' core too short');
+ assert(String(x.reaction||'').length>=15,x.id+' reaction/principle line too short');
+ x.e.forEach((e,i)=>assert(String(e).length>=55,x.id+' explanation '+(i+1)+' too short'));
+}
+assert(Q.find(x=>x.id==='ADV04').parts.length>=6,'ADV04 instrument parts too few');
+assert(Q.find(x=>x.id==='ADV05').parts.length>=7,'ADV05 instrument parts too few');
+assert(/\.choice\.good\{[^}]*#16a34a/.test(html),'green correct CSS missing');
+assert(/\.choice\.bad\{[^}]*#dc2626/.test(html),'red wrong CSS missing');
+assert(/id="next"/.test(html)&&/次の問題へ/.test(html),'next UI missing');
+assert(/全5肢の解説を開く/.test(html),'open-all explanations missing');
+assert(/function toggleExp\(/.test(html),'per-choice explanation toggle missing');
+assert(/function renderParts\(/.test(html),'component-role learning UI missing');
+assert(/function pick\([\s\S]*?save\(\);/.test(html),'instant answer save missing');
+assert(!/@@SUP|@@SUB|undefined/.test(html),'broken token/undefined found');
+console.log('ADVANCED_DRILL QUESTIONS',Q.length,'CHOICES',Q.reduce((n,x)=>n+x.o.length,0),'PARTS',Q.reduce((n,x)=>n+x.parts.length,0),'KEY',ctx.__KEY);
+console.log('PASS advanced treatment / sampling / analysis browser audit');
