@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#123b6d">
+<title>水質第1種｜処理・採取・分析 深掘り専門演習</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f2f5fa;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}.wrap{max-width:820px;margin:auto;padding:14px}.hero{background:#123b6d;color:#fff;padding:18px;border-radius:18px}.hero h1{font-size:20px;margin:0 0 8px}.hero p{font-size:12px;line-height:1.65;margin:5px 0;color:#e2e8f0}.pill{display:inline-block;background:#ffffff24;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800}.progress{height:8px;background:#ffffff2d;border-radius:999px;margin-top:12px;overflow:hidden}.progress i{display:block;height:100%;background:#7dd3fc;width:0}.stats{font-size:12px;margin-top:8px}.card{background:#fff;border-radius:18px;padding:18px;margin-top:12px;box-shadow:0 2px 14px #0000000d}.meta{color:#1d4ed8;font-size:13px;line-height:1.65;font-weight:800}.q{font-size:18px;font-weight:800;line-height:1.85;margin:14px 0}.figure{border:1px solid #cbd5e1;border-radius:14px;padding:10px;background:#fff;overflow:hidden;margin:10px 0 16px}.figure .ft{font-weight:900;font-size:14px;color:#1e3a8a;margin-bottom:8px}.figure svg{width:100%;height:auto;display:block}.figure .note{font-size:11px;line-height:1.6;color:#64748b;margin-top:8px}.choice{width:100%;text-align:left;background:#fff;border:2px solid #d9e2ef;border-radius:14px;padding:14px;margin:7px 0;font-size:15px;line-height:1.68;color:#172033}.choice.good{border-color:#16a34a;background:#ecfdf3}.choice.bad{border-color:#dc2626;background:#fff1f2}.exp{display:none;margin:-3px 5px 10px;padding:12px 13px;border-left:4px solid #64748b;background:#f8fafc;font-size:14px;line-height:1.78}.result{display:none;margin-top:15px;padding:15px;border-radius:14px;background:#eef2f7;line-height:1.8}.result h3{margin:0 0 8px}.deep{background:#fff;border:1px solid #cbd5e1;border-radius:12px;padding:12px;margin-top:10px}.deep b{color:#1e3a8a}.parts{display:none;margin-top:14px}.parts h3{font-size:15px;margin:8px 0}.partbtn{width:100%;text-align:left;border:1px solid #bfdbfe;background:#eff6ff;color:#172033;border-radius:11px;padding:11px 12px;margin:5px 0;font-size:14px;font-weight:800}.partdetail{display:none;border-left:4px solid #2563eb;background:#f8fafc;margin:-2px 5px 8px;padding:11px 12px;font-size:13px;line-height:1.72}.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.toolbar button,.next{border:0;border-radius:12px;padding:13px;font-weight:800}.toolbar button{background:#e2e8f0;color:#172033}.next{display:none;width:100%;margin-top:10px;background:#1d4ed8;color:#fff;font-size:15px}.reaction{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:10px;margin-top:8px;overflow-x:auto}.foot{font-size:11px;color:#64748b;line-height:1.6;margin-top:12px}.done{text-align:center;padding:22px 8px}.done h2{font-size:20px}.done button{border:0;border-radius:12px;background:#1d4ed8;color:#fff;padding:13px 18px;font-weight:800}.mini{font-size:12px;color:#475569}@media(max-width:520px){.wrap{padding:10px}.card{padding:15px}.q{font-size:17px}.choice{font-size:15px;padding:13px}.hero{padding:16px}.figure{padding:7px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="hero">
+  <h1>公害防止管理者 水質第1種｜処理・採取・分析 深掘り専門演習</h1>
+  <span class="pill">テスト版 5問 / 独立学習履歴</span>
+  <p>処理フロー・反応原理・採取/保存・分析装置の内部構成を、図と5択で深く理解するための専用演習です。</p>
+  <div id="stats" class="stats"></div><div class="progress"><i id="bar"></i></div>
+</header>
+<section class="card" id="card">
+  <div id="meta" class="meta"></div>
+  <div id="q" class="q"></div>
+  <div id="figure" class="figure"></div>
+  <div id="choices"></div>
+  <div id="result" class="result"></div>
+  <div id="parts" class="parts"></div>
+  <div class="toolbar"><button id="openall">全5肢の解説を開く</button><button id="reset">この演習をリセット</button></div>
+  <button id="next" class="next">次の問題へ</button>
+  <div class="foot">回答した瞬間に端末内へ保存します。正答表示前に正解を示す色分けは行いません。回答後は各選択肢を再タップすると、その直下に個別解説が開きます。</div>
+</section>
+</main>
+<script>
+const KEY='water1_advanced_treatment_analysis_v1';
+const Q=[
+{
+ id:'ADV01',subject:'水質有害物質特論 × 汚水処理特論',topic:'シアン含有排水｜アルカリ塩素法と安全管理',
+ q:'遊離シアンを主体とする排水を、下図のような酸化処理系で処理する場合の考え方として、最も適当なものはどれか。',
+ figTitle:'遊離シアン排水の代表的な処理フロー（概念図）',
+ svg:`<svg viewBox="0 0 760 260" role="img" aria-label="シアン排水処理フロー"><defs><marker id="a1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#475569"/></marker></defs><style>.b{fill:#eff6ff;stroke:#2563eb;stroke-width:2}.t{font:700 16px sans-serif;fill:#172033}.s{font:12px sans-serif;fill:#475569}.ar{stroke:#475569;stroke-width:2.5;marker-end:url(#a1)}</style><rect class="b" x="20" y="85" width="130" height="72" rx="12"/><text class="t" x="85" y="112" text-anchor="middle">シアン排水</text><text class="s" x="85" y="135" text-anchor="middle">遊離CN⁻主体</text><line class="ar" x1="150" y1="121" x2="195" y2="121"/><rect class="b" x="200" y="55" width="155" height="132" rx="12"/><text class="t" x="278" y="87" text-anchor="middle">第1反応槽</text><text class="s" x="278" y="112" text-anchor="middle">アルカリ側維持</text><text class="s" x="278" y="134" text-anchor="middle">酸化剤添加</text><text class="s" x="278" y="156" text-anchor="middle">CN⁻ → CNO⁻</text><line class="ar" x1="355" y1="121" x2="400" y2="121"/><rect class="b" x="405" y="55" width="155" height="132" rx="12"/><text class="t" x="483" y="87" text-anchor="middle">第2反応槽</text><text class="s" x="483" y="112" text-anchor="middle">酸化継続</text><text class="s" x="483" y="134" text-anchor="middle">pH・ORP管理</text><text class="s" x="483" y="156" text-anchor="middle">分解を進行</text><line class="ar" x1="560" y1="121" x2="605" y2="121"/><rect class="b" x="610" y="85" width="130" height="72" rx="12"/><text class="t" x="675" y="112" text-anchor="middle">後段処理</text><text class="s" x="675" y="135" text-anchor="middle">中和・確認</text></svg>`,
+ note:'図は遊離シアン主体の概念フロー。金属シアノ錯体などは同じ条件で十分処理できるとは限らない。',
+ o:[
+ '第1反応槽では、シアンを除去しやすくするため強酸性にしてHCNとして積極的に揮散させる。',
+ 'アルカリ側を保ってHCN発生を抑えながらCN⁻を酸化し、シアン酸塩などを経てさらに分解を進める。',
+ 'CN⁻は重金属イオンと同じように水酸化物として直接沈殿するため、酸化剤は原則不要である。',
+ '遊離シアンと鉄シアノ錯体などの安定錯体は処理性が同じなので、処理系統を分ける必要はない。',
+ 'アルカリ塩素法ではORPのみ管理すればよく、pHは反応性や安全性にほとんど影響しない。'
+ ],a:1,
+ e:[
+ '【誤り】酸性化するとCN⁻がHCN側へ移り、猛毒かつ揮発性のシアン化水素が発生しやすくなる。安全上、遊離シアンの酸化処理ではアルカリ側を保つことが重要。',
+ '【正しい】遊離シアンの代表的処理はアルカリ塩素法。まずCN⁻をCNO⁻へ酸化し、さらに酸化分解を進める。pH管理はHCN発生防止と酸化反応の制御の両面で重要。',
+ '【誤り】CN⁻自体を一般的な金属水酸化物のように沈殿させるのが基本ではない。遊離シアンは酸化分解が代表的で、錯体シアンは別途処理性を評価する。',
+ '【誤り】金属シアノ錯体は錯体の安定度により遊離シアンより分解しにくいことがある。対象化学種を把握し、必要に応じ前処理・別処理を検討する。',
+ '【誤り】pHはHCN/CN⁻の化学形態、酸化剤の有効化学種、反応速度、安全性に関与する。ORPだけで処理状態を判断するのは不十分。'
+ ],
+ core:'シアン処理では「化学形態」と「安全条件」を一体で理解する。遊離CN⁻はアルカリ側で酸化し、酸性化によるHCN発生を避ける。錯体シアンは処理性が異なる。',
+ reaction:'CN⁻ + OCl⁻ → CNO⁻ + Cl⁻　（第1段階の代表的概念）',
+ parts:[
+ ['第1反応槽','遊離シアンを酸化し、まずシアン酸塩方向へ変換する工程。','アルカリ側を維持してHCNの生成・揮散を抑えつつ酸化剤を作用させる。'],
+ ['第2反応槽','第1段階生成物をさらに分解し、残留シアンを低減する工程。','pH・ORP・反応時間などを管理し、酸化反応を完結側へ進める。'],
+ ['pH管理','安全性と反応性の両方を支配する重要操作。','酸性側ではHCNの割合が増えやすい。単なる中和操作ではなく化学種制御である。'],
+ ['ORP管理','酸化状態を運転管理する補助指標。','酸化剤注入と反応進行の把握に使うが、pHや実測濃度を置き換えるものではない。']
+ ]
+},
+{
+ id:'ADV02',subject:'水質有害物質特論 × 汚水処理特論',topic:'六価クロム排水｜還元・中和・沈殿',
+ q:'六価クロムを含む排水を処理する場合、下図の工程順序と各工程の役割に関する記述として、最も適当なものはどれか。',
+ figTitle:'六価クロム排水の代表処理フロー（概念図）',
+ svg:`<svg viewBox="0 0 760 260"><defs><marker id="a2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#475569"/></marker></defs><style>.b{fill:#f0fdf4;stroke:#16a34a;stroke-width:2}.t{font:700 16px sans-serif;fill:#172033}.s{font:12px sans-serif;fill:#475569}.ar{stroke:#475569;stroke-width:2.5;marker-end:url(#a2)}</style><rect class="b" x="15" y="90" width="120" height="70" rx="12"/><text class="t" x="75" y="116" text-anchor="middle">Cr(VI)排水</text><text class="s" x="75" y="139" text-anchor="middle">CrO₄²⁻等</text><line class="ar" x1="135" y1="125" x2="175" y2="125"/><rect class="b" x="180" y="55" width="145" height="140" rx="12"/><text class="t" x="253" y="85" text-anchor="middle">還元槽</text><text class="s" x="253" y="110" text-anchor="middle">還元剤添加</text><text class="s" x="253" y="132" text-anchor="middle">Cr(VI) → Cr(III)</text><text class="s" x="253" y="154" text-anchor="middle">反応条件管理</text><line class="ar" x1="325" y1="125" x2="365" y2="125"/><rect class="b" x="370" y="55" width="145" height="140" rx="12"/><text class="t" x="443" y="85" text-anchor="middle">中和・凝集</text><text class="s" x="443" y="110" text-anchor="middle">pH上昇</text><text class="s" x="443" y="132" text-anchor="middle">Cr(OH)₃生成</text><text class="s" x="443" y="154" text-anchor="middle">フロック形成</text><line class="ar" x1="515" y1="125" x2="555" y2="125"/><rect class="b" x="560" y="55" width="180" height="140" rx="12"/><text class="t" x="650" y="85" text-anchor="middle">固液分離</text><text class="s" x="650" y="110" text-anchor="middle">沈殿・ろ過</text><text class="s" x="650" y="132" text-anchor="middle">処理水確認</text><text class="s" x="650" y="154" text-anchor="middle">汚泥→脱水</text></svg>`,
+ note:'Cr(VI)をそのまま単純中和するのではなく、まずCr(III)へ還元してから水酸化物沈殿へ導くのが基本。',
+ o:[
+ 'Cr(VI)はまず強アルカリ性でCr(OH)₃として沈殿させ、その後Cr(III)へ還元する。',
+ 'Cr(VI)を還元剤でCr(III)へ変換した後、pHを調整してCr(OH)₃として沈殿・固液分離する。',
+ '還元槽ではCr(III)をCr(VI)へ酸化することで水酸化物沈殿しやすくする。',
+ 'シアン系排水を還元槽に直接混合すると、互いの有害性が相殺されるため系統分離は不要である。',
+ '還元反応の終点はpHだけで完全に判断でき、酸化還元状態や残留Cr(VI)の確認は不要である。'
+ ],a:1,
+ e:[
+ '【誤り】Cr(VI)はそのまま単純にCr(OH)₃として沈殿させるのではない。Cr(OH)₃はCr(III)の水酸化物であり、先に還元工程が必要。',
+ '【正しい】六価クロム処理の基本は「還元→中和→水酸化物沈殿→固液分離」。処理順序そのものが頻出論点。',
+ '【誤り】方向が逆。処理では高酸化状態のCr(VI)をCr(III)へ還元する。Cr(III)は適切なpH域で水酸化物沈殿を形成しやすい。',
+ '【誤り】シアン系と六価クロム系は反応条件・安全管理が異なり、安易な混合は危険。工程別・性状別の系統分離が重要。',
+ '【誤り】pHは重要だが、それだけでは還元完了を保証できない。ORP等の運転指標と、必要に応じCr(VI)の分析確認を組み合わせる。'
+ ],
+ core:'六価クロム処理では「価数を変えてから沈殿させる」。Cr(VI)→Cr(III)の還元と、Cr(III)→Cr(OH)₃の中和沈殿を別工程として理解する。',
+ reaction:'CrO₄²⁻ + 8H⁺ + 3e⁻ → Cr³⁺ + 4H₂O　／　Cr³⁺ + 3OH⁻ → Cr(OH)₃↓',
+ parts:[
+ ['還元槽','Cr(VI)をCr(III)へ変換する工程。','亜硫酸塩、鉄(II)塩などの還元剤を用いることがある。反応条件は還元剤や水質に依存する。'],
+ ['中和・凝集槽','Cr(III)を難溶性水酸化物として固相化する工程。','pHを調整してCr(OH)₃を生成させ、凝集により沈降・ろ過しやすいフロックへ成長させる。'],
+ ['沈殿・ろ過','生成した金属水酸化物を処理水から分離する工程。','化学反応で除去可能形にした後、最後は固液分離で系外へ取り出す。'],
+ ['汚泥脱水','クロムを含む沈殿汚泥の体積を減らし、後処理しやすくする。','脱水ケーキには有害物質が濃縮されるため、処分・資源化の適否を別途管理する。']
+ ]
+},
+{
+ id:'ADV03',subject:'汚水処理特論',topic:'汚泥処理｜濃縮・安定化・調質・脱水・焼却',
+ q:'生物処理等で発生した汚泥を下図のように処理する場合、各工程の目的と相互関係に関する記述として、最も適当なものはどれか。',
+ figTitle:'代表的な汚泥処理の流れ（概念図）',
+ svg:`<svg viewBox="0 0 760 315"><defs><marker id="a3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#475569"/></marker></defs><style>.b{fill:#fff7ed;stroke:#ea580c;stroke-width:2}.t{font:700 15px sans-serif;fill:#172033}.s{font:12px sans-serif;fill:#475569}.ar{stroke:#475569;stroke-width:2.5;marker-end:url(#a3)}</style><rect class="b" x="15" y="88" width="112" height="72" rx="12"/><text class="t" x="71" y="115" text-anchor="middle">発生汚泥</text><text class="s" x="71" y="138" text-anchor="middle">高含水率</text><line class="ar" x1="127" y1="124" x2="158" y2="124"/><rect class="b" x="162" y="72" width="112" height="104" rx="12"/><text class="t" x="218" y="101" text-anchor="middle">濃縮</text><text class="s" x="218" y="125" text-anchor="middle">自由水低減</text><text class="s" x="218" y="147" text-anchor="middle">容量縮小</text><line class="ar" x1="274" y1="124" x2="305" y2="124"/><rect class="b" x="309" y="72" width="112" height="104" rx="12"/><text class="t" x="365" y="101" text-anchor="middle">安定化</text><text class="s" x="365" y="125" text-anchor="middle">消化など</text><text class="s" x="365" y="147" text-anchor="middle">有機物低減</text><line class="ar" x1="421" y1="124" x2="452" y2="124"/><rect class="b" x="456" y="72" width="112" height="104" rx="12"/><text class="t" x="512" y="101" text-anchor="middle">調質</text><text class="s" x="512" y="125" text-anchor="middle">凝集性改善</text><text class="s" x="512" y="147" text-anchor="middle">脱水性改善</text><line class="ar" x1="568" y1="124" x2="599" y2="124"/><rect class="b" x="603" y="72" width="140" height="104" rx="12"/><text class="t" x="673" y="101" text-anchor="middle">機械脱水</text><text class="s" x="673" y="125" text-anchor="middle">ケーキ化</text><text class="s" x="673" y="147" text-anchor="middle">含水率低減</text><line class="ar" x1="673" y1="176" x2="673" y2="215"/><rect class="b" x="565" y="220" width="178" height="72" rx="12"/><text class="t" x="654" y="247" text-anchor="middle">焼却・資源化等</text><text class="s" x="654" y="270" text-anchor="middle">減容・安定化・灰利用</text></svg>`,
+ note:'実施設では汚泥性状・規模・最終処分方法により工程の有無や順序は変わる。図は代表的な理解用フロー。',
+ o:[
+ '濃縮は主に汚泥中の結合水を完全除去して乾燥固形物にする工程であり、後段脱水は通常不要となる。',
+ '調質は脱水前に凝集剤等を用いて汚泥粒子の構造を整え、ろ過・圧搾・遠心分離などで水を抜きやすくするために行う。',
+ '嫌気性消化は汚泥中の無機物をメタンへ変換する工程であり、有機物量にはほとんど影響しない。',
+ '脱水ケーキの含水率は焼却の熱収支にほとんど影響せず、補助燃料使用量とも無関係である。',
+ '汚泥を焼却すると全ての無機成分が気体になるため、焼却灰の処分や資源利用を検討する必要はない。'
+ ],a:1,
+ e:[
+ '【誤り】濃縮は主として自由水を減らして汚泥容量を小さくする工程で、完全乾燥ではない。濃縮後も高含水であり、通常は脱水などの後段処理が必要。',
+ '【正しい】調質は脱水機の前処理。高分子凝集剤等でフロックを形成し、ろ過性・圧搾性・遠心分離性などを改善する。',
+ '【誤り】嫌気性消化は汚泥中の生分解性有機物を分解・安定化し、メタンを含むバイオガスを生成する。無機物をメタンへ変えるわけではない。',
+ '【誤り】水を蒸発させるには大きな潜熱が必要なため、脱水ケーキ含水率は焼却の自燃性・補助燃料・炉負荷に大きく関係する。',
+ '【誤り】焼却後も無機成分は灰として残る。灰の重金属含有、溶出性、セメント原料等への資源利用可能性を評価する必要がある。'
+ ],
+ core:'汚泥処理は「水を減らす工程」と「有機物を安定化する工程」を区別する。濃縮→調質→脱水は含水率低減、消化は有機物安定化、焼却は最終的な減容・安定化の性格が強い。',
+ reaction:'嫌気性消化の代表イメージ：有機物 → 有機酸 → CH₄ + CO₂',
+ parts:[
+ ['濃縮','後段設備へ送る汚泥量を減らす前処理。','重力、浮上、遠心などを利用して主として自由水を除き、固形物濃度を高める。'],
+ ['安定化・消化','腐敗性・臭気・有機物量を低減する工程。','嫌気性消化では微生物群が有機物を段階分解し、最終的にメタンを含むバイオガスを生成する。'],
+ ['調質','脱水しにくい微細汚泥を脱水機に適した状態へ変える。','高分子凝集剤などで粒子を架橋・凝集させ、フロックを大きくし、水の抜け道を形成する。'],
+ ['機械脱水','汚泥から水を機械的に分離してケーキ化する。','ベルトプレス、フィルタープレス、遠心脱水機などで作用原理が異なる。'],
+ ['焼却','有機分を燃焼させて大幅に減容・安定化する。','含水率が高いほど蒸発に熱を奪われるため、前段脱水性能がエネルギー収支へ直結する。']
+ ]
+},
+{
+ id:'ADV04',subject:'水質有害物質特論',topic:'ひ素・セレン分析｜水素化物発生原子吸光',
+ q:'下図は、ひ素などを水素化物発生原子吸光法で測定する装置構成を模式化したものである。各部位の役割に関する記述として、最も適当なものはどれか。',
+ figTitle:'水素化物発生原子吸光装置の構成（概念図）',
+ svg:`<svg viewBox="0 0 780 370"><defs><marker id="a4" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#475569"/></marker></defs><style>.b{fill:#eef2ff;stroke:#4f46e5;stroke-width:2}.opt{fill:#fefce8;stroke:#ca8a04;stroke-width:2}.t{font:700 14px sans-serif;fill:#172033}.s{font:11px sans-serif;fill:#475569}.ar{stroke:#475569;stroke-width:2.3;marker-end:url(#a4)}.light{stroke:#ca8a04;stroke-width:3;marker-end:url(#a4)}</style><rect class="b" x="18" y="55" width="125" height="86" rx="12"/><text class="t" x="80" y="82" text-anchor="middle">試料前処理</text><text class="s" x="80" y="105" text-anchor="middle">分解・酸化数調整</text><line class="ar" x1="143" y1="98" x2="177" y2="98"/><rect class="b" x="182" y="45" width="145" height="106" rx="12"/><text class="t" x="255" y="75" text-anchor="middle">水素化物発生槽</text><text class="s" x="255" y="98" text-anchor="middle">還元剤を反応</text><text class="s" x="255" y="120" text-anchor="middle">AsH₃等を生成</text><line class="ar" x1="327" y1="98" x2="361" y2="98"/><rect class="b" x="366" y="45" width="145" height="106" rx="12"/><text class="t" x="439" y="75" text-anchor="middle">気液分離器</text><text class="s" x="439" y="98" text-anchor="middle">液相マトリックス</text><text class="s" x="439" y="120" text-anchor="middle">から気相を分離</text><line class="ar" x1="511" y1="98" x2="545" y2="98"/><rect class="b" x="550" y="45" width="145" height="106" rx="12"/><text class="t" x="623" y="75" text-anchor="middle">加熱吸収セル</text><text class="s" x="623" y="98" text-anchor="middle">水素化物分解</text><text class="s" x="623" y="120" text-anchor="middle">原子化</text><rect class="opt" x="70" y="245" width="120" height="70" rx="12"/><text class="t" x="130" y="272" text-anchor="middle">中空陰極ランプ</text><text class="s" x="130" y="294" text-anchor="middle">元素固有線</text><line class="light" x1="190" y1="280" x2="548" y2="280"/><rect class="opt" x="550" y="235" width="145" height="90" rx="12"/><text class="t" x="623" y="262" text-anchor="middle">吸収セル</text><text class="s" x="623" y="284" text-anchor="middle">原子による吸収</text><line class="light" x1="695" y1="280" x2="720" y2="280"/><rect class="opt" x="720" y="230" width="55" height="100" rx="10"/><text class="s" x="748" y="260" text-anchor="middle">分光</text><text class="s" x="748" y="280" text-anchor="middle">＋</text><text class="s" x="748" y="300" text-anchor="middle">検出</text><line x1="623" y1="151" x2="623" y2="235" stroke="#4f46e5" stroke-dasharray="6 4" stroke-width="2"/><text class="s" x="637" y="195">同じセル</text></svg>`,
+ note:'実機では水素化物発生部、キャリアガス系、加熱セル、分光器・検出器などが一体化/別体化される。図は原理理解用。',
+ o:[
+ '気液分離器の主目的は、試料液中のひ素を沈殿として捕集し、その沈殿質量を測ることである。',
+ '水素化物発生槽で揮発性水素化物を生成し、気液分離後にキャリアガスで加熱セルへ送り、原子化した元素による特定波長の吸収を測定する。',
+ '中空陰極ランプは試料を高温プラズマ化してイオンを作る部位であり、質量分析計へイオンを送る。',
+ '加熱セルの役割はAsH₃を液化して保持することであり、原子化は分光器内部で行われる。',
+ '分光器は試料中の元素を化学的に還元する装置であり、光の波長選択とは関係しない。'
+ ],a:1,
+ e:[
+ '【誤り】気液分離器は重量分析装置ではない。生成した揮発性水素化物を液相マトリックスから分離し、気相として測定部へ送る。',
+ '【正しい】水素化物発生法の核心は、対象元素をAsH₃やH₂Seなどの揮発性水素化物として気相分離し、加熱セルで原子化して原子吸光を測ること。',
+ '【誤り】中空陰極ランプは原子吸光用の光源。測定対象元素に固有の鋭いスペクトル線を供給する。プラズマイオン源はICP-MS等の別方式。',
+ '【誤り】加熱セルでは水素化物を熱分解し、測定対象元素を原子化する。液化保持する部位ではない。',
+ '【誤り】分光器は目的波長を選択して妨害光を除く光学系。化学的還元は水素化物発生部で行う。'
+ ],
+ core:'水素化物発生原子吸光は「化学反応で揮発性水素化物を作る前処理・導入法」と「元素固有光を使う原子吸光測定」を組み合わせた方法。各部位の機能を混同しない。',
+ reaction:'As(III) → AsH₃↑　／　Se → H₂Se↑　（発生条件・酸化数調整は分析法に従う）',
+ parts:[
+ ['試料前処理','対象元素を定量可能な化学形態にそろえる。','分解、酸化数調整、妨害対策などを行う。水素化物生成効率は元素の酸化状態に依存し得る。'],
+ ['水素化物発生槽','揮発性水素化物を化学反応で生成する。','酸性条件下で還元剤を作用させ、AsH₃、H₂Seなどを発生させる。'],
+ ['気液分離器','生成ガスを液相から分離する。','マトリックスの多くを液相へ残したまま対象元素を気相へ移すため、感度向上・妨害低減に有利。'],
+ ['加熱吸収セル','水素化物を分解して自由原子を作り、光を通す。','原子化した対象元素が元素固有波長の光を吸収し、その吸光度から濃度を求める。'],
+ ['中空陰極ランプ','対象元素に適した鋭い輝線を出す原子吸光用光源。','ランプ陰極に目的元素を用い、放電で元素固有スペクトルを得る。'],
+ ['分光器・検出器','目的波長を選び、透過光強度を電気信号へ変換する。','吸収前後の光強度差から吸光度を求め、検量線等により濃度へ換算する。']
+ ]
+},
+{
+ id:'ADV05',subject:'水質有害物質特論',topic:'VOC採取・保存 × パージ・トラップGC-MS',
+ q:'揮発性有機化合物（VOC）を水試料からパージ・トラップGC-MSで測定する場合の採取・導入・分離・検出の流れとして、最も適当なものはどれか。',
+ figTitle:'VOC採取からパージ・トラップGC-MSまで（概念図）',
+ svg:`<svg viewBox="0 0 790 360"><defs><marker id="a5" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#475569"/></marker></defs><style>.b{fill:#ecfeff;stroke:#0891b2;stroke-width:2}.t{font:700 13px sans-serif;fill:#172033}.s{font:10.5px sans-serif;fill:#475569}.ar{stroke:#475569;stroke-width:2.3;marker-end:url(#a5)}</style><rect class="b" x="12" y="68" width="105" height="92" rx="12"/><text class="t" x="65" y="95" text-anchor="middle">採取瓶</text><text class="s" x="65" y="118" text-anchor="middle">揮散・気泡</text><text class="s" x="65" y="137" text-anchor="middle">を避ける</text><line class="ar" x1="117" y1="114" x2="145" y2="114"/><rect class="b" x="150" y="55" width="105" height="118" rx="12"/><text class="t" x="203" y="83" text-anchor="middle">パージ容器</text><text class="s" x="203" y="106" text-anchor="middle">不活性ガス</text><text class="s" x="203" y="125" text-anchor="middle">でVOC追出し</text><line class="ar" x1="255" y1="114" x2="283" y2="114"/><rect class="b" x="288" y="55" width="105" height="118" rx="12"/><text class="t" x="341" y="83" text-anchor="middle">トラップ</text><text class="s" x="341" y="106" text-anchor="middle">VOC捕集</text><text class="s" x="341" y="125" text-anchor="middle">濃縮</text><line class="ar" x1="393" y1="114" x2="421" y2="114"/><rect class="b" x="426" y="55" width="105" height="118" rx="12"/><text class="t" x="479" y="83" text-anchor="middle">加熱脱着</text><text class="s" x="479" y="106" text-anchor="middle">GCへ導入</text><line class="ar" x1="531" y1="114" x2="559" y2="114"/><rect class="b" x="564" y="55" width="105" height="118" rx="12"/><text class="t" x="617" y="83" text-anchor="middle">GCカラム</text><text class="s" x="617" y="106" text-anchor="middle">保持差で</text><text class="s" x="617" y="125" text-anchor="middle">成分分離</text><line class="ar" x1="669" y1="114" x2="697" y2="114"/><rect class="b" x="702" y="55" width="78" height="118" rx="12"/><text class="t" x="741" y="83" text-anchor="middle">MS</text><text class="s" x="741" y="106" text-anchor="middle">イオン化</text><text class="s" x="741" y="125" text-anchor="middle">m/z分離</text><text class="s" x="741" y="144" text-anchor="middle">検出</text><rect class="b" x="245" y="235" width="300" height="72" rx="12"/><text class="t" x="395" y="262" text-anchor="middle">重要：採取・保存段階からVOC損失を防ぐ</text><text class="s" x="395" y="285" text-anchor="middle">採取時の曝気・激しい振とう・不要な開放を避ける</text></svg>`,
+ note:'具体的な採取容器、保存剤、保存温度・期限等は対象物質と公定法/JISに従う。図は揮発損失防止と装置原理の理解用。',
+ o:[
+ '採取時は試料を激しく曝気してVOCを気相へ追い出してから密栓すると、保存性が高くなる。',
+ '採取・保存では揮発損失を避け、分析時に不活性ガスでVOCをパージしトラップへ捕集・濃縮し、加熱脱着後にGCで分離、MSでイオン化・質量分離・検出する。',
+ 'トラップはGCカラムで分離された各成分を最後に混合して平均濃度を求めるための装置である。',
+ 'GCカラムでは分子を電子衝撃等でイオン化し、質量電荷比m/zごとに分離する。',
+ '質量分析計の四重極などの質量分析部は、主として沸点差によって化合物を分離し、GCカラムはm/zで分離する。'
+ ],a:1,
+ e:[
+ '【誤り】採取時の曝気や不要な気相接触はVOCを失う原因になる。採取から測定まで、揮発・漏えい・気泡発生を抑えることが重要。',
+ '【正しい】パージ・トラップでは揮発性を利用して水相から気相へ移し、吸着材等で濃縮後に熱脱着してGC-MSへ導入する。GCはクロマト分離、MSはイオン化・m/z分離・検出を担う。',
+ '【誤り】トラップはVOCを一時捕集・濃縮する前処理部。GC分離後に成分を混合する装置ではない。',
+ '【誤り】GCカラムは固定相との相互作用・分配や揮発性の差などによる保持時間差で成分を分離する。イオン化とm/z分離はMS側。',
+ '【誤り】役割が逆。GCが保持時間差で化学成分を分離し、MSの質量分析部がイオンをm/zに応じて分離する。'
+ ],
+ core:'VOC分析は「採取した瞬間から分析が始まっている」と考える。揮発損失を防いで保存し、パージ・トラップで水相からVOCを選択的に取り出し、GCとMSで二段階の分離・同定を行う。',
+ reaction:'装置原理：水相VOC → パージ気相 → トラップ濃縮 → 熱脱着 → GC保持時間分離 → MS m/z分離',
+ parts:[
+ ['採取瓶・保存','採取後の濃度変化を最小化する最初の品質管理。','VOCでは揮発・漏えい・不要なヘッドスペースや気泡が誤差要因となる。具体条件は公定法に従う。'],
+ ['パージ容器','不活性ガスを通してVOCを水相から気相へ移す。','気液平衡と揮発性を利用し、対象成分を水マトリックスから取り出す。'],
+ ['トラップ','パージされたVOCを吸着材等に捕集して濃縮する。','大量のパージガス中の微量成分を小さな体積へ集め、検出感度を上げる。'],
+ ['加熱脱着','トラップからVOCを短時間で放出しGCへ導入する。','捕集時とは逆に温度を上げて脱着し、狭いバンドとして導入することでピーク拡散を抑える。'],
+ ['GCカラム','混合物を成分ごとに時間的に分離する。','固定相との相互作用・分配、揮発性などの差により保持時間が変わる。'],
+ ['MSイオン源','GCから出た中性分子をイオンへ変換する。','電子イオン化などで分子イオン・フラグメントイオンを生成し、質量分析可能にする。'],
+ ['質量分析部・検出器','イオンをm/zで選別し、到達量を信号化する。','四重極等では電場条件により通過できるm/zを選択し、検出器でイオン電流を測定する。']
+ ]
+}
+];
+let S={idx:0,hist:{},total:0,correct:0};
+function load(){try{const z=JSON.parse(localStorage.getItem(KEY));if(z)S=Object.assign(S,z)}catch(e){};const first=Q.findIndex(x=>!S.hist[x.id]||!S.hist[x.id].attempts);if(first>=0)S.idx=first;else if(S.idx>=Q.length)S.idx=0}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function esc(s){return String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
+const el=id=>document.getElementById(id);
+function stats(){const done=Q.filter(x=>S.hist[x.id]&&S.hist[x.id].attempts).length;el('stats').textContent=`回答済み ${done}/${Q.length} ｜ 累計 ${S.total}回 ｜ 正解 ${S.correct}回`;el('bar').style.width=(done/Q.length*100)+'%'}
+function render(){stats();if(S.idx>=Q.length){finish();return}const x=Q[S.idx];el('meta').innerHTML=`${esc(x.subject)}<br><span class="pill" style="background:#dbeafe;color:#1e3a8a">専門演習 ${S.idx+1}/${Q.length}</span> ｜ ID ${x.id}<br>${esc(x.topic)}`;el('q').textContent=x.q;el('figure').innerHTML=`<div class="ft">${esc(x.figTitle)}</div>${x.svg}<div class="note">${esc(x.note)}</div>`;const c=el('choices');c.innerHTML='';x.o.forEach((v,i)=>{const b=document.createElement('button');b.className='choice';b.innerHTML=`${i+1}. ${v}`;b.onclick=()=>pick(i,b);c.appendChild(b);const d=document.createElement('div');d.className='exp';d.id='e'+i;d.innerHTML=x.e[i];c.appendChild(d)});el('result').style.display='none';el('result').innerHTML='';el('parts').style.display='none';el('parts').innerHTML='';el('next').style.display='none';el('openall').disabled=true;window.scrollTo({top:0,behavior:'smooth'})}
+function pick(i){const x=Q[S.idx],h=S.hist[x.id]||{attempts:0,correct:0,wrong:0};h.attempts++;S.total++;if(i===x.a){h.correct++;S.correct++}else h.wrong++;S.hist[x.id]=h;save();const btns=[...document.querySelectorAll('.choice')];btns.forEach((b,j)=>{b.disabled=false;b.onclick=()=>toggleExp(j);if(j===x.a)b.classList.add('good');if(j===i&&i!==x.a)b.classList.add('bad')});const r=el('result');r.style.display='block';r.innerHTML=`<h3 class="${i===x.a?'ok':'ng'}">${i===x.a?'✓ 正解':'✕ 不正解'}</h3><div>正答：${x.a+1}</div><div class="deep"><b>この問題の核心</b><br>${x.core}<div class="reaction">${x.reaction}</div></div>`;renderParts(x);el('openall').disabled=false;el('next').style.display='block';stats();r.scrollIntoView({behavior:'smooth',block:'start'})}
+function toggleExp(i){const d=el('e'+i);d.style.display=d.style.display==='block'?'none':'block'}
+function renderParts(x){const p=el('parts');p.style.display='block';p.innerHTML='<h3>図の各工程・各部位を学ぶ</h3><div class="mini">回答後は各部位をタップすると「役割」と「原理」がその直下に開きます。</div>';x.parts.forEach((z,i)=>{const b=document.createElement('button');b.className='partbtn';b.textContent=z[0];const d=document.createElement('div');d.className='partdetail';d.id='p'+i;d.innerHTML=`<b>役割：</b>${z[1]}<br><b>原理：</b>${z[2]}`;b.onclick=()=>{d.style.display=d.style.display==='block'?'none':'block'};p.appendChild(b);p.appendChild(d)})}
+el('openall').onclick=()=>document.querySelectorAll('.exp').forEach(d=>d.style.display='block');
+el('next').onclick=()=>{S.idx++;if(S.idx>=Q.length){save();finish()}else{save();render()}};
+el('reset').onclick=()=>{if(confirm('この専門演習5問の学習履歴だけをリセットしますか？')){S={idx:0,hist:{},total:0,correct:0};save();render()}};
+function finish(){stats();el('meta').textContent='テスト版 5問完了';el('q').textContent='処理・採取・分析 深掘り専門演習（テスト版）を一巡しました。';el('figure').innerHTML='<div class="done"><h2>5問一巡完了</h2><p>各問題は再演習できます。今後はこの形式で、処理法・採取保存・分析法・装置構成を体系的に拡張できます。</p><button onclick="S.idx=0;save();render()">最初からもう一度</button></div>';el('choices').innerHTML='';el('result').style.display='none';el('parts').style.display='none';el('next').style.display='none';el('openall').disabled=true}
+load();render();
+</script>
+</body>
+</html>
