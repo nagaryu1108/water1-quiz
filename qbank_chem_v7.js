@@ -30,13 +30,20 @@
 
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   function chem(s){
-    var z=esc(s), holds=[];
-    z=z.replace(/\^(\d*)([+−-])/g,function(_,n,sign){var p='@@SUP'+holds.length+'@@';holds.push('<sup>'+(n||'')+sign+'</sup>');return p;});
+    var z=esc(s),holds=[];
+    /* Keep charge placeholders immune to the later subscript pass. The former @@SUP0@@
+       marker contained P0, so the 0 itself became <sub>0</sub> and leaked into the UI. */
+    z=z.replace(/\^(\d*)([+−-])/g,function(_,n,sign){
+      var p='§§['+holds.length+']§§';
+      if(sign==='-')sign='−';
+      holds.push('<sup>'+(n||'')+sign+'</sup>');
+      return p;
+    });
     /* Formula subscripts: digits immediately following an element symbol or closing parenthesis.
        Decimal coefficients (1.5), leading coefficients (3 H2O), oxidation-state labels Cr(VI),
        and years/narrative numbers are therefore left alone. */
     z=z.replace(/([A-Z][a-z]?|\))(\d+)/g,'$1<sub>$2</sub>');
-    z=z.replace(/@@SUP(\d+)@@/g,function(_,i){return holds[+i]||'';});
+    z=z.replace(/§§\[(\d+)\]§§/g,function(_,i){return holds[+i]||'';});
     return z;
   }
   function formatReactionBoxes(root){
