@@ -8,7 +8,8 @@ const bank=ctx.window.QBANK,chem=ctx.window.water1ChemHTML,errors=[],formulaFiel
 ok(bank.length===200,'bank must remain 200 questions');ok(typeof chem==='function','chemical formatter not installed');
 function stringsOf(x){const a=[],add=(p,v)=>{if(typeof v==='string')a.push([p,v]);};add('t',x.t);add('q',x.q);add('p',x.p);add('src',x.src);(x.o||[]).forEach((v,i)=>add('o'+(i+1),v));(x.e||[]).forEach((v,i)=>add('e'+(i+1),v));(x.rxn||[]).forEach((v,i)=>add('rxn'+(i+1),v));(x.terms||[]).forEach((v,i)=>{if(v){add('term'+(i+1)+'.name',v.name);add('term'+(i+1)+'.desc',v.desc);}});return a;}
 const chemHint=/\b(?:NH4|NO2|NO3|N2|O2|H2O|H2S|SO2|CO2|CH4|CH2O|CH3COO|HCN|CN|CNO|OCl|CaF2|Al\(OH\)3|CrO4|Cr2O7|Cr\(OH\)3|Fe\(OH\)3|MgNH4PO4|PO4|Hg|AsH3|SeH2|H2Se|B\(OH\)[34])\b|\^[0-9]*[+−-]|[A-Za-z)]\^0/g;
-for(const x of bank){for(const [field,s] of stringsOf(x)){if(/@@(?:SUP|SUB)|@@|<\/?su(?:p|b)>/i.test(s))errors.push(`${x.id}.${field}: internal/HTML marker leaked into stored UI text`);if(chemHint.test(s))formulaFields.push({key:`${x.id}.${field}`,text:s});chemHint.lastIndex=0;}}
+for(const x of bank){for(const [field,s] of stringsOf(x)){if(/@@(?:SUP|SUB)|@@|<\/?su(?:p|b)>/i.test(s))errors.push(`${x.id}.${field}: internal/HTML marker leaked into stored UI text`);if(/\bundefined\b/.test(s))errors.push(`${x.id}.${field}: literal undefined leaked into UI text`);if(chemHint.test(s))formulaFields.push({key:`${x.id}.${field}`,text:s});chemHint.lastIndex=0;}}
+const h22=bank.find(x=>x.id==='H22');ok(h22&&Array.isArray(h22.e)&&/H2Se/.test(h22.e[1]||''),'H22 must use H2Se for hydrogen selenide');ok(h22&&!/SeH2/.test((h22.e||[]).join(' ')),'H22 must not contain incorrect SeH2 formula');
 const cases=[
  ['CH3COO^- + H^+ → CH4 + CO2','CH<sub>3</sub>COO<sup>−</sup> + H<sup>+</sup> → CH<sub>4</sub> + CO<sub>2</sub>'],
  ['NH4^+ + 1.5 O2 → NO2^− + 2 H^+ + H2O','NH<sub>4</sub><sup>+</sup> + 1.5 O<sub>2</sub> → NO<sub>2</sub><sup>−</sup> + 2 H<sup>+</sup> + H<sub>2</sub>O'],
