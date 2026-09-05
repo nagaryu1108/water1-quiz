@@ -3,6 +3,12 @@
   function q(id){for(var i=0;i<bank.length;i++)if(bank[i].id===id)return bank[i];return null;}
   function rx(id,arr){var x=q(id);if(x)x.rxn=arr;}
 
+  /* Chemistry-content corrections found by the full-bank formula review. */
+  var h22=q('H22');
+  if(h22&&Array.isArray(h22.e)&&h22.e[1])h22.e[1]=h22.e[1].replace(/SeH2/g,'H2Se');
+  var h10=q('H10');
+  if(h10&&Array.isArray(h10.e)&&h10.e[4])h10.e[4]=h10.e[4].replace('【試験・ひっかけ】undefined','【試験・ひっかけ】B(OH)3とB(OH)4−の存在比はpHで変化する。ほう素を単純な重金属水酸化物沈殿と同じ発想で扱わない。');
+
   /* Use ^ as the canonical source marker for charge/oxidation-state superscripts. */
   rx('T03',[
     '第1段階（アンモニア酸化の代表式）：NH4^+ + 1.5 O2 → NO2^− + 2 H^+ + H2O',
