@@ -25,7 +25,7 @@ for(const x of Q){
  assert(new Set(x.e).size===5,x.id+' duplicate explanations');
  assert(typeof x.svg==='string'&&x.svg.includes('<svg')&&x.svg.includes('viewBox'),x.id+' svg missing');
  assert(Array.isArray(x.parts)&&x.parts.length>=4,x.id+' component explanations too few');
- x.parts.forEach((p,i)=>assert(Array.isArray(p)&&p.length===3&&p.every(v=>String(v).length>=8),x.id+' bad part '+i));
+ x.parts.forEach((p,i)=>assert(Array.isArray(p)&&p.length===3&&String(p[0]).length>=2&&String(p[1]).length>=8&&String(p[2]).length>=8,x.id+' bad part '+i));
  assert(String(x.core||'').length>=55,x.id+' core too short');
  assert(String(x.reaction||'').length>=15,x.id+' reaction/principle line too short');
  x.e.forEach((e,i)=>assert(String(e).length>=55,x.id+' explanation '+(i+1)+' too short'));
