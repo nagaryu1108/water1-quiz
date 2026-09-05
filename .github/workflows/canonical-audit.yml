@@ -9,6 +9,7 @@ on:
       - 'tools/batch12_final200_audit_v32.js'
       - 'tools/chemical_formula_audit_v33.js'
       - 'tools/standards_drill_audit_v1.js'
+      - 'tools/standards_mobile_layout_audit_v2.js'
       - 'index.html'
       - 'sw.js'
       - '.github/workflows/canonical-audit.yml'
@@ -29,3 +30,5 @@ jobs:
         run: node tools/chemical_formula_audit_v33.js
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
+      - name: Run mobile standards table layout audit
+        run: node tools/standards_mobile_layout_audit_v2.js
