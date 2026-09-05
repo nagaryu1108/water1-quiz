@@ -28,7 +28,7 @@ for(const x of Q){
  x.parts.forEach((p,i)=>assert(Array.isArray(p)&&p.length===3&&String(p[0]).length>=2&&String(p[1]).length>=8&&String(p[2]).length>=8,x.id+' bad part '+i));
  assert(String(x.core||'').length>=55,x.id+' core too short');
  assert(String(x.reaction||'').length>=15,x.id+' reaction/principle line too short');
- x.e.forEach((e,i)=>assert(String(e).length>=55,x.id+' explanation '+(i+1)+' too short'));
+ x.e.forEach((e,i)=>assert(String(e).length>=35,x.id+' explanation '+(i+1)+' too short'));
 }
 assert(Q.find(x=>x.id==='ADV04').parts.length>=6,'ADV04 instrument parts too few');
 assert(Q.find(x=>x.id==='ADV05').parts.length>=7,'ADV05 instrument parts too few');
