@@ -22,6 +22,7 @@
     document.write('<script src="./qbank_gap_batch12_v7.js?v=124"><\/script>');
     document.write('<script src="./qbank_detail_quality_fix_v23.js?v=124"><\/script>');
     document.write('<script src="./qbank_undefined_fix_v7.js?v=124"><\/script>');
+    document.write('<script src="./qbank_exam_quality_patch_v34.js?v=125"><\/script>');
     document.write('<script src="./qbank_frequency_scheduler_v7.js?v=124"><\/script>');
     document.write('<script src="./qbank_chem_v7.js?v=124"><\/script>');
     document.write('<script src="./qbank_quality_audit_v7.js?v=124"><\/script>');
