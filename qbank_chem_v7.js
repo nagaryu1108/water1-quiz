@@ -3,8 +3,7 @@
   function q(id){for(var i=0;i<bank.length;i++)if(bank[i].id===id)return bank[i];return null;}
   function rx(id,arr){var x=q(id);if(x)x.rxn=arr;}
 
-  /* Use ^ only as an internal charge marker. The UI converts it to <sup> and ordinary
-     stoichiometric/formula digits to <sub>, e.g. NH4^+ -> NH₄⁺ and CrO4^2− -> CrO₄²⁻. */
+  /* Use ^ as the canonical source marker for charge/oxidation-state superscripts. */
   rx('T03',[
     '第1段階（アンモニア酸化の代表式）：NH4^+ + 1.5 O2 → NO2^− + 2 H^+ + H2O',
     '第2段階（亜硝酸酸化）：NO2^− + 0.5 O2 → NO3^−',
@@ -31,17 +30,14 @@
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   function chem(s){
     var z=esc(s),holds=[];
-    /* Keep charge placeholders immune to the later subscript pass. The former @@SUP0@@
-       marker contained P0, so the 0 itself became <sub>0</sub> and leaked into the UI. */
-    z=z.replace(/\^(\d*)([+−-])/g,function(_,n,sign){
-      var p='§§['+holds.length+']§§';
-      if(sign==='-')sign='−';
-      holds.push('<sup>'+(n||'')+sign+'</sup>');
-      return p;
-    });
-    /* Formula subscripts: digits immediately following an element symbol or closing parenthesis.
-       Decimal coefficients (1.5), leading coefficients (3 H2O), oxidation-state labels Cr(VI),
-       and years/narrative numbers are therefore left alone. */
+    function holdSup(body){var p='§§['+holds.length+']§§';holds.push('<sup>'+body+'</sup>');return p;}
+    /* Explicit canonical notation: charge (^2−, ^+) and neutral oxidation state (^0). */
+    z=z.replace(/\^(\d*)([+−-])/g,function(_,n,sign){if(sign==='-')sign='−';return holdSup((n||'')+sign);});
+    z=z.replace(/\^0/g,function(){return holdSup('0');});
+    /* Legacy monovalent notation found in older reaction data. Restrict conversion to
+       common ionic species/electron so arithmetic plus signs and ordinary prose are untouched. */
+    z=z.replace(/\b(H|OH|CN|CNO|OCl|Cl|F|e)([+−-])(?=\s|\/|→|⇄|$)/g,function(_,ion,sign){if(sign==='-')sign='−';return ion+holdSup(sign);});
+    /* Formula subscripts: digits immediately following an element symbol or closing parenthesis. */
     z=z.replace(/([A-Z][a-z]?|\))(\d+)/g,'$1<sub>$2</sub>');
     z=z.replace(/§§\[(\d+)\]§§/g,function(_,i){return holds[+i]||'';});
     return z;
