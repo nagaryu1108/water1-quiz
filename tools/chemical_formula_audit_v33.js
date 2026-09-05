@@ -7,8 +7,8 @@ for(const f of scripts){const p=path.join(root,f);if(!fs.existsSync(p))throw new
 const bank=ctx.window.QBANK,chem=ctx.window.water1ChemHTML,errors=[],formulaFields=[];const ok=(c,m)=>{if(!c)errors.push(m)};
 ok(bank.length===200,'bank must remain 200 questions');ok(typeof chem==='function','chemical formatter not installed');
 function stringsOf(x){const a=[],add=(p,v)=>{if(typeof v==='string')a.push([p,v]);};add('t',x.t);add('q',x.q);add('p',x.p);add('src',x.src);(x.o||[]).forEach((v,i)=>add('o'+(i+1),v));(x.e||[]).forEach((v,i)=>add('e'+(i+1),v));(x.rxn||[]).forEach((v,i)=>add('rxn'+(i+1),v));(x.terms||[]).forEach((v,i)=>{if(v){add('term'+(i+1)+'.name',v.name);add('term'+(i+1)+'.desc',v.desc);}});return a;}
-const chemHint=/\b(?:NH4|NO2|NO3|N2|O2|H2O|H2S|SO2|CO2|CH4|CH2O|CH3COO|HCN|CN|CNO|OCl|CaF2|Al\(OH\)3|CrO4|Cr2O7|Cr\(OH\)3|Fe\(OH\)3|MgNH4PO4|PO4|Hg|AsH3|SeH2|B\(OH\)[34])\b|\^[0-9]*[+−-]|[A-Za-z)]\^0/g;
-for(const x of bank){for(const [field,s] of stringsOf(x)){if(/@@(?:SUP|SUB)|@@|<\/?su(?:p|b)>/i.test(s))errors.push(`${x.id}.${field}: internal/HTML marker leaked into stored UI text`);if(chemHint.test(s))formulaFields.push(`${x.id}.${field}`);chemHint.lastIndex=0;}}
+const chemHint=/\b(?:NH4|NO2|NO3|N2|O2|H2O|H2S|SO2|CO2|CH4|CH2O|CH3COO|HCN|CN|CNO|OCl|CaF2|Al\(OH\)3|CrO4|Cr2O7|Cr\(OH\)3|Fe\(OH\)3|MgNH4PO4|PO4|Hg|AsH3|SeH2|H2Se|B\(OH\)[34])\b|\^[0-9]*[+−-]|[A-Za-z)]\^0/g;
+for(const x of bank){for(const [field,s] of stringsOf(x)){if(/@@(?:SUP|SUB)|@@|<\/?su(?:p|b)>/i.test(s))errors.push(`${x.id}.${field}: internal/HTML marker leaked into stored UI text`);if(chemHint.test(s))formulaFields.push({key:`${x.id}.${field}`,text:s});chemHint.lastIndex=0;}}
 const cases=[
  ['CH3COO^- + H^+ → CH4 + CO2','CH<sub>3</sub>COO<sup>−</sup> + H<sup>+</sup> → CH<sub>4</sub> + CO<sub>2</sub>'],
  ['NH4^+ + 1.5 O2 → NO2^− + 2 H^+ + H2O','NH<sub>4</sub><sup>+</sup> + 1.5 O<sub>2</sub> → NO<sub>2</sub><sup>−</sup> + 2 H<sup>+</sup> + H<sub>2</sub>O'],
@@ -28,6 +28,7 @@ let rxQuestions=0,rxLines=0;
 for(const x of bank){if(!Array.isArray(x.rxn)||!x.rxn.length)continue;rxQuestions++;for(let i=0;i<x.rxn.length;i++){rxLines++;const s=x.rxn[i],rendered=chem(s);ok(!/@@|§§|\^[0-9]*[+−-]/.test(rendered),`${x.id}.rxn${i+1}: marker remains after render: ${rendered}`);ok(!rawLegacy.test(rendered),`${x.id}.rxn${i+1}: unformatted ion/oxidation state: ${rendered}`);rawLegacy.lastIndex=0;ok(!/<sub>\s*<\/sub>|<sup>\s*<\/sup>/.test(rendered),`${x.id}.rxn${i+1}: empty sub/sup`);console.log(`RXN\t${x.id}\t${i+1}\t${s}\t=>\t${rendered}`);}}
 ok(rxQuestions===23,`reaction-bearing questions ${rxQuestions}, expected 23`);
 const code=fs.readFileSync(path.join(root,'qbank_chem_v7.js'),'utf8');ok(!code.includes("'@@SUP'+holds.length+'@@'"),'unsafe @@SUPn@@ placeholder must not return');ok(code.includes("'§§['+holds.length+']§§'"),'safe placeholder missing');
-console.log('FORMULA_BEARING_FIELD_COUNT',formulaFields.length,'UNIQUE_FIELDS',new Set(formulaFields).size,'REACTION_QUESTIONS',rxQuestions,'REACTION_LINES',rxLines,'FORMAT_CASES',cases.length);
-console.log('FORMULA_FIELDS',Array.from(new Set(formulaFields)).sort().join(','));
+const unique=new Map();for(const r of formulaFields)if(!unique.has(r.key))unique.set(r.key,r.text);
+console.log('FORMULA_BEARING_FIELD_COUNT',formulaFields.length,'UNIQUE_FIELDS',unique.size,'REACTION_QUESTIONS',rxQuestions,'REACTION_LINES',rxLines,'FORMAT_CASES',cases.length);
+for(const [key,text] of [...unique.entries()].sort())console.log(`FORMULA\t${key}\t${text.replace(/\n/g,' ⏎ ')}`);
 if(errors.length){console.error('FAIL chemical formula audit\n'+errors.join('\n'));process.exit(1);}console.log('PASS full-bank chemical formula rendering audit');
