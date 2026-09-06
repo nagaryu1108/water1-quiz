@@ -6,6 +6,8 @@ on:
       - 'standards-drill.html'
       - 'standards-drill-data-v1.js'
       - 'advanced-treatment-analysis.html'
+      - 'glossary-v5.html'
+      - 'glossary-v5*.js'
       - 'tools/canonical_audit_v22.js'
       - 'tools/batch12_final200_audit_v32.js'
       - 'tools/chemical_formula_audit_v33.js'
@@ -15,6 +17,7 @@ on:
       - 'tools/standards_drill_audit_v1.js'
       - 'tools/standards_mobile_layout_audit_v2.js'
       - 'tools/advanced_treatment_analysis_audit_v1.js'
+      - 'tools/glossary_v5_audit_v1.js'
       - 'index.html'
       - 'sw.js'
       - '.github/workflows/canonical-audit.yml'
@@ -45,3 +48,5 @@ jobs:
         run: node tools/standards_mobile_layout_audit_v2.js
       - name: Run advanced treatment and analysis browser drill audit
         run: node tools/advanced_treatment_analysis_audit_v1.js
+      - name: Run glossary v5 data/search/reverse-jump regression audit
+        run: node tools/glossary_v5_audit_v1.js
