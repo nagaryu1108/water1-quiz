@@ -11,6 +11,7 @@ on:
       - 'tools/chemical_formula_audit_v33.js'
       - 'tools/exam_difficulty_signal_report_v34.js'
       - 'tools/exam_quality_audit_v34.js'
+      - 'tools/visual_semantics_audit_v35.js'
       - 'tools/standards_drill_audit_v1.js'
       - 'tools/standards_mobile_layout_audit_v2.js'
       - 'tools/advanced_treatment_analysis_audit_v1.js'
@@ -36,6 +37,8 @@ jobs:
         run: node tools/exam_difficulty_signal_report_v34.js
       - name: Run exam realism and duplicate enrichment audit
         run: node tools/exam_quality_audit_v34.js
+      - name: Run full visual semantics audit
+        run: node tools/visual_semantics_audit_v35.js
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
       - name: Run mobile standards table layout audit
