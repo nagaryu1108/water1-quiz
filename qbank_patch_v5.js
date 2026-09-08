@@ -30,5 +30,6 @@
     document.write('<script src="./qbank_quality_audit_v7.js?v=124"><\/script>');
     document.write('<script src="./qbank_regression_audit_v14.js?v=124"><\/script>');
     document.write('<script src="./qbank_canonical_gap_audit_v21.js?v=124"><\/script>');
+    document.write('<script src="./qbank_content_restructure_v39.js?v=130"><\/script>');
   }
 })();
