@@ -52,7 +52,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: choice-logic-report-v38
-          path: choice_logic_report_v38.txt
+          path: |
+            choice_logic_report_v38.txt
+            choice_logic_bank_v38.json
           if-no-files-found: error
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
