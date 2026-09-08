@@ -47,7 +47,13 @@ jobs:
       - name: Run unit typography regression audit
         run: node tools/unit_typography_audit_v36.js
       - name: Report three-criteria choice logic and redundancy candidates
-        run: node tools/choice_logic_redundancy_audit_v38.js
+        run: node tools/choice_logic_redundancy_audit_v38.js | tee choice_logic_report_v38.txt
+      - name: Upload three-criteria audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: choice-logic-report-v38
+          path: choice_logic_report_v38.txt
+          if-no-files-found: error
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
       - name: Run mobile standards table layout audit
