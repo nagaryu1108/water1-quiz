@@ -13,9 +13,9 @@ ok(meta.modifiedIds.length===34,'modified question count must be 34');
 ok(meta.groups.length===21,'duplicate/redundancy groups must be 21');
 const ids=[...bank,...arc].map(x=>x.id);ok(ids.length===200&&new Set(ids).size===200,'200 stable IDs must be preserved across active+archive');
 for(const x of [...bank,...arc]){ok(Array.isArray(x.o)&&x.o.length===5,x.id+' choices !=5');ok(Array.isArray(x.e)&&x.e.length===5,x.id+' explanations !=5');ok(Number.isInteger(x.a)&&x.a>=0&&x.a<5,x.id+' answer invalid');ok(new Set(x.o).size===5,x.id+' duplicate choice');ok(new Set(x.e).size===5,x.id+' duplicate explanation');ok(!JSON.stringify(x).includes('undefined'),x.id+' contains undefined');}
-const classified=[...bank,...arc].filter(x=>x.restructure&&x.restructure.version==='v39');ok(classified.length>=50,'expected >=50 classified questions');
-const reps=classified.filter(x=>x.restructure.class==='representative').length,repurposed=classified.filter(x=>x.restructure.class==='repurposed').length,excluded=classified.filter(x=>x.restructure.class==='excluded-normal-pool').length;
-ok(reps===23,'representative count mismatch '+reps);ok(repurposed===26,'repurposed count mismatch '+repurposed);ok(excluded===1,'excluded count mismatch '+excluded);
+const classified=[...bank,...arc].filter(x=>x.restructure&&x.restructure.version==='v39');ok(classified.length===54,'expected 54 classified questions, got '+classified.length);
+const reps=classified.filter(x=>x.restructure.class==='representative').length,repurposed=classified.filter(x=>x.restructure.class==='repurposed').length,excluded=classified.filter(x=>x.restructure.class==='excluded-normal-pool').length,choice=classified.filter(x=>x.restructure.class==='choice-redesign').length;
+ok(reps===22,'representative count mismatch '+reps);ok(repurposed===27,'repurposed count mismatch '+repurposed);ok(excluded===1,'excluded count mismatch '+excluded);ok(choice===4,'choice-redesign count mismatch '+choice);
 // Criterion 1: known two-choice target collisions must no longer exist.
 ok(q('W19').o.filter(s=>/ジェオスミン|2-MIB/.test(s)).length===1,'W19 still duplicates the same odor target in two choices');
 ok(q('W23').o.filter(s=>/メタロチオネイン/.test(s)).length===1,'W23 still duplicates metallothionein target');
@@ -35,4 +35,4 @@ const w29=q('W29');ok(w29.v&&w29.v.kind==='table'&&w29.v.headers.join('|').inclu
 const patch=fs.readFileSync(path.join(root,'qbank_patch_v5.js'),'utf8');ok(patch.includes('qbank_content_restructure_v39.js'),'stable loader does not load v39');
 const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');ok(sw.includes('qbank_content_restructure_v39.js')&&sw.includes('content-restructure-v39'),'service worker not bumped for v39');
 console.log('PASS content restructure v39');
-console.log('ACTIVE',bank.length,'ARCHIVED',arc.map(x=>x.id).join(','),'MODIFIED',meta.modifiedIds.length,'GROUPS',meta.groups.length,'REPRESENTATIVE',reps,'REPURPOSED',repurposed,'EXCLUDED',excluded,'SUBJECTS',JSON.stringify(subj));
+console.log('ACTIVE',bank.length,'ARCHIVED',arc.map(x=>x.id).join(','),'MODIFIED',meta.modifiedIds.length,'GROUPS',meta.groups.length,'REPRESENTATIVE',reps,'REPURPOSED',repurposed,'EXCLUDED',excluded,'CHOICE_REDESIGN',choice,'SUBJECTS',JSON.stringify(subj));
