@@ -20,12 +20,30 @@ ok(reps===22,'representative count mismatch '+reps);ok(repurposed===27,'repurpos
 ok(q('W19').o.filter(s=>/ジェオスミン|2-MIB/.test(s)).length===1,'W19 still duplicates the same odor target in two choices');
 ok(q('W23').o.filter(s=>/メタロチオネイン/.test(s)).length===1,'W23 still duplicates metallothionein target');
 ok(q('G28').o.filter(s=>/硝酸性窒素/.test(s)).length===1,'G28 still duplicates nitrate target');
+// General strict C1 rule: in a combination-style question, the same leading target may not appear in exactly two answer choices.
+const strictC1=[];
+for(const x of bank){
+ const leads=(x.o||[]).map(s=>{const m=String(s).match(/^\s*([^―—–]+)[―—–]/);return m?m[1].trim():null;}).filter(Boolean),counts={};
+ for(const h of leads)counts[h]=(counts[h]||0)+1;
+ for(const [h,n] of Object.entries(counts))if(n>1)strictC1.push({id:x.id,target:h,count:n});
+}
+ok(strictC1.length===0,'strict C1 repeated combination targets remain: '+JSON.stringify(strictC1));
 // Criterion 2: known direct-opposite pairs must be gone.
 ok(!q('L17').o.some(s=>/成層.*上下混合.*活発/.test(s)),'L17 old direct opposite remains');
 ok(!q('T36').o.some(s=>/嫌気.*取り込み.*好気.*放出/.test(s)),'T36 inverse PAO distractor remains');
 ok(!q('H04').o.some(s=>/三価クロム.*六価クロムへ酸化/.test(s)),'H04 reverse Cr pair remains');
 ok(!q('T10').o.some(s=>/均等係数.*大きいほど.*粒径.*そろ/.test(s)),'T10 inverse uniformity pair remains');
 ok(!q('G35').o.some(s=>/2013年度より増加/.test(s)),'G35 direct graph inverse remains');
+// General strict C2 rule: detect highly similar statements whose only material direction/polarity is reversed.
+const DIR=[['増加','減少'],['上昇','低下'],['高い','低い'],['高く','低く'],['多い','少ない'],['大きい','小さい'],['促進','抑制'],['促進','阻害'],['活発','抑制'],['強い','弱い'],['強まる','弱まる'],['供給','消費'],['吸収','放出'],['溶解','沈殿'],['酸化','還元'],['好気','嫌気'],['必要','不要'],['容易','困難'],['有利','不利'],['起こりやすい','起こりにくい']];
+function nrm(s){return String(s||'').normalize('NFKC').replace(/[\s\u3000、。,.，．・:：;；!?！？()（）\[\]【】「」『』＝=＋+－−—―–\/／×]/g,'');}
+function canon(s){s=nrm(s);for(const [a,b] of DIR){s=s.split(a).join('§DIR§').split(b).join('§DIR§')}return s.replace(/できない|しない|ではない|ない|不要/g,'§POL§');}
+function hasInverse(a,b){for(const [u,v] of DIR)if((a.includes(u)&&b.includes(v))||(a.includes(v)&&b.includes(u)))return true;const na=/(できない|しない|ではない|ない|不要)/.test(a),nb=/(できない|しない|ではない|ない|不要)/.test(b);return na!==nb;}
+function bigrams(s){s=canon(s);if(s.length<2)return s?[s]:[];const a=[];for(let i=0;i<s.length-1;i++)a.push(s.slice(i,i+2));return a;}
+function dice(a,b){const A=bigrams(a),B=bigrams(b);if(!A.length||!B.length)return 0;const m=new Map();for(const z of A)m.set(z,(m.get(z)||0)+1);let hit=0;for(const z of B){const c=m.get(z)||0;if(c){hit++;m.set(z,c-1)}}return 2*hit/(A.length+B.length);}
+const strictC2=[];
+for(const x of bank)for(let i=0;i<5;i++)for(let j=i+1;j<5;j++)if(hasInverse(x.o[i],x.o[j])){const sim=dice(x.o[i],x.o[j]);if(sim>=0.60)strictC2.push({id:x.id,pair:[i+1,j+1],sim:+sim.toFixed(3)});}
+ok(strictC2.length===0,'strict C2 direct-opposite pairs remain: '+JSON.stringify(strictC2));
 // Criterion 3: representative and repurposed questions now test materially different skills.
 const topicChecks={G08:/見直し/,G29:/実務適用/,G30:/負荷量/,W20:/横出し/,W30:/流向/,W31:/硝化/,W32:/合成試料/,L01:/内部負荷/,L17:/酸素収支/,W29:/データ/,W25:/青潮/,H29:/錯体シアン/,H20:/処理法選定/,H25:/気液分離器/,H28:/方法選択/,H33:/共存りん酸/,H31:/両性/,H32:/形態別/,H37:/分析法/,H38:/QA\/QC/,H19:/パージ・トラップ/,L24:/導電率/,L27:/スケール/,L28:/ストリッピング/,L22:/エネルギー回収/,L38:/高濃度廃液/};
 for(const [id,re] of Object.entries(topicChecks)){ok(q(id)&&re.test(q(id).t),id+' was not repurposed as intended: '+(q(id)&&q(id).t));}
@@ -35,4 +53,4 @@ const w29=q('W29');ok(w29.v&&w29.v.kind==='table'&&w29.v.headers.join('|').inclu
 const patch=fs.readFileSync(path.join(root,'qbank_patch_v5.js'),'utf8');ok(patch.includes('qbank_content_restructure_v39.js'),'stable loader does not load v39');
 const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');ok(sw.includes('qbank_content_restructure_v39.js')&&sw.includes('content-restructure-v39'),'service worker not bumped for v39');
 console.log('PASS content restructure v39');
-console.log('ACTIVE',bank.length,'ARCHIVED',arc.map(x=>x.id).join(','),'MODIFIED',meta.modifiedIds.length,'GROUPS',meta.groups.length,'REPRESENTATIVE',reps,'REPURPOSED',repurposed,'EXCLUDED',excluded,'CHOICE_REDESIGN',choice,'SUBJECTS',JSON.stringify(subj));
+console.log('ACTIVE',bank.length,'ARCHIVED',arc.map(x=>x.id).join(','),'MODIFIED',meta.modifiedIds.length,'GROUPS',meta.groups.length,'REPRESENTATIVE',reps,'REPURPOSED',repurposed,'EXCLUDED',excluded,'CHOICE_REDESIGN',choice,'STRICT_C1',strictC1.length,'STRICT_C2',strictC2.length,'SUBJECTS',JSON.stringify(subj));
