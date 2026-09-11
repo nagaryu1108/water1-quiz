@@ -46,6 +46,7 @@
     document.write('<script src="./qbank_exam_difficulty_stage1_v47.js?v=139"><\/script>');
     document.write('<script src="./qbank_recent_exam_upgrade_v47.js?v=140"><\/script>');
     document.write('<script src="./qbank_recent_exam_audit_finalize_v47.js?v=142"><\/script>');
+    document.write('<script src="./qbank_exam_difficulty_stage2_v48.js?v=144"><\/script>');
     document.write('<script src="./ui_polish_v46.js?v=143"><\/script>');
   }
 })();
