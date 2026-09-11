@@ -11,7 +11,7 @@ function ensureStyle(){
   s.textContent=[
     '.tools button{min-height:44px;touch-action:manipulation}',
     '.ch,.next,.openall{min-height:44px;touch-action:manipulation}',
-    '.audit{display:none!important}',
+    '.audit,#regressionWarn{display:none!important}',
     '.poolStatus{margin-top:4px;font-size:11px;line-height:1.55;color:#bfdbfe}',
     '@media(max-width:600px){',
     '  .visual,.afterVisual{-webkit-overflow-scrolling:touch}',
@@ -44,6 +44,12 @@ function refreshReleaseUI(){
     var archived=(window.WATER1_ARCHIVED_QUESTIONS||[]).length;
     var stable=active+archived;
     p.textContent='通常出題 '+active+'問 ｜ 安定ID '+stable+'件 ｜ アーカイブ '+archived+'問';
+  }
+
+  var regressionWarn=document.getElementById('regressionWarn');
+  if(regressionWarn){
+    regressionWarn.hidden=true;
+    regressionWarn.setAttribute('aria-hidden','true');
   }
 
   if(Object.prototype.hasOwnProperty.call(window,'BUILD'))window.BUILD=BUILD_ID;
