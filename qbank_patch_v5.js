@@ -50,6 +50,7 @@
     document.write('<script src="./qbank_exam_difficulty_stage3_v49.js?v=145"><\/script>');
     document.write('<script src="./qbank_exam_difficulty_stage3_fix_v49.js?v=1451"><\/script>');
     document.write('<script src="./qbank_exam_difficulty_stage4_v50.js?v=146"><\/script>');
+    document.write('<script src="./qbank_exam_difficulty_stage5_v51.js?v=147"><\/script>');
     document.write('<script src="./ui_polish_v46.js?v=143"><\/script>');
   }
 })();

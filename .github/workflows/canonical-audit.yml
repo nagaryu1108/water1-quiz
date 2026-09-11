@@ -26,6 +26,7 @@ on:
       - 'tools/exam_difficulty_stage2_audit_v48.js'
       - 'tools/exam_difficulty_stage3_audit_v49.js'
       - 'tools/exam_difficulty_stage4_audit_v50.js'
+      - 'tools/exam_difficulty_stage5_audit_v51.js'
       - 'tools/standards_drill_audit_v1.js'
       - 'tools/standards_mobile_layout_audit_v2.js'
       - 'tools/advanced_treatment_analysis_audit_v1.js'
@@ -86,6 +87,8 @@ jobs:
         run: node tools/exam_difficulty_stage3_audit_v49.js
       - name: Run stage 4 water-overview exam difficulty uplift audit v50
         run: node tools/exam_difficulty_stage4_audit_v50.js
+      - name: Run stage 5 pollution-general exam difficulty uplift audit v51
+        run: node tools/exam_difficulty_stage5_audit_v51.js
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
       - name: Run mobile standards table layout audit
