@@ -20,6 +20,7 @@ on:
       - 'tools/full_bank_semantic_review_v41.json'
       - 'tools/full_bank_semantic_review_audit_v41.js'
       - 'tools/semantic_upgrade_audit_v42.js'
+      - 'tools/semantic_final_audit_v43.js'
       - 'tools/standards_drill_audit_v1.js'
       - 'tools/standards_mobile_layout_audit_v2.js'
       - 'tools/advanced_treatment_analysis_audit_v1.js'
@@ -66,6 +67,8 @@ jobs:
         run: node tools/full_bank_semantic_review_audit_v41.js
       - name: Run v42 semantic rewrite and strengthening audit
         run: node tools/semantic_upgrade_audit_v42.js
+      - name: Run final all-bank semantic quality audit v43
+        run: node tools/semantic_final_audit_v43.js
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
       - name: Run mobile standards table layout audit
