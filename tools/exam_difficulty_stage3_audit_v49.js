@@ -6,7 +6,7 @@ const ctx={window:{QBANK:[]},document,console,setTimeout:(f)=>{try{f()}catch(e){
 for(const f of pre)vm.runInContext(fs.readFileSync(path.join(root,f),'utf8'),ctx,{filename:f});
 const targets=['H03','H07','H10','H12','H13','H17'];
 const baseline={};for(const id of targets){const x=ctx.window.QBANK.find(q=>q.id===id);if(x)baseline[id]=x.a;}
-vm.runInContext(fs.readFileSync(path.join(root,'qbank_exam_difficulty_stage3_v49.js'),'utf8'),ctx,{filename:'qbank_exam_difficulty_stage3_v49.js'});
+for(const f of ['qbank_exam_difficulty_stage3_v49.js','qbank_exam_difficulty_stage3_fix_v49.js'])vm.runInContext(fs.readFileSync(path.join(root,f),'utf8'),ctx,{filename:f});
 const bank=ctx.window.QBANK||[],arc=ctx.window.WATER1_ARCHIVED_QUESTIONS||[],errs=[];const ok=(c,m)=>{if(!c)errs.push(m)};
 const ABS=/必ず|常に|一切|例外なく|すべて|全て/;
 function medianWrong(x){const a=x.o.map(s=>String(s).length).filter((_,i)=>i!==x.a).sort((a,b)=>a-b);return(a[1]+a[2])/2;}
@@ -32,7 +32,7 @@ ok(/As\(III\)/.test(text('H12'))&&/リン酸/.test(text('H12')),'H12 arsenic oxi
 ok(/25.0/.test(text('H13'))&&/ヘッドスペース/.test(text('H13')),'H13 VOC preservation');
 ok(/P1/.test(text('H17'))&&/生分解率/.test(text('H17')),'H17 organophosphorus treatability');
 const meta=ctx.window.WATER1_RECENT_EXAM_DIFFICULTY_AUDIT||{};ok(meta.version==='v49','metadata version');ok(Array.isArray(meta.stage3Ids)&&targets.every(id=>meta.stage3Ids.includes(id)),'stage3 metadata ids');
-const loader=fs.readFileSync(path.join(root,'qbank_patch_v5.js'),'utf8'),sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');ok(loader.includes('qbank_exam_difficulty_stage3_v49.js?v=145'),'loader includes stage3');ok(sw.includes('qbank_exam_difficulty_stage3_v49.js')&&sw.includes('difficulty-v49-stage3'),'service worker includes stage3');
+const loader=fs.readFileSync(path.join(root,'qbank_patch_v5.js'),'utf8'),sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');ok(loader.includes('qbank_exam_difficulty_stage3_v49.js?v=145')&&loader.includes('qbank_exam_difficulty_stage3_fix_v49.js?v=1451'),'loader includes stage3 and fix');ok(sw.includes('qbank_exam_difficulty_stage3_v49.js')&&sw.includes('qbank_exam_difficulty_stage3_fix_v49.js')&&sw.includes('difficulty-v49-stage3'),'service worker includes stage3');
 console.log('STAGE3_TARGETS',targets.join(','),'ACTIVE',bank.length,'ARCHIVED',arc.map(x=>x.id).join(','),'ABS',absCue,'LEN',lenCue);
 if(errs.length){console.error('FAIL stage3 hazardous-substance exam difficulty audit\n'+errs.join('\n'));process.exit(1)}
 console.log('PASS stage3 hazardous-substance exam difficulty uplift v49');
