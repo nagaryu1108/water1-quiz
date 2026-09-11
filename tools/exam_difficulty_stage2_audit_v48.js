@@ -28,8 +28,11 @@ for(const id of targets){
    ok(/^【(正しい|誤り)】/.test(String(e||'')),`${id}.e${i+1} status prefix`);
    ok(String(e||'').length>=55,`${id}.e${i+1} explanation too short`);
  });
- ok(/^【正しい】/.test(x.e[x.a]),`${id} answer explanation status`);
- x.e.forEach((e,i)=>{if(i!==x.a)ok(/^【誤り】/.test(e),`${id}.e${i+1} wrong explanation status`)});
+ const asksForIncorrect=/誤っている|不適当/.test(String(x.q||''));
+ const answerPrefix=asksForIncorrect?'【誤り】':'【正しい】';
+ const nonAnswerPrefix=asksForIncorrect?'【正しい】':'【誤り】';
+ ok(String(x.e[x.a]||'').startsWith(answerPrefix),`${id} answer explanation status`);
+ x.e.forEach((e,i)=>{if(i!==x.a)ok(String(e||'').startsWith(nonAnswerPrefix),`${id}.e${i+1} non-answer explanation status`)});
  const flags=x.o.map(s=>ABS.test(String(s))),n=flags.filter(Boolean).length;
  ok(!(n===1&&!flags[x.a]),`${id} absolute-word giveaway`);
  const ans=String(x.o[x.a]).length,med=medianWrong(x);
