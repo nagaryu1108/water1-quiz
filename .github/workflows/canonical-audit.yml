@@ -17,6 +17,8 @@ on:
       - 'tools/unit_typography_audit_v36.js'
       - 'tools/choice_logic_redundancy_audit_v38.js'
       - 'tools/content_restructure_audit_v39.js'
+      - 'tools/full_bank_semantic_review_v41.json'
+      - 'tools/full_bank_semantic_review_audit_v41.js'
       - 'tools/standards_drill_audit_v1.js'
       - 'tools/standards_mobile_layout_audit_v2.js'
       - 'tools/advanced_treatment_analysis_audit_v1.js'
@@ -59,6 +61,8 @@ jobs:
           if-no-files-found: error
       - name: Run v39 content restructure regression audit
         run: node tools/content_restructure_audit_v39.js
+      - name: Run full-bank semantic review coverage v41
+        run: node tools/full_bank_semantic_review_audit_v41.js
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
       - name: Run mobile standards table layout audit
