@@ -87,6 +87,39 @@ test('visual questions stay readable without widening the mobile page',async({pa
   expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth+1);
 });
 
+test('stage 2 wastewater table question works on mobile',async({page})=>{
+  await openQuiz(page);
+  await page.evaluate(()=>{
+    localStorage.setItem('water1_bank_v3',JSON.stringify({
+      hist:{},mode:'coverage',current:'T22',total:0,correct:0,currentAnswered:false,currentSel:null
+    }));
+  });
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>window.S&&window.S.current==='T22');
+  await expect(page.locator('.ch')).toHaveCount(5);
+  await expect(page.locator('#visual')).toBeVisible();
+  await expect(page.locator('#visual table')).toBeVisible();
+  await expect(page.locator('#visual')).toContainText('脱水方式の比較');
+
+  const stage=await page.evaluate(()=>({
+    marker:window.getQ('T22').examDifficultyStage,
+    answer:window.getQ('T22').a,
+    meta:window.WATER1_RECENT_EXAM_DIFFICULTY_AUDIT&&window.WATER1_RECENT_EXAM_DIFFICULTY_AUDIT.version
+  }));
+  expect(stage).toEqual({marker:'v48-stage2',answer:1,meta:'v48'});
+
+  await page.locator('.ch').nth(0).click();
+  await expect(page.locator('.ch').nth(0)).toHaveClass(/bad/);
+  await expect(page.locator('.ch').nth(1)).toHaveClass(/good/);
+  await page.locator('.ch').nth(1).click();
+  await expect(page.locator('#e1')).toBeVisible();
+  await expect(page.locator('#e1')).toContainText('約0.83 t/日');
+
+  const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('water1_bank_v3')).hist.T22);
+  expect(saved.attempts).toBe(1);
+  expect(saved.lastSel).toBe(0);
+});
+
 test('service worker supports an offline reload including versioned assets',async({page,context})=>{
   await openQuiz(page);
   await page.evaluate(async()=>{await navigator.serviceWorker.ready;});
