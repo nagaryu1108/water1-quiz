@@ -67,7 +67,7 @@ jobs:
         run: node tools/full_bank_semantic_review_audit_v41.js
       - name: Run v42 semantic rewrite and strengthening audit
         run: node tools/semantic_upgrade_audit_v42.js
-      - name: Run final all-bank semantic quality audit v43
+      - name: Run final all-bank semantic quality audit v45
         run: node tools/semantic_final_audit_v43.js
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
