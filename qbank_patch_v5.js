@@ -32,5 +32,13 @@
     document.write('<script src="./qbank_canonical_gap_audit_v21.js?v=124"><\/script>');
     document.write('<script src="./qbank_content_restructure_v39.js?v=130"><\/script>');
     document.write('<script src="./qbank_distractor_plausibility_v40.js?v=131"><\/script>');
+    document.write('<script src="./qbank_semantic_rewrite_gw_v42.js?v=132"><\/script>');
+    document.write('<script src="./qbank_semantic_rewrite_th_v42.js?v=132"><\/script>');
+    document.write('<script src="./qbank_semantic_rewrite_l_v42.js?v=132"><\/script>');
+    document.write('<script src="./qbank_semantic_strengthen_g_v42.js?v=132"><\/script>');
+    document.write('<script src="./qbank_semantic_strengthen_w_v42.js?v=132"><\/script>');
+    document.write('<script src="./qbank_semantic_strengthen_t_v42.js?v=132"><\/script>');
+    document.write('<script src="./qbank_semantic_strengthen_h_v42.js?v=132"><\/script>');
+    document.write('<script src="./qbank_semantic_strengthen_l_v42.js?v=132"><\/script>');
   }
 })();
