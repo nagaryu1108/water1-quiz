@@ -13,9 +13,12 @@ const cfg=read('playwright.config.js');
 const e2e=read('tests/ui.e2e.spec.js');
 const wf=read('.github/workflows/canonical-audit.yml');
 
-ok(loader.includes('ui_polish_v46.js?v=136'),'loader missing ui_polish_v46.js');
+ok(loader.includes('ui_polish_v46.js?v=137'),'loader missing ui_polish_v46.js');
 ok(ui.includes("問題バンク '+RELEASE+' / '+RELEASE_DATE"),'v45 release badge updater missing');
 ok(ui.includes("通常出題 '+active+'問 ｜ 安定ID '+stable+'件 ｜ アーカイブ '+archived+'問"),'199+1 pool status missing');
+ok(ui.includes('.audit{display:none!important}'),'learner-facing regression audit is not hidden');
+ok(ui.includes("audit.hidden=true"),'audit element hidden state missing');
+ok(ui.includes('learnerAuditVisible:false'),'UI release metadata does not record hidden audit state');
 ok(ui.includes('min-width:560px'),'mobile visual minimum width missing');
 ok(ui.includes('min-height:44px'),'minimum tap target missing');
 ok(ui.includes('WATER1_ARCHIVED_QUESTIONS'),'archive count source missing');
@@ -28,6 +31,7 @@ ok(cfg.includes("viewport:{width:390,height:844}"),'mobile E2E viewport missing'
 ok(e2e.includes(".ch.good")&&e2e.includes(".ch.bad"),'answer-color E2E assertions missing');
 ok(e2e.includes("water1_bank_v3"),'instant-save E2E assertion missing');
 ok(e2e.includes("#e'+i")||e2e.includes("#e'+i"),'per-choice inline explanation E2E assertion missing');
+ok(e2e.includes("#audit")&&e2e.includes("WATER1_REGRESSION_AUDIT"),'hidden audit/internal regression E2E assertion missing');
 ok(e2e.includes('setOffline(true)'),'offline service-worker E2E missing');
 ok(wf.includes('Run v46 UI and service-worker static audit'),'workflow missing v46 static audit step');
 ok(wf.includes('Run mobile browser E2E'),'workflow missing browser E2E step');
