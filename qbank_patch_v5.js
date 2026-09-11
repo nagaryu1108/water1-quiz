@@ -43,5 +43,6 @@
     document.write('<script src="./qbank_semantic_polish_v43.js?v=133"><\/script>');
     document.write('<script src="./qbank_semantic_polish_v44.js?v=134"><\/script>');
     document.write('<script src="./qbank_semantic_polish_v45.js?v=135"><\/script>');
+    document.write('<script src="./ui_polish_v46.js?v=136"><\/script>');
   }
 })();
