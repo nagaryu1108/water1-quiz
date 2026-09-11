@@ -44,6 +44,7 @@
     document.write('<script src="./qbank_semantic_polish_v44.js?v=134"><\/script>');
     document.write('<script src="./qbank_semantic_polish_v45.js?v=135"><\/script>');
     document.write('<script src="./qbank_exam_difficulty_stage1_v47.js?v=139"><\/script>');
-    document.write('<script src="./ui_polish_v46.js?v=138"><\/script>');
+    document.write('<script src="./qbank_recent_exam_upgrade_v47.js?v=140"><\/script>');
+    document.write('<script src="./ui_polish_v46.js?v=141"><\/script>');
   }
 })();
