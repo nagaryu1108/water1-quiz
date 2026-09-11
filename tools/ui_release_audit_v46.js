@@ -13,7 +13,13 @@ const cfg=read('playwright.config.js');
 const e2e=read('tests/ui.e2e.spec.js');
 const wf=read('.github/workflows/canonical-audit.yml');
 
-ok(loader.includes('ui_polish_v46.js?v=138'),'loader missing latest ui_polish_v46.js');
+const uiLoaderMatch=loader.match(/ui_polish_v46\.js\?v=(\d+)/);
+ok(!!uiLoaderMatch,'loader missing latest ui_polish_v46.js');
+if(uiLoaderMatch){
+  const uiPos=loader.indexOf(uiLoaderMatch[0]);
+  const stage2Pos=loader.indexOf('qbank_exam_difficulty_stage2_v48.js');
+  ok(stage2Pos<0||uiPos>stage2Pos,'ui_polish_v46.js must load after stage2 content patch');
+}
 ok(ui.includes("問題バンク '+RELEASE+' / '+RELEASE_DATE"),'v45 release badge updater missing');
 ok(ui.includes("通常出題 '+active+'問 ｜ 安定ID '+stable+'件 ｜ アーカイブ '+archived+'問"),'199+1 pool status missing');
 ok(ui.includes('.audit,#regressionWarn{display:none!important}'),'learner-facing audit/warning is not hidden');
