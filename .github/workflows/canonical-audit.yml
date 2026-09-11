@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'qbank_*.js'
+      - 'ui_polish_v46.js'
       - 'standards-drill.html'
       - 'standards-drill-data-v1.js'
       - 'advanced-treatment-analysis.html'
@@ -25,6 +26,10 @@ on:
       - 'tools/standards_mobile_layout_audit_v2.js'
       - 'tools/advanced_treatment_analysis_audit_v1.js'
       - 'tools/glossary_v5_audit_v1.js'
+      - 'tools/ui_release_audit_v46.js'
+      - 'tests/**'
+      - 'package.json'
+      - 'playwright.config.js'
       - 'index.html'
       - 'sw.js'
       - '.github/workflows/canonical-audit.yml'
@@ -77,3 +82,11 @@ jobs:
         run: node tools/advanced_treatment_analysis_audit_v1.js
       - name: Run glossary v5 data/search/reverse-jump regression audit
         run: node tools/glossary_v5_audit_v1.js
+      - name: Run v46 UI and service-worker static audit
+        run: node tools/ui_release_audit_v46.js
+      - name: Install E2E dependencies
+        run: npm install --no-fund --no-audit
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run mobile browser E2E
+        run: npm run test:e2e
