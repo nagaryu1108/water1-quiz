@@ -19,28 +19,38 @@ const DIR=[['増加','減少'],['上昇','低下'],['高い','低い'],['高く'
 function nrm(s){return String(s||'').normalize('NFKC').replace(/[\s\u3000、。,.，．・:：;；!?！？()（）\[\]【】「」『』＝=＋+－−—―–\/／×]/g,'');}function canon(s){s=nrm(s);for(const [a,b] of DIR)s=s.split(a).join('§DIR§').split(b).join('§DIR§');return s.replace(/できない|しない|ではない|ない|不要/g,'§POL§');}function hasInverse(a,b){for(const [u,v] of DIR)if((a.includes(u)&&b.includes(v))||(a.includes(v)&&b.includes(u)))return true;const na=/(できない|しない|ではない|ない|不要)/.test(a),nb=/(できない|しない|ではない|ない|不要)/.test(b);return na!==nb;}function bigrams(s){s=canon(s);if(s.length<2)return s?[s]:[];const a=[];for(let i=0;i<s.length-1;i++)a.push(s.slice(i,i+2));return a;}function dice(a,b){const A=bigrams(a),B=bigrams(b);if(!A.length||!B.length)return 0;const m=new Map();for(const z of A)m.set(z,(m.get(z)||0)+1);let hit=0;for(const z of B){const c=m.get(z)||0;if(c){hit++;m.set(z,c-1)}}return 2*hit/(A.length+B.length);}
 const strictC2=[];for(const x of bank)for(let i=0;i<5;i++)for(let j=i+1;j<5;j++)if(hasInverse(x.o[i],x.o[j])){const sim=dice(x.o[i],x.o[j]);if(sim>=0.60)strictC2.push({id:x.id,pair:[i+1,j+1],sim:+sim.toFixed(3),a:x.o[i],b:x.o[j]});}
 
-/* "Magic" in this project means nuclear transmutation disguised as ordinary water-treatment chemistry: one element becomes another without a nuclear/high-energy process. Keep this distinct from merely implausible chemistry. */
+/*
+  "Magic" / transmutation in this project means a claim that ordinary water-treatment or analytical chemistry changes the atomic identity of one element into another without a nuclear/high-energy process.
+  Scan question/choice prose, not explanations that may quote and refute a wrong statement.
+  Deliberately avoid bare one-letter symbols (B, C, N, P, S, F), because acronyms such as BOD, GC and HPLC otherwise create false positives.
+*/
 const NUCLEAR=/(核分裂|核融合|核反応|放射性壊変|放射性崩壊|中性子照射|粒子加速器|高エネルギー粒子)/;
 const EL=[
-  ['C','炭素|C(?![a-z])'],['N','窒素|N(?:2)?(?![a-z])'],['P','りん|リン|P(?![a-z])'],['S','硫黄|S(?![a-z])'],
-  ['F','ふっ素|フッ素|F(?![a-z])'],['Cl','塩素|Cl'],['Cr','クロム|Cr'],['Mn','マンガン|Mn'],['Fe','鉄|Fe'],['Co','コバルト|Co'],
-  ['Ni','ニッケル|Ni'],['Cu','銅|Cu'],['Zn','亜鉛|Zn'],['As','ひ素|ヒ素|As'],['Se','セレン|Se'],['Cd','カドミウム|Cd'],
-  ['Hg','水銀|Hg'],['Pb','鉛|Pb'],['B','ほう素|ホウ素|B(?![a-z])'],['Al','アルミニウム|Al'],['Ca','カルシウム|Ca'],['Mg','マグネシウム|Mg']
+  ['C','炭素'],['N','窒素|N₂|N2'],['P','りん|リン'],['S','硫黄'],['F','ふっ素|フッ素'],['Cl','塩素'],
+  ['Cr','クロム|Cr(?:\([IVX]+\))?'],['Mn','マンガン|Mn(?:\([IVX]+\))?'],['Fe','鉄|Fe(?:\([IVX]+\))?'],
+  ['Co','コバルト'],['Ni','ニッケル'],['Cu','銅'],['Zn','亜鉛'],['As','ひ素|ヒ素|As(?:\([IVX]+\))?'],
+  ['Se','セレン'],['Cd','カドミウム'],['Hg','水銀|Hg(?:\([IVX]+\))?'],['Pb','鉛'],['B','ほう素|ホウ素'],
+  ['Al','アルミニウム'],['Ca','カルシウム'],['Mg','マグネシウム']
 ];
 function transmutationEvidence(text){
-  const s=String(text||'');if(NUCLEAR.test(s))return null;
+  const s=String(text||'');if(!s||NUCLEAR.test(s))return null;
   for(const [ka,aa] of EL)for(const [kb,bb] of EL){if(ka===kb)continue;
-    const r1=new RegExp('(?:'+aa+')[^。；;]{0,26}(?:を|が|から)[^。；;]{0,18}(?:'+bb+')(?:元素|原子|ガス)?(?:へ|に)[^。；;]{0,12}(?:変換|転換|変化|還元|酸化|生成|なる|する)');
-    const r2=new RegExp('(?:'+aa+')[^。；;]{0,20}(?:を|が)[^。；;]{0,15}(?:還元|酸化|分解|処理)[^。；;]{0,15}(?:'+bb+')(?:元素|原子|ガス)?(?:を生成|になる|へ変換)');
+    const src='(?:'+aa+')',dst='(?:'+bb+')';
+    const r1=new RegExp(src+'[^。；;]{0,28}(?:を|が|から)[^。；;]{0,18}'+dst+'(?:元素|原子|ガス)?(?:へ|に)[^。；;]{0,14}(?:変換|転換|変化|還元|酸化|生成|なる|する)');
+    const r2=new RegExp(src+'[^。；;]{0,24}(?:を|が)[^。；;]{0,16}(?:還元|酸化|分解|処理)[^。；;]{0,16}'+dst+'(?:元素|原子|ガス)?(?:を生成|が生成|になる|へ変換|に変換)');
     if(r1.test(s)||r2.test(s))return ka+'→'+kb;
   }
   return null;
 }
-const transmutationHits=[];for(const x of bank){for(const [kind,arr] of [['q',[x.q]],['o',x.o||[]],['e',x.e||[]]])arr.forEach((s,i)=>{const ev=transmutationEvidence(s);if(ev)transmutationHits.push({id:x.id,field:kind+(kind==='q'?'':i+1),evidence:ev,text:s});});}
+/* Guard the detector itself: one real transmutation-style sentence must be caught, while common analytical acronyms must not be. */
+ok(transmutationEvidence('六価クロムを通常の還元処理で窒素ガスへ変換する。')==='Cr→N','transmutation detector missed Cr→N fixture');
+ok(transmutationEvidence('AはHPLCで分離し、BはGCへ直接導入する。')===null,'transmutation detector misread HPLC/GC acronym');
+ok(transmutationEvidence('硝化抑制剤を用いたBODはアンモニア性窒素の硝化を抑える。')===null,'transmutation detector misread BOD acronym');
+const transmutationHits=[];for(const x of bank){for(const [kind,arr] of [['q',[x.q]],['o',x.o||[]]])arr.forEach((s,i)=>{const ev=transmutationEvidence(s);if(ev)transmutationHits.push({id:x.id,field:kind+(kind==='q'?'':i+1),evidence:ev,text:s});});}
 
-/* Other impossible/irrelevant distractors are tracked separately; they are not called transmutation. */
+/* Other impossible/irrelevant chemistry is tracked separately; it is not called transmutation. */
 const impossibleChem=/P2ガス|F2へ還元|GC[-‐‑–—]?FID[^。]{0,30}硝酸|硝化菌[^。]{0,30}(クロム|Cr)|純窒素[^。]{0,30}Fe|りん元素が生成|りん酸.*ストリッピング/;
-const impossibleHits=[];for(const x of bank)if(impossibleChem.test([x.q,...x.o,...x.e].join(' ')))impossibleHits.push(x.id);
+const impossibleHits=[];for(const x of bank)if(impossibleChem.test([x.q,...x.o].join(' ')))impossibleHits.push(x.id);
 
 console.log('FINAL_ACTIVE',bank.length,'ARCHIVED',arc.map(x=>x.id).join(','));
 console.log('FINAL_ABS_CUE',absCue.length,JSON.stringify(absCue));
