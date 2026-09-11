@@ -11,6 +11,16 @@ test('approved quiz UI flow is preserved on mobile',async({page})=>{
 
   await expect(page).toHaveTitle(/問題バンク v45/);
   await expect(page.locator('#poolStatus')).toHaveText('通常出題 199問 ｜ 安定ID 200件 ｜ アーカイブ 1問');
+  await expect(page.locator('#audit')).toBeHidden();
+  await page.waitForFunction(()=>!!window.WATER1_REGRESSION_AUDIT);
+  const regression=await page.evaluate(()=>({
+    questions:window.WATER1_REGRESSION_AUDIT.questions,
+    errors:window.WATER1_REGRESSION_AUDIT.errors.length,
+    learnerAuditVisible:window.WATER1_UI_RELEASE&&window.WATER1_UI_RELEASE.learnerAuditVisible
+  }));
+  expect(regression.questions).toBeGreaterThanOrEqual(199);
+  expect(regression.errors).toBe(0);
+  expect(regression.learnerAuditVisible).toBe(false);
   await expect(page.locator('.ch.good')).toHaveCount(0);
   await expect(page.locator('.ch.bad')).toHaveCount(0);
 
@@ -87,6 +97,7 @@ test('service worker supports an offline reload including versioned assets',asyn
     await expect(page.locator('.ver')).toContainText('v45');
     await expect(page.locator('.ch')).toHaveCount(5);
     await expect(page.locator('#poolStatus')).toContainText('通常出題 199問');
+    await expect(page.locator('#audit')).toBeHidden();
   }finally{
     await context.setOffline(false);
   }
