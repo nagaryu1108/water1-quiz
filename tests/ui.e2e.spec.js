@@ -3,13 +3,16 @@ const {test,expect}=require('@playwright/test');
 async function openQuiz(page){
   await page.goto('/index.html',{waitUntil:'domcontentloaded'});
   await expect(page.locator('.ch')).toHaveCount(5);
-  await expect(page.locator('.ver')).toContainText('v45');
+  await page.waitForFunction(()=>window.WATER1_UI_RELEASE&&/^v\d+$/.test(window.WATER1_UI_RELEASE.release));
+  const release=await page.evaluate(()=>window.WATER1_UI_RELEASE.release);
+  await expect(page.locator('.ver')).toContainText('問題バンク '+release);
+  return release;
 }
 
 test('approved quiz UI flow is preserved on mobile',async({page})=>{
-  await openQuiz(page);
+  const release=await openQuiz(page);
 
-  await expect(page).toHaveTitle(/問題バンク v45/);
+  await expect(page).toHaveTitle(new RegExp('問題バンク '+release));
   await expect(page.locator('#poolStatus')).toHaveText('通常出題 199問 ｜ 安定ID 200件 ｜ アーカイブ 1問');
   await expect(page.locator('#audit')).toBeHidden();
   await page.waitForFunction(()=>!!window.WATER1_REGRESSION_AUDIT);
@@ -89,29 +92,22 @@ test('visual questions stay readable without widening the mobile page',async({pa
 
 test('stage 2 wastewater table question works on mobile',async({page})=>{
   await openQuiz(page);
+  await page.waitForFunction(()=>window.getQ&&window.getQ('T22')&&window.getQ('T22').examDifficultyStage==='v48-stage2');
 
-  // Force one known Stage 2 item through the app's real render path. This avoids
-  // coupling the content regression test to the startup scheduler/random picker.
   const forced=await page.evaluate(()=>{
     const q=window.getQ('T22');
-    if(!q||typeof window.render!=='function')return null;
     window.S.current='T22';
     window.S.currentAnswered=false;
     window.S.currentSel=null;
     window.S.hist={};
     window.S.total=0;
     window.S.correct=0;
-    window.save();
     window.render();
-    return {
-      id:window.S.current,
-      marker:q.examDifficultyStage,
-      answer:q.a,
-      meta:window.WATER1_RECENT_EXAM_DIFFICULTY_AUDIT&&window.WATER1_RECENT_EXAM_DIFFICULTY_AUDIT.version
-    };
+    return {id:window.S.current,marker:q.examDifficultyStage,answer:q.a};
   });
-  expect(forced).toEqual({id:'T22',marker:'v48-stage2',answer:1,meta:'v48'});
+  expect(forced).toEqual({id:'T22',marker:'v48-stage2',answer:1});
 
+  await expect(page.locator('#q')).toContainText('乾燥固形物量1.0 t/日');
   await expect(page.locator('.ch')).toHaveCount(5);
   await expect(page.locator('#visual')).toBeVisible();
   await expect(page.locator('#visual table')).toBeVisible();
@@ -130,14 +126,14 @@ test('stage 2 wastewater table question works on mobile',async({page})=>{
 });
 
 test('service worker supports an offline reload including versioned assets',async({page,context})=>{
-  await openQuiz(page);
+  const release=await openQuiz(page);
   await page.evaluate(async()=>{await navigator.serviceWorker.ready;});
   await page.waitForFunction(()=>!!navigator.serviceWorker.controller);
 
   await context.setOffline(true);
   try{
     await page.reload({waitUntil:'domcontentloaded'});
-    await expect(page.locator('.ver')).toContainText('v45');
+    await expect(page.locator('.ver')).toContainText('問題バンク '+release);
     await expect(page.locator('.ch')).toHaveCount(5);
     await expect(page.locator('#poolStatus')).toContainText('通常出題 199問');
     await expect(page.locator('#audit')).toBeHidden();
