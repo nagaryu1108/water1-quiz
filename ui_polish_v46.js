@@ -1,8 +1,8 @@
 (function(){
 'use strict';
-var RELEASE='v51';
-var RELEASE_DATE='2026-09-11';
-var BUILD_ID='v51-20260911-ui46d';
+var RELEASE='v52';
+var RELEASE_DATE='2026-09-12';
+var BUILD_ID='v52-20260912-ui46e';
 
 function ensureStyle(){
   if(document.getElementById('water1-ui-v46-style'))return;
