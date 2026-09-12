@@ -24,8 +24,8 @@ ok(l33&&/SWS/.test(l33.p)&&/API分離/.test(l33.p)&&/DAF/.test(l33.p)&&/生物�
 let raw=0;for(const q of bank){const vals=[q.q,q.p,q.src].concat(q.o||[],q.e||[]);for(const s of vals){if(typeof s==='string'&&/\b(?:NH3|H2S)\b/.test(s)){raw++;errs.push(`${q.id} raw NH3/H2S remains: ${s.slice(0,90)}`);}}}
 ok(raw===0,`raw NH3/H2S count ${raw}`);
 const loader=fs.readFileSync(path.join(root,'qbank_patch_v5.js'),'utf8'),sw=fs.readFileSync(path.join(root,'sw.js'),'utf8'),ui=fs.readFileSync(path.join(root,'ui_polish_v46.js'),'utf8');
-const lp=loader.indexOf('qbank_learning_visuals_v52.js?v=149'),sp=loader.indexOf('qbank_exam_difficulty_stage5_v51.js?v=147'),up=loader.indexOf('ui_polish_v46.js?v=149');
-ok(lp>=0,'v52 loader missing');ok(sp>=0&&sp<lp,'v52 must load after stage5');ok(up>lp,'UI polish must load after v52');ok(sw.includes("'./qbank_learning_visuals_v52.js'"),'service worker does not precache v52');ok(sw.includes('learning-visuals-v52'),'service worker v52 cache marker missing');ok(ui.includes("var RELEASE='v52'"),'UI release is not v52');
+const lp=loader.indexOf('qbank_learning_visuals_v52.js?v=149'),sp=loader.indexOf('qbank_exam_difficulty_stage5_v51.js?v=147'),uiMatch=loader.match(/ui_polish_v46\.js\?v=(\d+)/),up=uiMatch?loader.indexOf(uiMatch[0]):-1;
+ok(lp>=0,'v52 loader missing');ok(sp>=0&&sp<lp,'v52 must load after stage5');ok(up>lp,'UI polish must load after v52');ok(sw.includes("'./qbank_learning_visuals_v52.js'"),'service worker does not precache v52');ok(sw.includes('learning-visuals-v52'),'service worker v52 cache marker missing');const rel=ui.match(/var RELEASE='v(\d+)'/);ok(rel&&Number(rel[1])>=52,'UI release must be v52 or later');
 console.log('V52_FLOWS',ids.join(','),'ACTIVE',bank.length,'ARCHIVED',arc.map(x=>x.id).join(','),'RAW_NH3_H2S',raw);
 if(errs.length){console.error('FAIL v52 formula/learning-flow audit\n'+errs.join('\n'));process.exit(1)}
 console.log('PASS v52 formula and explanation-flow audit');
