@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - 'qbank_*.js'
+      - 'visual_aid_audit_v53.js'
+      - 'visual_aid_audit_v53.json'
       - 'ui_polish_v46.js'
       - 'standards-drill.html'
       - 'standards-drill-data-v1.js'
@@ -28,6 +30,7 @@ on:
       - 'tools/exam_difficulty_stage4_audit_v50.js'
       - 'tools/exam_difficulty_stage5_audit_v51.js'
       - 'tools/learning_visuals_audit_v52.js'
+      - 'tools/visual_aid_audit_v53.js'
       - 'tools/standards_drill_audit_v1.js'
       - 'tools/standards_mobile_layout_audit_v2.js'
       - 'tools/advanced_treatment_analysis_audit_v1.js'
@@ -92,6 +95,8 @@ jobs:
         run: node tools/exam_difficulty_stage5_audit_v51.js
       - name: Run v52 formula and explanation-flow audit
         run: node tools/learning_visuals_audit_v52.js
+      - name: Run v53 all-question visual-aid audit
+        run: node tools/visual_aid_audit_v53.js
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
       - name: Run mobile standards table layout audit
