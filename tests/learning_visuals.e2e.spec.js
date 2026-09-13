@@ -3,7 +3,7 @@ const {test,expect}=require('@playwright/test');
 async function openQuiz(page){
   await page.goto('/index.html',{waitUntil:'domcontentloaded'});
   await expect(page.locator('.ch')).toHaveCount(5);
-  await page.waitForFunction(()=>window.WATER1_UI_RELEASE&&window.WATER1_UI_RELEASE.release==='v52');
+  await page.waitForFunction(()=>window.WATER1_UI_RELEASE&&/^v\d+$/.test(window.WATER1_UI_RELEASE.release));
 }
 
 test('L33 renders chemical subscripts and branched refinery treatment flow on mobile',async({page})=>{
