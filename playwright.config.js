@@ -9,7 +9,9 @@ module.exports=defineConfig({
   use:{
     baseURL:'http://127.0.0.1:4173',
     viewport:{width:390,height:844},
-    locale:'ja-JP'
+    locale:'ja-JP',
+    trace:'retain-on-failure',
+    screenshot:'only-on-failure'
   },
   webServer:{
     command:'python3 -m http.server 4173 --bind 127.0.0.1',
