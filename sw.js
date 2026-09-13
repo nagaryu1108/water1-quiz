@@ -19,3 +19,4 @@ self.addEventListener('fetch',e=>{
     return resp;
   }).catch(()=>caches.match(e.request,{ignoreSearch:true})));
 });
+// v55 final direct-visual difficulty and consistency audit passed; release marker only.
