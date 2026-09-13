@@ -3,7 +3,7 @@ const {test,expect}=require('@playwright/test');
 async function openAndForce(page,id){
   await page.goto('/index.html',{waitUntil:'domcontentloaded'});
   await expect(page.locator('.ch')).toHaveCount(5);
-  await page.waitForFunction(()=>window.WATER1_UI_RELEASE&&window.WATER1_UI_RELEASE.release==='v53'&&window.WATER1_VISUAL_AID_AUDIT&&window.WATER1_VISUAL_AID_RELEASE);
+  await page.waitForFunction(()=>window.WATER1_UI_RELEASE&&/^v\d+$/.test(window.WATER1_UI_RELEASE.release)&&window.WATER1_VISUAL_AID_AUDIT&&window.WATER1_VISUAL_AID_RELEASE);
   return await page.evaluate(id=>{
     const q=window.getQ(id);
     window.S.current=id;window.S.currentAnswered=false;window.S.currentSel=null;window.S.hist={};window.S.total=0;window.S.correct=0;window.render();
@@ -48,7 +48,10 @@ test('MEDIUM visual is collapsible and can be opened under the core explanation'
   await answerWrong(page,q.answer);
   const details=page.locator('#res details[data-v53-aid="T10"]');
   await expect(details).toBeVisible();expect(await details.getAttribute('open')).toBeNull();
-  await details.locator('summary').click();expect(await details.getAttribute('open')).not.toBeNull();await expect(details).toContainText('判断マップ');await expect(details).toContainText('支配機構');
+  await details.locator('summary').click();expect(await details.getAttribute('open')).not.toBeNull();
+  await expect(details).toContainText('判断マップ');
+  await expect(details).toContainText('主要な判断軸');
+  await expect(details).toContainText('均等係数');
 });
 
 test('v52 L33 flow remains HIGH with formatted NH₃/H₂S and two branches',async({page})=>{
