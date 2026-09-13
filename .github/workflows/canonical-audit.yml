@@ -32,6 +32,7 @@ on:
       - 'tools/learning_visuals_audit_v52.js'
       - 'tools/visual_aid_audit_v53.js'
       - 'tools/direct_visual_answer_report_v54.js'
+      - 'tools/direct_visual_answer_post_v54_report_v55.js'
       - 'tools/standards_drill_audit_v1.js'
       - 'tools/standards_mobile_layout_audit_v2.js'
       - 'tools/advanced_treatment_analysis_audit_v1.js'
@@ -107,6 +108,16 @@ jobs:
           path: |
             direct_visual_answer_report_v54.txt
             direct_visual_answer_report_v54.json
+          if-no-files-found: error
+      - name: Report residual direct visual-answer risks after v54
+        run: node tools/direct_visual_answer_post_v54_report_v55.js | tee direct_visual_answer_post_v54_report_v55.txt
+      - name: Upload post-v54 direct visual-answer report
+        uses: actions/upload-artifact@v4
+        with:
+          name: direct-visual-answer-post-v54-report-v55
+          path: |
+            direct_visual_answer_post_v54_report_v55.txt
+            direct_visual_answer_post_v54_report_v55.json
           if-no-files-found: error
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
