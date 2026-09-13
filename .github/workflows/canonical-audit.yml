@@ -33,6 +33,8 @@ on:
       - 'tools/visual_aid_audit_v53.js'
       - 'tools/direct_visual_answer_report_v54.js'
       - 'tools/direct_visual_answer_post_v54_report_v55.js'
+      - 'tools/direct_visual_manual_review_v55.json'
+      - 'tools/direct_visual_answer_final_audit_v55.js'
       - 'tools/standards_drill_audit_v1.js'
       - 'tools/standards_mobile_layout_audit_v2.js'
       - 'tools/advanced_treatment_analysis_audit_v1.js'
@@ -119,6 +121,8 @@ jobs:
             direct_visual_answer_post_v54_report_v55.txt
             direct_visual_answer_post_v54_report_v55.json
           if-no-files-found: error
+      - name: Run final all-visual direct-answer audit v55
+        run: node tools/direct_visual_answer_final_audit_v55.js
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
       - name: Run mobile standards table layout audit
