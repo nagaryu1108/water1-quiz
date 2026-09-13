@@ -31,6 +31,7 @@ on:
       - 'tools/exam_difficulty_stage5_audit_v51.js'
       - 'tools/learning_visuals_audit_v52.js'
       - 'tools/visual_aid_audit_v53.js'
+      - 'tools/direct_visual_answer_report_v54.js'
       - 'tools/standards_drill_audit_v1.js'
       - 'tools/standards_mobile_layout_audit_v2.js'
       - 'tools/advanced_treatment_analysis_audit_v1.js'
@@ -97,6 +98,16 @@ jobs:
         run: node tools/learning_visuals_audit_v52.js
       - name: Run v53 all-question visual-aid audit
         run: node tools/visual_aid_audit_v53.js
+      - name: Report direct visual-answer difficulty risks v54
+        run: node tools/direct_visual_answer_report_v54.js | tee direct_visual_answer_report_v54.txt
+      - name: Upload direct visual-answer report
+        uses: actions/upload-artifact@v4
+        with:
+          name: direct-visual-answer-report-v54
+          path: |
+            direct_visual_answer_report_v54.txt
+            direct_visual_answer_report_v54.json
+          if-no-files-found: error
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
       - name: Run mobile standards table layout audit
