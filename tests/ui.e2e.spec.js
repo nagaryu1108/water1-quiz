@@ -49,6 +49,21 @@ test('stage 3 hazardous-substance table question works on mobile',async({page})=
   const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('water1_bank_v3')).hist.H12);expect(saved.attempts).toBe(1);expect(saved.lastSel).toBe(wrong);
 });
 
+test('v55 G37 does not print the answer percentages and requires calculation',async({page})=>{
+  await openQuiz(page);await page.waitForFunction(()=>window.getQ&&window.getQ('G37')&&window.getQ('G37').directVisualDifficulty==='v55');
+  const forced=await page.evaluate(()=>{const q=window.getQ('G37');window.S.current='G37';window.S.currentAnswered=false;window.S.currentSel=null;window.S.hist={};window.S.total=0;window.S.correct=0;window.render();return {answer:q.a,marker:q.directVisualDifficulty};});
+  expect(forced).toEqual({answer:2,marker:'v55'});await expect(page.locator('#q')).toContainText('割合をそれぞれ計算');await expect(page.locator('#visual table')).toBeVisible();
+  const visualText=await page.locator('#visual').innerText();expect(visualText).not.toContain('41.1%');expect(visualText).not.toContain('72.5%');expect(visualText).not.toContain('建設作業の割合');
+  await page.locator('.ch').nth(0).click();await expect(page.locator('.ch').nth(2)).toHaveClass(/good/);await page.locator('.ch').nth(2).click();await expect(page.locator('#e2')).toContainText('8,166/19,886');await expect(page.locator('#e2')).toContainText('LAeq');
+});
+
+test('v55 L37 nutrient-addition graph agrees with the keyed N-limitation conclusion',async({page})=>{
+  await openQuiz(page);await page.waitForFunction(()=>window.getQ&&window.getQ('L37')&&window.getQ('L37').directVisualDifficulty==='v55');
+  const state=await page.evaluate(()=>{const q=window.getQ('L37');window.S.current='L37';window.S.currentAnswered=false;window.S.currentSel=null;window.S.hist={};window.S.total=0;window.S.correct=0;window.render();const m=Object.fromEntries(q.v.series.map(s=>[s.label,s.y[s.y.length-1]]));return {answer:q.a,marker:q.directVisualDifficulty,n:m['+N'],p:m['+P'],np:m['+N+P'],correct:q.o[q.a]};});
+  expect(state.answer).toBe(0);expect(state.marker).toBe('v55');expect(state.n).toBeGreaterThan(state.p+1);expect(Math.abs(state.np-state.n)).toBeLessThanOrEqual(0.15);expect(state.correct).toContain('窒素が主要な制限栄養塩');
+  await expect(page.locator('#visual')).toBeVisible();await page.locator('.ch').nth(0).click();await expect(page.locator('.ch').nth(0)).toHaveClass(/good/);await page.locator('.ch').nth(0).click();await expect(page.locator('#e0')).toContainText('窒素制限');
+});
+
 test('service worker supports an offline reload including versioned assets',async({page,context})=>{
   const release=await openQuiz(page);await page.evaluate(async()=>{await navigator.serviceWorker.ready;});await page.waitForFunction(()=>!!navigator.serviceWorker.controller);await context.setOffline(true);
   try{await page.reload({waitUntil:'domcontentloaded'});await expect(page.locator('.ver')).toContainText('問題バンク '+release);await expect(page.locator('.ch')).toHaveCount(5);await expect(page.locator('#poolStatus')).toContainText('通常出題 199問');await expect(page.locator('#audit')).toBeHidden();await page.waitForFunction(()=>!!window.WATER1_REGRESSION_AUDIT);await expect(page.locator('#regressionWarn')).toBeHidden();}finally{await context.setOffline(false);}
