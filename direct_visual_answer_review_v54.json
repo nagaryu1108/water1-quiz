@@ -1,0 +1,32 @@
+{
+  "version": "v54",
+  "scope": "All 52 active questions that had a problem visual before the v54 rewrite",
+  "criterion": "A visual must not disclose the correct option by simple transcription, maximum/minimum comparison, or a threshold that is printed next to the measured value. Legitimate visuals require calculation, masked-label knowledge, domain inference, diagnostic reasoning, denominator awareness, or process/analytical knowledge.",
+  "baselineVisualIds": ["G03","W01","W03","W04","H03","L05","G06","W06","W07","T06","H06","H07","L06","L07","T08","G08","G10","W08","W10","T10","H10","G11","G12","W12","H12","H13","G15","T15","T16","H17","G22","T21","T22","W24","G27","W29","T30","G34","W33","L35","G35","G37","W35","W36","T42","H38","L36","L37","G38","W39","T43","H39"],
+  "rewriteIds": ["G12","G34","G35","G38","W12","W39","H06"],
+  "rewriteReasons": {
+    "G12": "The former correct option simply calculated and restated percentages visible from a small table; rewritten to require weighted aggregation, denominator awareness, and a causality caveat.",
+    "G34": "The former correct option was mostly the visible NO2 ranking plus a basic source fact; rewritten as a multi-pollutant source-diagnosis question with limits on causal attribution.",
+    "G35": "The former chart visibly gave the under-10-billion-t-CO2 statement; rewritten to require reduction-rate calculation and GWP/CO2-equivalent knowledge, following the pattern of recent official exams.",
+    "G38": "The former table printed every waste category and treatment percentage beside its name, so all five choices could be decided by direct comparison; labels are now masked and must be identified from current official statistics.",
+    "W12": "The former table printed both measured DO and the applicable threshold in the same row; rewritten to require daily-average calculation plus recall of the current class thresholds.",
+    "W39": "Duplicated the W12 bottom-DO threshold-table task and supplied thresholds in the note; converted to a nonvisual official-style conceptual threshold/classification question.",
+    "H06": "The former answer stated that the minimum occurred near pH 8 although the displayed minimum was at pH 9; rewritten to fix the inconsistency and require selection of an operating window plus amphoteric-redissolution reasoning."
+  },
+  "keepGroups": {
+    "calculation_or_quantitative_derivation": ["T06","G15","T22","G27","L35","L36","H39"],
+    "curve_or_profile_identification": ["W06","L06","T08","W36","L37"],
+    "process_or_operational_diagnosis": ["W01","W03","W04","W07","T10","H07","L07","T15","T16","H10","H12","H13","H17","T21","T30","T42","T43"],
+    "survey_design_or_management_judgment": ["G03","G08","G10","W08","W10","G11","G22"],
+    "domain_inference_not_disclosed_by_visual": ["H03","L05","G06","W24","W29","G37","W35","H38"],
+    "statistical_denominator_or_context_reasoning": ["W33"]
+  },
+  "expectedAfterRewrite": {
+    "activeQuestions": 199,
+    "archivedQuestion": "L30",
+    "problemVisualCount": 51,
+    "reviewedBaselineVisualCount": 52,
+    "rewritten": 7,
+    "kept": 45
+  }
+}
