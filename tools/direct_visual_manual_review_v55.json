@@ -1,0 +1,22 @@
+{
+  "version": "v55",
+  "scope": "All 51 active questions with q.v after v54",
+  "criterion": "Flag questions whose correct answer can be obtained by merely transcribing a displayed value/ranking, without meaningful calculation, interpretation, domain knowledge, or procedural judgment.",
+  "rewriteDirectDisclosure": ["G37"],
+  "fixVisualStemConsistency": ["L37"],
+  "keepDerivedCalculationOrPattern": ["T06","G12","W12","G15","T22","G27","T30","L35","G35","H39","L36"],
+  "keepMechanismOrCurveInterpretation": ["W01","W03","W04","W06","W07","L05","L06","T08","W29","W36"],
+  "keepProfessionalJudgmentOrConcept": ["G03","H03","G06","H06","H07","L07","G08","G10","W08","W10","T10","H10","G11","H12","H13","T15","T16","H17","G22","T21","W24","G34","W33","W35","T42","H38","G38","T43"],
+  "notes": {
+    "G37": "The former table printed the construction-work percentages and the correct option repeated which was larger. v55 removes the percentage column and requires calculation plus LAeq knowledge.",
+    "L37": "The former graph contradicted the stem and keyed answer by showing the large response in +P instead of +N. v55 aligns the curves with the intended N-limitation interpretation.",
+    "G38": "v54 already masked category names so the answer is no longer printed in the table; retained after review.",
+    "W12": "Requires averaging four measurements and recalling the current class thresholds; not direct transcription.",
+    "G12": "Requires aggregation with unequal denominators and interpretation of correlation/causation; not direct transcription.",
+    "T22": "Requires converting cake moisture to total cake mass and comparing downstream energy consequences.",
+    "G27": "Requires connected/unconnected population split, removal rates and delivery rates.",
+    "L36": "Requires Chl-a to carbon conversion and stoichiometric oxygen-demand calculation.",
+    "W33": "The table gives exceedance counts but the correct inference explicitly depends on unequal denominators, so simple ranking is insufficient.",
+    "G35": "Requires computing reductions from an index and knowing the role of GWP; the answer is not printed as a table entry."
+  }
+}
