@@ -29,8 +29,9 @@ test('v56 Environment Basic Act fill-in works on mobile',async({page})=>{
 
 test('v56 pollution-control organization numeric combination works on mobile',async({page})=>{
   const f=await force(page,'G07');
-  await expect(page.locator('#q')).toContainText('60');
+  await expect(page.locator('#q')).toContainText('（ア）');
   await expect(page.locator('#q')).toContainText('（エ）');
+  await expect(page.locator('.ch').nth(f.answer)).toContainText('60');
   await expect(page.locator('.ch').nth(f.answer)).toContainText('都道府県知事等');
   await page.locator('.ch').nth(f.answer).click();
   await expect(page.locator('.ch').nth(f.answer)).toHaveClass(/good/);
