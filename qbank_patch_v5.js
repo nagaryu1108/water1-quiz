@@ -57,6 +57,7 @@
     document.write('<script src="./qbank_learning_visuals_v53_mobilefix.js?v=151"><\/script>');
     document.write('<script src="./qbank_direct_visual_difficulty_v54.js?v=152"><\/script>');
     document.write('<script src="./qbank_direct_visual_quality_v55.js?v=153"><\/script>');
-    document.write('<script src="./ui_polish_v46.js?v=153"><\/script>');
+    document.write('<script src="./qbank_legal_fillin_v56.js?v=154"><\/script>');
+    document.write('<script src="./ui_polish_v46.js?v=154"><\/script>');
   }
 })();
