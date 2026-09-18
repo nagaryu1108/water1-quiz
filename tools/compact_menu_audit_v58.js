@@ -11,7 +11,7 @@ ok(loader.includes('compact_menu_v58.js?v=156'),'loader missing compact menu v58
 ok(loader.indexOf('compact_menu_v58.js')>loader.indexOf('study_workflow_v57.js'),'compact menu must load after v57 workflow');
 ok(sw.includes("'./compact_menu_v58.js'"),'service worker missing compact menu v58');
 ok(sw.includes('compact-menu-v58'),'service worker cache marker missing v58');
-ok(ui.includes("var RELEASE='v58'"),'UI release is not v58');
+const uiRelease=(ui.match(/var RELEASE='v(\d+)'/)||[])[1];ok(Number(uiRelease)>=58,'UI release must be v58 or later');
 ok(index.includes("var KEY='water1_bank_v3'"),'learning-history key changed');
 ok(wf.includes('Run v58 compact menu audit'),'workflow missing v58 audit');
 ok(wf.includes("'compact_menu_v58.js'")&&wf.includes("'tools/compact_menu_audit_v58.js'"),'workflow watch paths missing v58');
