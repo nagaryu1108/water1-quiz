@@ -60,5 +60,6 @@
     document.write('<script src="./qbank_legal_fillin_v56.js?v=154"><\/script>');
     document.write('<script src="./ui_polish_v46.js?v=155"><\/script>');
     document.write('<script src="./study_workflow_v57.js?v=155"><\/script>');
+    document.write('<script src="./compact_menu_v58.js?v=156"><\/script>');
   }
 })();
