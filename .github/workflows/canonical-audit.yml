@@ -7,6 +7,7 @@ on:
       - 'visual_aid_audit_v53.json'
       - 'ui_polish_v46.js'
       - 'study_workflow_v57.js'
+      - 'compact_menu_v58.js'
       - 'standards-drill.html'
       - 'standards-drill-data-v1.js'
       - 'advanced-treatment-analysis.html'
@@ -39,6 +40,7 @@ on:
       - 'tools/direct_visual_answer_final_audit_v55.js'
       - 'tools/legal_fillin_audit_v56.js'
       - 'tools/study_workflow_audit_v57.js'
+      - 'tools/compact_menu_audit_v58.js'
       - 'tools/standards_drill_audit_v1.js'
       - 'tools/standards_mobile_layout_audit_v2.js'
       - 'tools/advanced_treatment_analysis_audit_v1.js'
@@ -131,6 +133,8 @@ jobs:
         run: node tools/legal_fillin_audit_v56.js
       - name: Run v57 study workflow audit
         run: node tools/study_workflow_audit_v57.js
+      - name: Run v58 compact menu audit
+        run: node tools/compact_menu_audit_v58.js
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
       - name: Run mobile standards table layout audit
