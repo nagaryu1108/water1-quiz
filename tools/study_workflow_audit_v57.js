@@ -15,7 +15,7 @@ ok(loader.includes('study_workflow_v57.js?v=155'),'loader missing v57 workflow')
 ok(loader.indexOf('study_workflow_v57.js')>loader.indexOf('qbank_legal_fillin_v56.js'),'v57 must load after v56 content');
 ok(sw.includes("'./study_workflow_v57.js'"),'service worker missing v57 workflow');
 ok(sw.includes('study-workflow-v57'),'service worker cache marker missing v57');
-const uiRelease=(ui.match(/var RELEASE='v(\\d+)'/)||[])[1];ok(Number(uiRelease)>=57,'UI release must be v57 or later');
+const uiRelease=(ui.match(/var RELEASE='v(\d+)'/)||[])[1];ok(Number(uiRelease)>=57,'UI release must be v57 or later');
 ok(wf.includes('Run v57 study workflow audit'),'workflow missing v57 audit');
 ok(wf.includes("'study_workflow_v57.js'")&&wf.includes("'tools/study_workflow_audit_v57.js'"),'workflow watch paths missing v57');
 
