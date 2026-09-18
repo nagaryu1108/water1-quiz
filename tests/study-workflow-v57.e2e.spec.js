@@ -5,6 +5,10 @@ async function open(page){
   await page.waitForFunction(()=>window.WATER1_STUDY_WORKFLOW&&window.WATER1_STUDY_WORKFLOW.installed);
   await expect(page.locator('.ch')).toHaveCount(5);
 }
+async function openMenu(page){
+  await page.locator('#studyMenuToggle').click();
+  await expect(page.locator('#studyMenuPanel')).toBeVisible();
+}
 async function force(page,id){
   return page.evaluate((qid)=>{
     const q=window.getQ(qid);
@@ -21,6 +25,7 @@ test('v57 schedules 1-day review and due queue survives localStorage',async({pag
   expect(saved.reviewStage).toBe(0);expect(saved.reviewIntervalDays).toBe(1);
   expect(saved.reviewDue).toBeGreaterThan(before+23*60*60*1000);
   await page.evaluate(()=>{window.S.hist.G01.reviewDue=Date.now()-1000;window.save();});
+  await openMenu(page);
   await page.locator('#review').click();
   const state=await page.evaluate(()=>({mode:window.S.mode,current:window.S.current,due:window.WATER1_STUDY_WORKFLOW.reviewRows().filter(r=>r.dueNow).length}));
   expect(state.mode).toBe('review');expect(state.current).toBe('G01');expect(state.due).toBeGreaterThanOrEqual(1);
@@ -42,6 +47,7 @@ test('v57 bookmark and needs-review controls save immediately',async({page})=>{
 
 test('v57 separates official past exam mode and shows water-1 annual index',async({page})=>{
   await open(page);
+  await openMenu(page);
   await page.locator('[data-study-view="past"]').click();
   await expect(page.locator('#pastExamPanel')).toBeVisible();
   await expect(page.locator('.card')).toBeHidden();
@@ -57,6 +63,7 @@ test('v57 separates official past exam mode and shows water-1 annual index',asyn
 test('v57 topic mastery and bookmark jump work on mobile',async({page})=>{
   await open(page);const f=await force(page,'G01');
   await page.locator('#bookmarkBtn').click();await page.locator('.ch').nth(f.answer).click();
+  await openMenu(page);
   await page.locator('[data-study-view="mastery"]').click();
   await expect(page.locator('#masteryPanel')).toBeVisible();
   await expect(page.locator('#masteryPanel')).toContainText('環境基本法');
