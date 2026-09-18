@@ -2,7 +2,7 @@ const {test,expect}=require('@playwright/test');
 
 async function open(page){
   await page.goto('/index.html',{waitUntil:'domcontentloaded'});
-  await page.waitForFunction(()=>window.WATER1_STUDY_WORKFLOW&&window.WATER1_STUDY_WORKFLOW.installed);
+  await page.waitForFunction(()=>window.WATER1_STUDY_WORKFLOW&&window.WATER1_STUDY_WORKFLOW.installed&&window.WATER1_COMPACT_MENU&&window.WATER1_COMPACT_MENU.installed);
   await expect(page.locator('.ch')).toHaveCount(5);
 }
 async function openMenu(page){
