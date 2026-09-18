@@ -1,0 +1,30 @@
+const fs=require('fs'),path=require('path'),vm=require('vm');
+const root=path.resolve(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8'),errs=[],ok=(c,m)=>{if(!c)errs.push(m)};
+const mod=read('study_workflow_v57.js'),loader=read('qbank_patch_v5.js'),sw=read('sw.js'),ui=read('ui_polish_v46.js'),index=read('index.html'),wf=read('.github/workflows/canonical-audit.yml');
+ok(mod.includes("var INTERVALS=[1,3,7,14,30,60]"),'spaced repetition intervals missing');
+ok(mod.includes("accuracy<0.60")&&mod.includes("accuracy<0.80"),'past accuracy is not used in scheduling');
+ok(mod.includes("window.S.bookmarks")&&mod.includes("window.S.reviewFlags"),'bookmark/review flags missing');
+ok(mod.includes("reviewDue")&&mod.includes("reviewStage")&&mod.includes("reviewIntervalDays"),'review schedule fields missing');
+ok(mod.includes("JEMAI公式・実過去問")&&mod.includes("for(var y=2025;y>=2006;y--)"),'2006-2025 past exam index missing');
+ok(mod.includes("R07_")&&mod.includes("R06_")&&mod.includes("answerR07.pdf")&&mod.includes("answerR06.pdf"),'verified 2024/2025 JEMAI direct links missing');
+ok(mod.includes("https://www.jemai.or.jp/polconman/examination/past.html"),'official JEMAI index missing');
+ok(mod.includes("topicOf")&&mod.includes("環境基本法")&&mod.includes("公害防止組織法")&&mod.includes("活性汚泥")&&mod.includes("有害物質分析"),'topic-level mastery rules missing');
+ok(mod.includes("正解 '+z.correct+'/'+z.attempts")&&mod.includes("網羅 '+z.covered+'/'+z.totalQuestions"),'topic mastery numerator/denominator missing');
+ok(mod.includes("storageKey:'water1_bank_v3'")&&index.includes("KEY='water1_bank_v3'"),'study history storage key changed');
+ok(loader.includes('study_workflow_v57.js?v=155'),'loader missing v57 workflow');
+ok(loader.indexOf('study_workflow_v57.js')>loader.indexOf('qbank_legal_fillin_v56.js'),'v57 must load after v56 content');
+ok(sw.includes("'./study_workflow_v57.js'"),'service worker missing v57 workflow');
+ok(sw.includes('study-workflow-v57'),'service worker cache marker missing v57');
+ok(ui.includes("var RELEASE='v57'"),'UI release is not v57');
+ok(wf.includes('Run v57 study workflow audit'),'workflow missing v57 audit');
+ok(wf.includes("'study_workflow_v57.js'")&&wf.includes("'tools/study_workflow_audit_v57.js'"),'workflow watch paths missing v57');
+
+const baseFiles=['qbank_v3.js','qbank_extra_v4.js','qbank_core_patch_v7.js','qbank_detail_patch_v6.js','qbank_enrichment_v7.js','qbank_detail_round1_v7.js','qbank_detail_complete_v7.js','qbank_gap_batch1_v7.js','qbank_gap_batch2_v7.js','qbank_gap_batch3_v7.js','qbank_gap_batch4_v7.js','qbank_gap_batch4_fix_v7.js','qbank_gap_batch5_v7.js','qbank_gap_batch6_v7.js','qbank_gap_batch6_fix_v7.js','qbank_gap_batch7_v7.js','qbank_gap_batch8_v7.js','qbank_gap_batch9_v7.js','qbank_gap_batch10_v7.js','qbank_gap_batch11_v7.js','qbank_gap_batch12_v7.js','qbank_detail_quality_fix_v23.js','qbank_undefined_fix_v7.js','qbank_exam_quality_patch_v34.js','qbank_visual_fix_v35.js','qbank_unit_typography_v1.js','qbank_content_restructure_v39.js','qbank_distractor_plausibility_v40.js','qbank_semantic_rewrite_gw_v42.js','qbank_semantic_rewrite_th_v42.js','qbank_semantic_rewrite_l_v42.js','qbank_semantic_strengthen_g_v42.js','qbank_semantic_strengthen_w_v42.js','qbank_semantic_strengthen_t_v42.js','qbank_semantic_strengthen_h_v42.js','qbank_semantic_strengthen_l_v42.js','qbank_semantic_polish_v43.js','qbank_semantic_polish_v44.js','qbank_semantic_polish_v45.js','qbank_exam_difficulty_stage1_v47.js','qbank_recent_exam_upgrade_v47.js','qbank_recent_exam_audit_finalize_v47.js','qbank_exam_difficulty_stage2_v48.js','qbank_exam_difficulty_stage3_v49.js','qbank_exam_difficulty_stage3_fix_v49.js','qbank_exam_difficulty_stage4_v50.js','qbank_exam_difficulty_stage5_v51.js','qbank_learning_visuals_v52.js','visual_aid_audit_v53.js','qbank_learning_visuals_v53.js','qbank_learning_visuals_v53_mobilefix.js','qbank_direct_visual_difficulty_v54.js','qbank_direct_visual_quality_v55.js','qbank_legal_fillin_v56.js'];
+const noop=()=>{};const document={readyState:'loading',addEventListener:noop,getElementById:()=>null,querySelectorAll:()=>[],querySelector:()=>null,body:{},head:{appendChild:noop},createElement:()=>({style:{},setAttribute:noop,appendChild:noop})};
+const ctx={window:{QBANK:[]},document,console,setTimeout:noop,clearTimeout:noop,MutationObserver:function(){this.observe=noop},localStorage:{getItem:()=>null,setItem:noop},Set,Map,Math,JSON,Number,String,Array,Object,RegExp,Date};ctx.window.window=ctx.window;ctx.window.document=document;vm.createContext(ctx);
+for(const f of baseFiles)vm.runInContext(read(f),ctx,{filename:f});
+const bank=ctx.window.QBANK||[],arc=ctx.window.WATER1_ARCHIVED_QUESTIONS||[];
+ok(bank.length===199,'active bank changed: '+bank.length);ok(arc.length===1&&arc[0].id==='L30','archive invariant changed');
+console.log('STUDY_WORKFLOW_V57 ACTIVE',bank.length,'ARCHIVED',arc.length,'INTERVALS','1,3,7,14,30,60','PAST_INDEX','2006-2025','DIRECT','2024,2025');
+if(errs.length){console.error('FAIL v57 study workflow audit\n'+errs.join('\n'));process.exit(1)}
+console.log('PASS v57 spaced review + bookmark + official past exam index + topic mastery audit');
