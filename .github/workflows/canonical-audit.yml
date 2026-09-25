@@ -9,6 +9,7 @@ on:
       - 'study_workflow_v57.js'
       - 'compact_menu_v58.js'
       - 'qbank_chem_typography_v59.js'
+      - 'qbank_choice_independence_v60.js'
       - 'standards-drill.html'
       - 'standards-drill-data-v1.js'
       - 'advanced-treatment-analysis.html'
@@ -43,6 +44,8 @@ on:
       - 'tools/study_workflow_audit_v57.js'
       - 'tools/compact_menu_audit_v58.js'
       - 'tools/chem_typography_audit_v59.js'
+      - 'tools/choice_independence_report_v60.js'
+      - 'tools/choice_independence_audit_v60.js'
       - 'tools/standards_drill_audit_v1.js'
       - 'tools/standards_mobile_layout_audit_v2.js'
       - 'tools/advanced_treatment_analysis_audit_v1.js'
@@ -139,6 +142,10 @@ jobs:
         run: node tools/compact_menu_audit_v58.js
       - name: Run v59 chemical typography audit
         run: node tools/chem_typography_audit_v59.js
+      - name: Report same-fact answer-vs-distractor risks v60
+        run: node tools/choice_independence_report_v60.js
+      - name: Run v60 choice independence audit
+        run: node tools/choice_independence_audit_v60.js
       - name: Run standards table fill-in drill audit
         run: node tools/standards_drill_audit_v1.js
       - name: Run mobile standards table layout audit
