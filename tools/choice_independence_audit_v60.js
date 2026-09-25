@@ -1,0 +1,27 @@
+const fs=require('fs'),vm=require('vm'),path=require('path');
+const root=path.resolve(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8'),errs=[],ok=(c,m)=>{if(!c)errs.push(m)};
+const files=['qbank_v3.js','qbank_extra_v4.js','qbank_core_patch_v7.js','qbank_detail_patch_v6.js','qbank_enrichment_v7.js','qbank_detail_round1_v7.js','qbank_detail_complete_v7.js','qbank_gap_batch1_v7.js','qbank_gap_batch2_v7.js','qbank_gap_batch3_v7.js','qbank_gap_batch4_v7.js','qbank_gap_batch4_fix_v7.js','qbank_gap_batch5_v7.js','qbank_gap_batch6_v7.js','qbank_gap_batch6_fix_v7.js','qbank_gap_batch7_v7.js','qbank_gap_batch8_v7.js','qbank_gap_batch9_v7.js','qbank_gap_batch10_v7.js','qbank_gap_batch11_v7.js','qbank_gap_batch12_v7.js','qbank_detail_quality_fix_v23.js','qbank_undefined_fix_v7.js','qbank_exam_quality_patch_v34.js','qbank_visual_fix_v35.js','qbank_unit_typography_v1.js','qbank_content_restructure_v39.js','qbank_distractor_plausibility_v40.js','qbank_semantic_rewrite_gw_v42.js','qbank_semantic_rewrite_th_v42.js','qbank_semantic_rewrite_l_v42.js','qbank_semantic_strengthen_g_v42.js','qbank_semantic_strengthen_w_v42.js','qbank_semantic_strengthen_t_v42.js','qbank_semantic_strengthen_h_v42.js','qbank_semantic_strengthen_l_v42.js','qbank_semantic_polish_v43.js','qbank_semantic_polish_v44.js','qbank_semantic_polish_v45.js','qbank_exam_difficulty_stage1_v47.js','qbank_recent_exam_upgrade_v47.js','qbank_recent_exam_audit_finalize_v47.js','qbank_exam_difficulty_stage2_v48.js','qbank_exam_difficulty_stage3_v49.js','qbank_exam_difficulty_stage3_fix_v49.js','qbank_exam_difficulty_stage4_v50.js','qbank_exam_difficulty_stage5_v51.js','qbank_learning_visuals_v52.js','visual_aid_audit_v53.js','qbank_learning_visuals_v53.js','qbank_learning_visuals_v53_mobilefix.js','qbank_direct_visual_difficulty_v54.js','qbank_direct_visual_quality_v55.js','qbank_legal_fillin_v56.js','qbank_chem_typography_v59.js','qbank_choice_independence_v60.js'];
+const noop=()=>{};const document={readyState:'loading',addEventListener:noop,getElementById:()=>null,querySelectorAll:()=>[],querySelector:()=>null,body:{},head:{appendChild:noop},createElement:()=>({style:{},dataset:{},setAttribute:noop,appendChild:noop})};
+const ctx={window:{QBANK:[]},document,console,setTimeout:noop,clearTimeout:noop,MutationObserver:function(){this.observe=noop},localStorage:{getItem:()=>null,setItem:noop},Set,Map,Math,JSON,Number,String,Array,Object,RegExp,Date};ctx.window.window=ctx.window;ctx.window.document=document;vm.createContext(ctx);
+for(const f of files)vm.runInContext(read(f),ctx,{filename:f});
+const bank=ctx.window.QBANK||[],arc=ctx.window.WATER1_ARCHIVED_QUESTIONS||[];
+ok(bank.length===199,'active bank changed: '+bank.length);ok(arc.length===1&&arc[0].id==='L30','archive invariant changed');
+ok(ctx.window.WATER1_CHOICE_INDEPENDENCE&&ctx.window.WATER1_CHOICE_INDEPENDENCE.version==='v60','v60 metadata missing');
+const w=bank.find(q=>q.id==='W39');
+ok(w&&w.choiceIndependenceVersion==='v60','W39 v60 marker missing');
+ok(w&&w.a===1,'W39 answer index changed unexpectedly');
+ok(w&&w.o.length===5&&w.e.length===5,'W39 5-choice/5-explanation invariant');
+ok(w&&!w.o[0].includes('4.0')&&!w.o[0].includes('3.0')&&!w.o[0].includes('2.0'),'W39 choice 1 still reveals threshold triplet');
+ok(w&&!w.o[1].includes('1.0 mg/L'),'W39 answer still uses competing false threshold');
+ok(w&&w.o[1].includes('日間平均値は用いない'),'W39 answer must test evaluation method independently');
+ok(w&&w.p.includes('生物1=4.0')&&w.p.includes('生物3=2.0'),'W39 explanation must still teach current thresholds');
+const loader=read('qbank_patch_v5.js'),sw=read('sw.js'),ui=read('ui_polish_v46.js'),index=read('index.html'),wf=read('.github/workflows/canonical-audit.yml');
+ok(loader.includes('qbank_choice_independence_v60.js?v=158'),'loader missing v60 patch');
+ok(loader.indexOf('qbank_choice_independence_v60.js')>loader.indexOf('qbank_chem_typography_v59.js'),'v60 must run after v59');
+ok(loader.indexOf('qbank_choice_independence_v60.js')<loader.indexOf('ui_polish_v46.js'),'v60 must run before UI scripts');
+ok(sw.includes("'./qbank_choice_independence_v60.js'")&&sw.includes('choice-independence-v60'),'service worker missing v60');
+ok(ui.includes("var RELEASE='v60'"),'UI release is not v60');
+ok(index.includes("KEY='water1_bank_v3'"),'storage key changed');
+ok(wf.includes('Run v60 choice independence audit'),'workflow missing v60 audit');
+if(errs.length){console.error('FAIL v60 choice independence audit\n'+errs.join('\n'));process.exit(1)}
+console.log('PASS v60 W39 independent-choice rewrite + bank invariants');
