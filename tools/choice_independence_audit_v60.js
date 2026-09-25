@@ -7,14 +7,49 @@ for(const f of files)vm.runInContext(read(f),ctx,{filename:f});
 const bank=ctx.window.QBANK||[],arc=ctx.window.WATER1_ARCHIVED_QUESTIONS||[];
 ok(bank.length===199,'active bank changed: '+bank.length);ok(arc.length===1&&arc[0].id==='L30','archive invariant changed');
 ok(ctx.window.WATER1_CHOICE_INDEPENDENCE&&ctx.window.WATER1_CHOICE_INDEPENDENCE.version==='v60','v60 metadata missing');
+const meta=ctx.window.WATER1_CHOICE_INDEPENDENCE;
+const rewritten=['W20','W32','W39','T34','T41'];
+ok(meta&&JSON.stringify(meta.rewritten)===JSON.stringify(rewritten),'v60 rewritten ID list mismatch');
+for(const id of rewritten){
+  const q=bank.find(x=>x.id===id);
+  ok(q&&q.choiceIndependenceVersion==='v60',id+' v60 marker missing');
+  ok(q&&Array.isArray(q.o)&&q.o.length===5&&Array.isArray(q.e)&&q.e.length===5,id+' 5-choice/5-explanation invariant');
+}
+const expectedAnswers={W20:0,W32:1,W39:1,T34:1,T41:1};
+for(const id of rewritten){const q=bank.find(x=>x.id===id);ok(q&&q.a===expectedAnswers[id],id+' answer index changed unexpectedly');}
 const w=bank.find(q=>q.id==='W39');
-ok(w&&w.choiceIndependenceVersion==='v60','W39 v60 marker missing');
-ok(w&&w.a===1,'W39 answer index changed unexpectedly');
-ok(w&&w.o.length===5&&w.e.length===5,'W39 5-choice/5-explanation invariant');
+
 ok(w&&!w.o[0].includes('4.0')&&!w.o[0].includes('3.0')&&!w.o[0].includes('2.0'),'W39 choice 1 still reveals threshold triplet');
 ok(w&&!w.o[1].includes('1.0 mg/L'),'W39 answer still uses competing false threshold');
 ok(w&&w.o[1].includes('日間平均値は用いない'),'W39 answer must test evaluation method independently');
 ok(w&&w.p.includes('生物1=4.0')&&w.p.includes('生物3=2.0'),'W39 explanation must still teach current thresholds');
+const w20=bank.find(q=>q.id==='W20'),w32=bank.find(q=>q.id==='W32'),t34=bank.find(q=>q.id==='T34'),t41=bank.find(q=>q.id==='T41');
+ok(w20&&w20.o.filter(x=>x.includes('上乗せ')&&x.includes('横出し')).length===1,'W20 still contains a direct swapped-name pair');
+ok(w32&&w32.o.filter(x=>x.includes('流量比例合成')).length===1,'W32 still duplicates the flow-proportional answer fact');
+ok(t34&&t34.o[t34.a].indexOf('正リン酸')<0,'T34 keyed distractor still directly negates the digestion-to-orthophosphate fact');
+ok(t41&&t41.o[t41.a].indexOf('硝化')<0,'T41 keyed distractor still directly opposes the nitrification oxygen-demand fact');
+
+const review=JSON.parse(read('choice_independence_review_v60.json'));
+ok(review&&review.version==='v60','manual review version missing');
+ok(Array.isArray(review.candidates)&&review.candidates.length===12,'manual review must cover W39 plus all 11 heuristic candidates');
+const reviewMap=new Map(review.candidates.map(x=>[x.id,x.disposition]));
+for(const id of rewritten)ok(reviewMap.get(id)==='rewritten',id+' manual-review disposition must be rewritten');
+['G01','G29','W11','G04','H09','H06','T30'].forEach(id=>ok(/^retain_/.test(reviewMap.get(id)||''),id+' retained-candidate rationale missing'));
+
+function norm(s){return String(s||'').toLowerCase().replace(/[０-９]/g,ch=>String.fromCharCode(ch.charCodeAt(0)-0xFEE0)).replace(/\d+(?:\.\d+)?/g,'#').replace(/mg\/l|ng\/l|g\/l|mol|％|%|以上|以下|未満|超|約|である|となる|する|される|もの|こと/g,'').replace(/[\s、。・，,（）()「」『』：:＝=＋+－−→\/]/g,'');}
+function bigrams(s){const a=[];for(let i=0;i<s.length-1;i++)a.push(s.slice(i,i+2));return a;}
+function dice(a,b){const A=bigrams(norm(a)),B=bigrams(norm(b));if(!A.length||!B.length)return 0;const m=new Map();A.forEach(x=>m.set(x,(m.get(x)||0)+1));let hit=0;B.forEach(x=>{const n=m.get(x)||0;if(n){hit++;m.set(x,n-1);}});return 2*hit/(A.length+B.length);}
+function nums(s){return (String(s).match(/\d+(?:\.\d+)?/g)||[]).join(',');}
+function anchors(a,b){const keys=['基準値','日間平均','年間平均','排水基準','環境基準','生物1','生物2','生物3','SRT','HRT','SVI','pH','DO','BOD','COD','TOC','純度','回収率','達成率','除去率','負荷量','濃度','温度','時間','流量','mol','mg/L','ng/L','％','%'];return keys.filter(k=>String(a).includes(k)&&String(b).includes(k));}
+const currentCandidates=[];
+for(const q of bank){
+  const keyed=q.o[q.a],pairs=[];
+  for(let i=0;i<5;i++)if(i!==q.a){const sim=dice(keyed,q.o[i]),an=anchors(keyed,q.o[i]),na=nums(keyed),nb=nums(q.o[i]);pairs.push({i,sim,an,numeric:!!na&&!!nb&&na!==nb});}
+  pairs.sort((a,b)=>b.sim-a.sim);const top=pairs[0],second=pairs[1];
+  if((top.sim>=0.44&&top.sim-second.sim>=0.16)||(top.numeric&&top.an.length>=1&&top.sim>=0.30&&top.sim-second.sim>=0.10))currentCandidates.push(q.id);
+}
+for(const id of currentCandidates)ok(reviewMap.has(id),'new unreviewed same-fact-duel candidate: '+id);
+for(const id of rewritten)ok(!currentCandidates.includes(id),'rewritten question still triggers same-fact-duel heuristic: '+id);
 const loader=read('qbank_patch_v5.js'),sw=read('sw.js'),ui=read('ui_polish_v46.js'),index=read('index.html'),wf=read('.github/workflows/canonical-audit.yml');
 ok(loader.includes('qbank_choice_independence_v60.js?v=158'),'loader missing v60 patch');
 ok(loader.indexOf('qbank_choice_independence_v60.js')>loader.indexOf('qbank_chem_typography_v59.js'),'v60 must run after v59');
@@ -23,5 +58,6 @@ ok(sw.includes("'./qbank_choice_independence_v60.js'")&&sw.includes('choice-inde
 ok(ui.includes("var RELEASE='v60'"),'UI release is not v60');
 ok(index.includes("KEY='water1_bank_v3'"),'storage key changed');
 ok(wf.includes('Run v60 choice independence audit'),'workflow missing v60 audit');
+ok(wf.includes("'choice_independence_review_v60.json'"),'workflow watch path missing v60 manual review');
 if(errs.length){console.error('FAIL v60 choice independence audit\n'+errs.join('\n'));process.exit(1)}
-console.log('PASS v60 W39 independent-choice rewrite + bank invariants');
+console.log('PASS v60 five-question choice-independence rewrite + 12-candidate manual review + bank invariants');
