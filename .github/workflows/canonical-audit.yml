@@ -10,6 +10,7 @@ on:
       - 'compact_menu_v58.js'
       - 'qbank_chem_typography_v59.js'
       - 'qbank_choice_independence_v60.js'
+      - 'choice_independence_review_v60.json'
       - 'standards-drill.html'
       - 'standards-drill-data-v1.js'
       - 'advanced-treatment-analysis.html'
@@ -143,7 +144,15 @@ jobs:
       - name: Run v59 chemical typography audit
         run: node tools/chem_typography_audit_v59.js
       - name: Report same-fact answer-vs-distractor risks v60
-        run: node tools/choice_independence_report_v60.js
+        run: node tools/choice_independence_report_v60.js | tee choice_independence_report_v60.txt
+      - name: Upload v60 choice-independence report
+        uses: actions/upload-artifact@v4
+        with:
+          name: choice-independence-report-v60
+          path: |
+            choice_independence_report_v60.txt
+            choice_independence_review_v60.json
+          if-no-files-found: error
       - name: Run v60 choice independence audit
         run: node tools/choice_independence_audit_v60.js
       - name: Run standards table fill-in drill audit
