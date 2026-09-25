@@ -27,7 +27,7 @@ ok(loader.includes('qbank_chem_typography_v59.js?v=157'),'loader missing v59 typ
 ok(loader.indexOf('qbank_chem_typography_v59.js')>loader.indexOf('qbank_legal_fillin_v56.js'),'v59 must run after final content patch');
 ok(loader.indexOf('qbank_chem_typography_v59.js')<loader.indexOf('ui_polish_v46.js'),'v59 must run before UI/workflow scripts');
 ok(sw.includes("'./qbank_chem_typography_v59.js'")&&sw.includes('chem-typography-v59'),'service worker missing v59');
-ok(ui.includes("var RELEASE='v59'"),'UI release is not v59');
+const uiRelease=(ui.match(/var RELEASE='v(\d+)'/)||[])[1];ok(Number(uiRelease)>=59,'UI release must be v59 or later');
 ok(index.includes("KEY='water1_bank_v3'"),'storage key changed');
 ok(wf.includes('Run v59 chemical typography audit'),'workflow missing v59 audit');
 console.log('CHEM_TYPOGRAPHY_V59 ACTIVE',bank.length,'H09',h&&h.t);
