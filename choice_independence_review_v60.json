@@ -1,0 +1,67 @@
+{
+  "version": "v60",
+  "reviewedAt": "2026-09-25",
+  "rule": "Avoid a structure where the keyed choice and only one distractor compete for the same single fact, leaving the other three choices disposable. Preserve legitimate multiway calculations, legal fill-in combinations, and data-interpretation alternatives.",
+  "candidates": [
+    {
+      "id": "W39",
+      "disposition": "rewritten",
+      "reason": "Correct threshold triplet and one false threshold directly competed; other choices became secondary."
+    },
+    {
+      "id": "W20",
+      "disposition": "rewritten",
+      "reason": "Correct 上乗せ/横出し assignment and a simple swapped-name distractor formed a direct two-choice pair."
+    },
+    {
+      "id": "W32",
+      "disposition": "rewritten",
+      "reason": "Flow-proportional sampling and an explicit equivalent-opposite statement formed a one-fact duel."
+    },
+    {
+      "id": "T34",
+      "disposition": "rewritten",
+      "reason": "Correct digestion statement and its direct negation competed on one preprocessing fact."
+    },
+    {
+      "id": "T41",
+      "disposition": "rewritten",
+      "reason": "Correct oxygen-demand statement and oxygen-generation distractor formed a direct opposition pair."
+    },
+    {
+      "id": "G01",
+      "disposition": "retain_multiway",
+      "reason": "Legal fill-in combination question; all five options are competing word combinations, not a two-option duel."
+    },
+    {
+      "id": "G29",
+      "disposition": "retain_multiway",
+      "reason": "Legal fill-in combination question; multiple blanks vary across all five alternatives."
+    },
+    {
+      "id": "W11",
+      "disposition": "retain_calculation",
+      "reason": "All five choices represent distinct load-calculation or unit/interpretation error paths."
+    },
+    {
+      "id": "H09",
+      "disposition": "retain_calculation",
+      "reason": "All five choices encode distinct stoichiometric/purity/conversion error paths."
+    },
+    {
+      "id": "H06",
+      "disposition": "retain_data_interpretation",
+      "reason": "Five choices test different interpretations of the pH-response table and treatment window."
+    },
+    {
+      "id": "T30",
+      "disposition": "retain_data_interpretation",
+      "reason": "Five choices interpret different parts/mechanisms of the breakpoint-chlorination curve."
+    },
+    {
+      "id": "G04",
+      "disposition": "retain_independent_stats",
+      "reason": "The flagged pair shares statistical vocabulary but asks different independent official-statistics facts."
+    }
+  ]
+}
