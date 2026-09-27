@@ -3,6 +3,9 @@ on:
   push:
     paths:
       - 'qbank_*.js'
+      - 'exam_practice_review_v61.json'
+      - 'ui_baseline_v61.json'
+      - 'tools/*v61.js'
       - 'visual_aid_audit_v53.js'
       - 'visual_aid_audit_v53.json'
       - 'ui_polish_v46.js'
@@ -67,6 +70,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Run v61 final-loader content and history audit
+        run: node tools/exam_practice_audit_v61.js
       - name: Run canonical gap audit
         run: node tools/canonical_audit_v22.js
       - name: Run Batch 12 final 200-question quality and UI regression audit
