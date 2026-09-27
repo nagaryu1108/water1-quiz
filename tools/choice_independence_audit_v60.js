@@ -55,7 +55,7 @@ ok(loader.includes('qbank_choice_independence_v60.js?v=158'),'loader missing v60
 ok(loader.indexOf('qbank_choice_independence_v60.js')>loader.indexOf('qbank_chem_typography_v59.js'),'v60 must run after v59');
 ok(loader.indexOf('qbank_choice_independence_v60.js')<loader.indexOf('ui_polish_v46.js'),'v60 must run before UI scripts');
 ok(sw.includes("'./qbank_choice_independence_v60.js'")&&sw.includes('choice-independence-v60'),'service worker missing v60');
-ok(ui.includes("var RELEASE='v60'"),'UI release is not v60');
+ok(Number((ui.match(/var RELEASE='v(\d+)'/)||[])[1])>=60,'UI release predates v60');
 ok(index.includes("KEY='water1_bank_v3'"),'storage key changed');
 ok(wf.includes('Run v60 choice independence audit'),'workflow missing v60 audit');
 ok(wf.includes("'choice_independence_review_v60.json'"),'workflow watch path missing v60 manual review');
