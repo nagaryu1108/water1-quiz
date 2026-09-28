@@ -18,7 +18,7 @@ test('v63 archives only the genuine H04/H07 duplicate while preserving all stabl
   expect(x.activeIds).toContain('H07');
   expect(x.archived).toEqual(expect.arrayContaining(['L30','H04']));
   expect(new Set([...x.activeIds,...x.archived]).size).toBe(200);
-  expect(x.changed).toEqual(['G23','G33','H01','H14','H16','H22','H37','H40']);
+  expect(x.changed).toEqual(['G10','G23','G26','G29','G32','G33','W09','H01','H14','H16','H22','H37','H40']);
 });
 
 test('v63 keeps learning history but clears stale answer presentation',async({page})=>{
