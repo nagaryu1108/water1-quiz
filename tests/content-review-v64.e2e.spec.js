@@ -1,9 +1,9 @@
 const {test,expect}=require('@playwright/test');
 async function open(page){await page.goto('/index.html',{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.WATER1_REVIEW_V64&&window.WATER1_STUDY_WORKFLOW?.installed);}
 test('v64 migrates only stale answer presentation',async({page})=>{
- await page.addInitScript(()=>localStorage.setItem('water1_bank_v3',JSON.stringify({bankContentVersion:'v63',hist:{H28:{attempts:8,correct:5,wrong:3,lastSel:1,dueAt:1900000000000}},current:'H28',currentSel:1,currentAnswered:true,total:8,correct:5,mode:'coverage'})));
- await open(page);await expect(page.locator('#res')).toBeHidden();await expect(page.locator('#q')).toContainText('価数調整・妨害・品質管理');
- const s=await page.evaluate(()=>window.S);expect(s.total).toBe(8);expect(s.correct).toBe(5);expect(s.hist.H28.attempts).toBe(8);expect(s.hist.H28.wrong).toBe(3);expect(s.hist.H28.lastSel).toBeNull();
+ await page.addInitScript(()=>localStorage.setItem('water1_bank_v3',JSON.stringify({bankContentVersion:'v63',hist:{H35:{attempts:8,correct:5,wrong:3,lastSel:1,dueAt:1900000000000}},current:'H35',currentSel:1,currentAnswered:true,total:8,correct:5,mode:'coverage'})));
+ await open(page);await expect(page.locator('#res')).toBeHidden();await expect(page.locator('#q')).toContainText('全シアン');
+ const s=await page.evaluate(()=>window.S);expect(s.total).toBe(8);expect(s.correct).toBe(5);expect(s.hist.H35.attempts).toBe(8);expect(s.hist.H35.wrong).toBe(3);expect(s.hist.H35.lastSel).toBeNull();
 });
 test('v64 all changed questions keep five inline explanations on mobile',async({page})=>{
  test.setTimeout(180000);await open(page);const ids=await page.evaluate(()=>window.WATER1_REVIEW_V64.changed);
