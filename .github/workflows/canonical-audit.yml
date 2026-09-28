@@ -8,6 +8,8 @@ on:
       - 'tools/*v61.js'
       - 'tools/*v62.js'
       - 'tools/*v63.js'
+      - 'tools/*v64.js'
+      - 'review_primary_sources_v64.md'
       - 'review_primary_sources_v63.md'
       - 'review_remaining_v62.md'
       - 'visual_aid_audit_v53.js'
@@ -80,6 +82,8 @@ jobs:
         run: node tools/content_review_audit_v62.js
       - name: Run v63 primary-source and distractor audit
         run: node tools/primary_source_review_audit_v63.js
+      - name: Run v64 primary-source and duplicate-depth audit
+        run: node tools/primary_source_review_audit_v64.js
       - name: Run canonical gap audit
         run: node tools/canonical_audit_v22.js
       - name: Run Batch 12 final 200-question quality and UI regression audit
