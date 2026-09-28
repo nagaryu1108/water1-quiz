@@ -1,7 +1,7 @@
 (function(){
 'use strict';
 var B=window.QBANK||[],VERSION='v64';
-var changed=['W09','W17','W27','W38','H24','H28','H36'];
+var changed=['W09','W17','W27','W38','H24','H28','H35','H36'];
 function get(id){return B.find(function(x){return x.id===id;});}
 function edit(id,p){var q=get(id);if(!q)return;Object.keys(p).forEach(function(k){q[k]=p[k];});q.primarySourceReviewVersion=VERSION;}
 
@@ -22,7 +22,7 @@ edit('W09',{
   '【誤り】土地所有者であることだけで当然に第1項の直接の命令対象になるという制度ではない。一方、事業場や敷地を取得した者には、旧設置者への命令に係る措置へ協力すべき規定がある。\n【試験】命令の名宛人と協力義務を混同しない。'
  ],
  p:'地下水浄化命令は「有害物質の地下浸透」「健康被害又はそのおそれ」「必要な限度」「現設置者・一定の旧設置者」という4点で整理する。',
- src:'一次資料：環境省「水質汚濁防止法の一部を改正する法律の施行について」第2（法14条の3）及び運用通知。https://www.env.go.jp/hourei/05/000133.html'
+ src:'一次資料：環境省「水質汚濁防止法施行規則等の一部を改正する省令 参照条文」法14条の3・規則9条の3。https://www.env.go.jp/content/000190117.pdf'
 });
 
 edit('W17',{
@@ -125,6 +125,26 @@ edit('H28',{
  src:'一次資料：環境省「産業廃棄物の検定方法に係る分析操作マニュアル（第3版、令和7年10月）」セレン。https://www.env.go.jp/content/000346612.pdf'
 });
 
+edit('H35',{
+ q:'全シアンの分析における前処理と測定法の選択に関する記述として、最も適当なものはどれか。',
+ o:[
+  '全シアンを測定する場合、試料中の遊離シアンだけを直接測ればよく、金属シアノ錯体などからシアンを回収する前処理の適用条件を確認する必要はない。',
+  '全シアンでは、対象となるシアン化合物を規定の前処理で回収した後、ピリジン－ピラゾロン吸光光度法、4－ピリジンカルボン酸－ピラゾロン吸光光度法、流れ分析法、イオン電極測定法など、採用規格で認められた方法を用いる。前処理法と定量法の適用範囲を分けて確認する。',
+  'シアン化物は酸性ほどCN−として安定になるため、保存時に強酸性へ調整してHCNの揮散を促進しておくと、全シアンの回収率が高くなる。',
+  '流れ分析法が採用されている場合、試料の蒸留・分離や妨害除去は原理上不要となり、試料マトリックスにかかわらず未処理試料をそのまま測定部へ導入できる。',
+  '全シアンは炭素と窒素からなる化合物なので、金属元素用のICP発光分光分析で炭素又は窒素の発光強度を測れば、化学形態に関係なく公定法の全シアン値を直接求められる。'
+ ],
+ e:[
+  '【誤り】全シアンは遊離シアンだけを意味しない。錯体等を含め、採用法で測定対象となるシアンを回収できる前処理が必要である。\n【試験】「全○○」を単一化学種の直接測定と置き換えない。',
+  '【正しい】環境省の2025年分析操作マニュアルは、シアン化合物についてJIS K 0102-2等に基づき、ピリジン－ピラゾロン法、4－ピリジンカルボン酸－ピラゾロン法、流れ分析法、イオン電極測定法を示している。\n【関連】前処理・分離と最終定量を別工程として理解する。',
+  '【誤り】酸性側ではCN−がHCNへ移りやすく、揮散損失と安全上の問題が生じる。保存時は採用法に従い、測定対象を失わない条件を維持する。\n【試験】金属試料の酸保存をシアンへ流用しない。',
+  '【誤り】流れ分析法を採用しても、必要な前処理・蒸留・妨害除去が自動的に不要になるわけではない。環境省マニュアルも測定法と前処理条件を分けて規定している。\n【関連】自動化＝前処理不要ではない。',
+  '【誤り】全シアンはシアン化合物としての操作的な測定対象であり、通常の金属元素分析のようにICP発光分光分析でC又はNを測って直接求める項目ではない。\n【試験】元素分析と化学種・操作定義分析を区別する。'
+ ],
+ p:'全シアン分析は「保存→対象化学種の回収・分離→認められた定量法」の順に考える。測定装置だけを見て前処理を省略しない。',
+ src:'一次資料：環境省「産業廃棄物の検定方法に係る分析操作マニュアル（第3版、令和7年10月）」シアン化合物。https://www.env.go.jp/content/000346612.pdf'
+});
+
 edit('H36',{
  q:'六価クロムのジフェニルカルバジド（DPC）吸光光度分析法における妨害確認と品質管理に関する記述として、最も適当なものはどれか。',
  o:[
@@ -165,9 +185,9 @@ if(window.WATER1_EXAM_PRACTICE_V61)window.WATER1_EXAM_PRACTICE_V61.migrate=migra
 window.WATER1_REVIEW_V64={
  version:VERSION,
  changed:changed,
- repurposed:['H28','H36'],
+ repurposed:['H24','H28','H36'],
  primarySourceChecked:changed.slice(),
  migrate:migrate,
- note:'No question added. H28 and H36 were repurposed from basic duplicate knowledge checks to matrix/QC reasoning; IDs, topics, answer positions and accumulated statistics are preserved.'
+ note:'No question added. H24, H28 and H36 were repurposed from basic duplicate knowledge checks to sampling/QC reasoning; H35 was strengthened. IDs, topics, answer positions and accumulated statistics are preserved.'
 };
 })();
