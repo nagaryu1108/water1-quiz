@@ -4,7 +4,7 @@ function load(include){
  const noop=()=>{},document={readyState:'loading',addEventListener:noop,querySelector:()=>null,querySelectorAll:()=>[],getElementById:()=>null,createElement:()=>({style:{},dataset:{},setAttribute:noop,appendChild:noop}),head:{appendChild:noop}};
  const c={document,console,setTimeout:noop,setInterval:noop,addEventListener:noop};c.window=c;vm.createContext(c);
  const files=['qbank_v3.js','qbank_extra_v4.js',...Array.from(read('qbank_patch_v5.js').matchAll(/src="\.\/([^"?]+)/g),m=>m[1])];
- for(const f of files){if(['qbank_review_v62.js','ui_polish_v46.js','study_workflow_v57.js','compact_menu_v58.js'].includes(f)||(!include&&f==='qbank_exam_practice_v61.js'))continue;vm.runInContext(read(f),c,{filename:f});}return c;
+ for(const f of files){if(['qbank_review_v62.js','qbank_review_v63.js','ui_polish_v46.js','study_workflow_v57.js','compact_menu_v58.js'].includes(f)||(!include&&f==='qbank_exam_practice_v61.js'))continue;vm.runInContext(read(f),c,{filename:f});}return c;
 }
 const before=load(false),after=load(true),b=after.QBANK,m=after.WATER1_EXAM_PRACTICE_V61,r=JSON.parse(read('exam_practice_review_v61.json'));
 const plain=x=>JSON.parse(JSON.stringify(x));
