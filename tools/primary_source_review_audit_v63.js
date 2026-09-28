@@ -6,7 +6,7 @@ function load(include63){
  const c={document,console,setTimeout:noop,setInterval:noop,addEventListener:noop};c.window=c;vm.createContext(c);
  const files=['qbank_v3.js','qbank_extra_v4.js',...Array.from(read('qbank_patch_v5.js').matchAll(/src="\.\/([^"?]+)/g),m=>m[1])];
  for(const f of files){
-  if(['ui_polish_v46.js','study_workflow_v57.js','compact_menu_v58.js'].includes(f))continue;
+  if(['qbank_review_v64.js','ui_polish_v46.js','study_workflow_v57.js','compact_menu_v58.js'].includes(f))continue;
   if(!include63&&f==='qbank_review_v63.js')continue;
   vm.runInContext(read(f),c,{filename:f});
  }
