@@ -5,7 +5,8 @@ function load(version='v62'){
  const c={document,console,setTimeout:noop,setInterval:noop,addEventListener:noop};c.window=c;vm.createContext(c);
  for(const f of ['qbank_v3.js','qbank_extra_v4.js',...Array.from(read('qbank_patch_v5.js').matchAll(/src="\.\/([^"?]+)/g),m=>m[1])]){
   if(['ui_polish_v46.js','study_workflow_v57.js','compact_menu_v58.js'].includes(f))continue;
-  if(version!=='v62'&&f==='qbank_review_v62.js')continue;
+  if((version==='v60'||version==='v61')&&f==='qbank_review_v62.js')continue;
+  if(version!=='v63'&&f==='qbank_primary_source_v63.js')continue;
   if(version==='v60'&&f==='qbank_exam_practice_v61.js')continue;
   vm.runInContext(read(f),c,{filename:f});
  }return c;

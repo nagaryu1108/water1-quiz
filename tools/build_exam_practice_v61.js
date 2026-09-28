@@ -7,7 +7,7 @@ const noop=()=>{};
 const document={readyState:'loading',addEventListener:noop,querySelector:()=>null,querySelectorAll:()=>[],getElementById:()=>null,createElement:()=>({style:{},dataset:{},setAttribute:noop,appendChild:noop}),head:{appendChild:noop}};
 const c={document,console,setTimeout:noop,setInterval:noop,addEventListener:noop};c.window=c;vm.createContext(c);
 const scripts=['qbank_v3.js','qbank_extra_v4.js',...Array.from(read('qbank_patch_v5.js').matchAll(/src="\.\/([^"?]+)/g),m=>m[1])];
-for(const f of scripts){if(f==='qbank_review_v62.js'||f==='qbank_exam_practice_v61.js'||f==='ui_polish_v46.js'||f==='study_workflow_v57.js'||f==='compact_menu_v58.js')continue;vm.runInContext(read(f),c,{filename:f});}
+for(const f of scripts){if(f==='qbank_review_v62.js'||f==='qbank_primary_source_v63.js'||f==='qbank_exam_practice_v61.js'||f==='ui_polish_v46.js'||f==='study_workflow_v57.js'||f==='compact_menu_v58.js')continue;vm.runInContext(read(f),c,{filename:f});}
 const baseline=JSON.parse(JSON.stringify(c.QBANK));
 const bank=JSON.parse(JSON.stringify(baseline));
 for(const q of bank){const p=review.questions[q.id];if(p){q.q=p.q;q.o=p.o;q.e=p.e;q.a=p.a;}}

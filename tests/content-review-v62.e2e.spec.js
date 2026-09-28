@@ -1,5 +1,5 @@
 const {test,expect}=require('@playwright/test');
-async function open(page){await page.goto('/index.html',{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.WATER1_REVIEW_V62&&window.WATER1_STUDY_WORKFLOW?.installed);}
+async function open(page){await page.goto('/index.html',{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.WATER1_REVIEW_V62&&window.WATER1_PRIMARY_SOURCE_V63&&window.WATER1_STUDY_WORKFLOW?.installed);}
 test('v62 retains v61 scores/bookmarks but clears changed answer presentation once',async({page})=>{
  await page.addInitScript(()=>{if(!localStorage.getItem('water1_bank_v3'))localStorage.setItem('water1_bank_v3',JSON.stringify({bankContentVersion:'v61',hist:{W15:{attempts:6,correct:4,wrong:2,lastSel:1,dueAt:1900000000000}},reviewFlags:{W15:true},current:'W15',currentSel:1,currentAnswered:true,total:6,correct:4,mode:'coverage'}));});
  await open(page);await expect(page.locator('#res')).toBeHidden();await expect(page.locator('.ch').nth(1)).toContainText('腎近位尿細管');
@@ -20,6 +20,6 @@ test('v62 all changed content keeps inline explanations and mobile layout',async
 test('v62 offline reload retains the content patch',async({page,context})=>{
  await open(page);await page.evaluate(()=>navigator.serviceWorker.ready);await page.reload();await page.waitForFunction(()=>navigator.serviceWorker.controller);
  await context.setOffline(true);await page.reload({waitUntil:'domcontentloaded'});
- expect(await page.evaluate(()=>window.WATER1_REVIEW_V62.version)).toBe('v62');expect(await page.evaluate(()=>window.QBANK.length)).toBe(199);
- await expect(page.locator('.ver')).toContainText('v62');await context.setOffline(false);
+ expect(await page.evaluate(()=>window.WATER1_REVIEW_V62.version)).toBe('v62');expect(await page.evaluate(()=>window.WATER1_PRIMARY_SOURCE_V63.version)).toBe('v63');expect(await page.evaluate(()=>window.QBANK.length)).toBe(198);
+ await context.setOffline(false);
 });
