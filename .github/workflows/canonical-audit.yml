@@ -65,6 +65,7 @@ on:
       - 'index.html'
       - 'sw.js'
       - '.github/workflows/canonical-audit.yml'
+  pull_request:
   workflow_dispatch:
 jobs:
   audit:
