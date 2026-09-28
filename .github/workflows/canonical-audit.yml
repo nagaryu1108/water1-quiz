@@ -6,6 +6,8 @@ on:
       - 'exam_practice_review_v61.json'
       - 'ui_baseline_v61.json'
       - 'tools/*v61.js'
+      - 'tools/*v62.js'
+      - 'review_remaining_v62.md'
       - 'visual_aid_audit_v53.js'
       - 'visual_aid_audit_v53.json'
       - 'ui_polish_v46.js'
@@ -72,6 +74,8 @@ jobs:
           node-version: '20'
       - name: Run v61 final-loader content and history audit
         run: node tools/exam_practice_audit_v61.js
+      - name: Run v62 final-bank content and history regression
+        run: node tools/content_review_audit_v62.js
       - name: Run canonical gap audit
         run: node tools/canonical_audit_v22.js
       - name: Run Batch 12 final 200-question quality and UI regression audit
