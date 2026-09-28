@@ -25,7 +25,7 @@ for(const q of b){
  assert.ok(q.o.every(x=>typeof x==='string'&&x.trim().length>0),q.id);assert.ok(q.e.every(x=>typeof x==='string'&&x.trim().length>0),q.id);
  assert.ok(Number.isInteger(q.a)&&q.a>=0&&q.a<5,q.id);counts[q.a]++;
  assert.equal(q.a,prev(q.id).a,q.id+' answer position changed');
- assert.equal(q.s,prev(q.id).s,q.id+' subject changed');
+ assert.equal(q.s,prev(q.id).s,q.id+' subject changed');assert.equal(q.t,prev(q.id).t,q.id+' topic metadata changed');
  if(JSON.stringify(q)!==JSON.stringify(prev(q.id)))actual.push(q.id);
  if(changed.includes(q.id)){
   assert.equal(q.primarySourceReviewVersion,'v63',q.id+' missing review marker');
@@ -36,7 +36,6 @@ for(const q of b){
 }
 assert.deepEqual(actual.sort(),changed.slice().sort());
 assert.deepEqual(counts,[40,40,40,40,39],'answer distribution changed');
-assert.equal(by('H07').t,'六価クロム処理・分析');
 assert.match(by('H07').q,/排水処理.*分析/);assert.match(by('H07').o[1],/Cr\(VI\).*Cr\(III\).*分析/);
 assert.match(by('G02').o[2],/直罰/);assert.match(by('G02').o[2],/違反のおそれ/);
 assert.match(by('G23').o[1],/同じ対象物質・項目/);assert.match(by('G23').o[1],/条例規制/);
