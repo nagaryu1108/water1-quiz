@@ -12,7 +12,7 @@ assert.ok(by(b,'H07'),'H07 representative missing');
 assert.ok(arc.some(q=>q.id==='L30'),'prior archive L30 missing');
 assert.ok(arc.some(q=>q.id==='H04'),'new archive H04 missing');
 assert.equal(new Set([...b,...arc].map(q=>q.id)).size,200,'stable 200 IDs across active+archive');
-assert.deepEqual(plain(m.changed),['G23','G33','H01','H14','H16','H22','H37','H40']);
+assert.deepEqual(plain(m.changed),['G10','G23','G26','G29','G32','G33','W09','H01','H14','H16','H22','H37','H40']);
 for(const id of m.changed){
  const q=by(b,id),old=by(before.QBANK,id);
  assert.ok(q,id+' missing');assert.equal(q.a,old.a,id+' answer position changed');
@@ -21,6 +21,11 @@ for(const id of m.changed){
  assert.equal(new Set(q.o).size,5,id+' duplicate choice');assert.equal(new Set(q.e).size,5,id+' duplicate explanation');
  assert.match(q.src,/一次資料照合/,id+' source marker');
 }
+assert.equal(by(b,'G10').a,1);assert.match(by(b,'G10').o[1],/方法書段階/);assert.match(by(b,'G10').e[4],/地域的範囲/);
+assert.equal(by(b,'G26').a,1);assert.match(by(b,'G26').o[1],/環境大臣/);assert.match(by(b,'G26').e[2],/人口・産業/);
+assert.equal(by(b,'G29').a,2);assert.match(by(b,'G29').o[2],/環境基準/);assert.match(by(b,'G29').e[3],/指定水域/);
+assert.equal(by(b,'G32').a,2);assert.match(by(b,'G32').o[2],/自然的・社会的条件/);
+assert.equal(by(b,'W09').a,2);assert.match(by(b,'W09').q,/第14条の3/);assert.match(by(b,'W09').e[2],/自動命令/);
 assert.equal(by(b,'G23').a,1);assert.match(by(b,'G23').o[0],/第3条第3項/);assert.match(by(b,'G23').e[0],/第29条/);
 assert.equal(by(b,'G33').a,1);assert.match(by(b,'G33').o[1],/あらかじめ選任/);assert.match(by(b,'G33').o[1],/同じ資格/);
 assert.equal(by(b,'H01').a,1);assert.match(by(b,'H01').o[1],/多原子イオン/);assert.match(by(b,'H01').e[3],/内部標準/);
