@@ -25,6 +25,18 @@
 4. 経済産業省「公害防止管理者制度」資料
    - 公害防止主任管理者、公害防止管理者及び代理者の資格要件を照合。
    - https://www.meti.go.jp/policy/newmiti/mission/2023/2_1_5_3.pdf
+5. 環境省「令和4年度環境測定分析統一精度管理調査結果・質問と回答」
+   - ICP-MSの多原子イオン干渉、希釈、コリジョン・リアクションセルの適用と限界を照合。
+   - https://www.env.go.jp/air/tech/seidokanri/explanation/pdf/q_aR04.pdf
+6. 環境省「環境測定分析における金属類測定について」
+   - 原子吸光・ICPにおける標準添加法、内標準法、マトリックス影響と補正の考え方を照合。
+   - https://www.env.go.jp/air/tech/seidokanri/block/pdf/lecture02.pdf
+7. 環境省「付表6」
+   - イオンクロマトグラフ法の陰イオン交換分離、電気伝導率検出、サプレッサによる背景導電率低減を照合。
+   - https://www.env.go.jp/kijun/wt_a06.html
+8. 環境省「産業廃棄物の検定方法に係る分析操作マニュアル（第3版、令和7年10月）」
+   - セレンのSe(VI)→Se(IV)還元とH2Se発生、ひ素のAs(V)→As(III)予備還元と水素化ひ素発生を照合。
+   - https://www.env.go.jp/content/000346612.pdf
 
 ## 逐肢レビュー
 
