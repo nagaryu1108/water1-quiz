@@ -12,7 +12,7 @@ async function openQuiz(page){
 test('approved quiz UI flow is preserved on mobile',async({page})=>{
   const release=await openQuiz(page);
   await expect(page).toHaveTitle(new RegExp('問題バンク '+release));
-  await expect(page.locator('#poolStatus')).toHaveText('通常出題 199問 ｜ 安定ID 200件 ｜ アーカイブ 1問');
+  await expect(page.locator('#poolStatus')).toHaveText('通常出題 198問 ｜ 安定ID 200件 ｜ アーカイブ 2問');
   await expect(page.locator('#audit')).toBeHidden();
   await page.waitForFunction(()=>!!window.WATER1_REGRESSION_AUDIT);
   await expect(page.locator('#regressionWarn')).toBeHidden();
@@ -66,5 +66,5 @@ test('v55 L37 nutrient-addition graph agrees with the keyed N-limitation conclus
 
 test('service worker supports an offline reload including versioned assets',async({page,context})=>{
   const release=await openQuiz(page);await page.evaluate(async()=>{await navigator.serviceWorker.ready;});await page.waitForFunction(()=>!!navigator.serviceWorker.controller);await context.setOffline(true);
-  try{await page.reload({waitUntil:'domcontentloaded'});await expect(page.locator('.ver')).toContainText('問題バンク '+release);await expect(page.locator('.ch')).toHaveCount(5);await expect(page.locator('#poolStatus')).toContainText('通常出題 199問');await expect(page.locator('#audit')).toBeHidden();await page.waitForFunction(()=>!!window.WATER1_REGRESSION_AUDIT);await expect(page.locator('#regressionWarn')).toBeHidden();}finally{await context.setOffline(false);}
+  try{await page.reload({waitUntil:'domcontentloaded'});await expect(page.locator('.ver')).toContainText('問題バンク '+release);await expect(page.locator('.ch')).toHaveCount(5);await expect(page.locator('#poolStatus')).toContainText('通常出題 198問');await expect(page.locator('#audit')).toBeHidden();await page.waitForFunction(()=>!!window.WATER1_REGRESSION_AUDIT);await expect(page.locator('#regressionWarn')).toBeHidden();}finally{await context.setOffline(false);}
 });

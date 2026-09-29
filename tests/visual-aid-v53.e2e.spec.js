@@ -19,7 +19,7 @@ async function answerWrong(page,answer){
   await expect(page.locator('.ch').nth(wrong)).toHaveClass(/bad/);
 }
 
-test('v53 audit covers all 199 active questions exactly once',async({page})=>{
+test('v53 audit retains its 199 original rows after one additional question is archived',async({page})=>{
   await page.goto('/index.html',{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>window.WATER1_VISUAL_AID_AUDIT&&window.WATER1_VISUAL_AID_RELEASE);
   const m=await page.evaluate(()=>({
@@ -29,7 +29,7 @@ test('v53 audit covers all 199 active questions exactly once',async({page})=>{
     active:window.QBANK.length,
     archived:(window.WATER1_ARCHIVED_QUESTIONS||[]).map(q=>q.id)
   }));
-  expect(m.active).toBe(199);expect(m.rows).toBe(199);expect(m.counts).toEqual({active:199,high:64,medium:60,none:75});expect(m.release.version).toBe('v53');expect(m.archived).toEqual(['L30']);
+  expect(m.active).toBe(198);expect(m.rows).toBe(199);expect(m.counts).toEqual({active:199,high:64,medium:60,none:75});expect(m.release.version).toBe('v53');expect(m.archived).toEqual(['L30','T17']);
 });
 
 test('new HIGH visual is expanded in the answer explanation on mobile',async({page})=>{

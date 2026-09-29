@@ -20,6 +20,6 @@ test('v62 all changed content keeps inline explanations and mobile layout',async
 test('v62 offline reload retains the content patch',async({page,context})=>{
  await open(page);await page.evaluate(()=>navigator.serviceWorker.ready);await page.reload();await page.waitForFunction(()=>navigator.serviceWorker.controller);
  await context.setOffline(true);await page.reload({waitUntil:'domcontentloaded'});
- expect(await page.evaluate(()=>window.WATER1_REVIEW_V62.version)).toBe('v62');expect(await page.evaluate(()=>window.QBANK.length)).toBe(199);
+ expect(await page.evaluate(()=>window.WATER1_REVIEW_V62.version)).toBe('v62');expect(await page.evaluate(()=>window.QBANK.length)).toBe(198);
  await expect(page.locator('.ver')).toContainText('v62');await context.setOffline(false);
 });

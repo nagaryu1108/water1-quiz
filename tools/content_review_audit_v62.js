@@ -4,10 +4,10 @@ function load(version='v62'){
  const noop=()=>{},document={readyState:'loading',addEventListener:noop,querySelector:()=>null,querySelectorAll:()=>[],getElementById:()=>null,createElement:()=>({style:{},dataset:{},setAttribute:noop,appendChild:noop}),head:{appendChild:noop}};
  const c={document,console,setTimeout:noop,setInterval:noop,addEventListener:noop};c.window=c;vm.createContext(c);
  for(const f of ['qbank_v3.js','qbank_extra_v4.js',...Array.from(read('qbank_patch_v5.js').matchAll(/src="\.\/([^"?]+)/g),m=>m[1])]){
-  if(['qbank_review_v63.js','qbank_review_v64.js','ui_polish_v46.js','study_workflow_v57.js','compact_menu_v58.js'].includes(f))continue;
+  if(['qbank_review_v63.js','qbank_review_v64.js','ui_polish_v46.js','study_workflow_v57.js','compact_menu_v58.js','qbank_source_audit_v63.js','qbank_source_audit_v64.js','qbank_source_audit_v65.js','qbank_source_audit_v66.js','qbank_source_audit_v67.js','qbank_coverage_trim_v68.js','qbank_source_audit_v69.js','qbank_source_audit_v70.js'].includes(f))continue;
   if(version!=='v62'&&f==='qbank_review_v62.js')continue;
   if(version==='v60'&&f==='qbank_exam_practice_v61.js')continue;
-  vm.runInContext(read(f),c,{filename:f});
+  if(f==='qbank_coverage_trim_v71.js')continue;if(f==='qbank_source_audit_v72.js')continue;if(f==='qbank_source_audit_v73.js')continue;if(f==='qbank_source_audit_v74.js')continue;if(f==='qbank_source_audit_v75.js')continue;if(f==='qbank_source_audit_v76.js')continue;if(f==='qbank_source_audit_v77.js')continue;if(f==='qbank_source_audit_v78.js')continue;if(f==='qbank_source_audit_v79.js')continue;if(f==='qbank_source_audit_v80.js')continue;if(f==='qbank_source_audit_v81.js')continue;if(f==='qbank_source_audit_v82.js')continue;if(f==='qbank_source_audit_v83.js')continue;if(f==='qbank_source_audit_v84.js')continue;if(f==='qbank_source_audit_v85.js')continue;if(f==='qbank_source_audit_v86.js')continue;if(f==='qbank_source_audit_v87.js')continue;if(f==='qbank_source_audit_v88.js')continue;if(/^qbank_(?:source_audit|coverage_trim)_v\d+\.js$/.test(f))continue;if(f==='qbank_public_restore_v96.js')continue;vm.runInContext(read(f),c,{filename:f});
  }return c;
 }
 module.exports={load};

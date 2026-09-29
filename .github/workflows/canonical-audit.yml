@@ -11,7 +11,11 @@ on:
       - 'tools/*v64.js'
       - 'review_primary_sources_v64.md'
       - 'review_primary_sources_v63.md'
+      - 'tools/source_audit_v*.js'
+      - 'tools/coverage_trim_v68.js'
       - 'review_remaining_v62.md'
+      - 'review_primary_sources_v*.md'
+      - 'coverage_trim_v68.md'
       - 'visual_aid_audit_v53.js'
       - 'visual_aid_audit_v53.json'
       - 'ui_polish_v46.js'
@@ -84,6 +88,19 @@ jobs:
         run: node tools/primary_source_review_audit_v63.js
       - name: Run v64 primary-source and duplicate-depth audit
         run: node tools/primary_source_review_audit_v64.js
+      - name: Run v63-v67 primary-source question and history regressions
+        run: |
+          node tools/source_audit_v63.js
+          node tools/source_audit_v64.js
+          node tools/source_audit_v65.js
+          node tools/source_audit_v66.js
+          node tools/source_audit_v67.js
+      - name: Run v68 coverage-trim and history regression
+        run: node tools/coverage_trim_v68.js
+      - name: Run complete v95 active-bank and migration audit
+        run: node tools/source_audit_v95.js
+      - name: Run public v63-v64 preservation and v96 integration audit
+        run: node tools/published_integration_audit_v96.js
       - name: Run canonical gap audit
         run: node tools/canonical_audit_v22.js
       - name: Run Batch 12 final 200-question quality and UI regression audit

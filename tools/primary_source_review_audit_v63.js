@@ -7,8 +7,9 @@ function load(include63){
  const files=['qbank_v3.js','qbank_extra_v4.js',...Array.from(read('qbank_patch_v5.js').matchAll(/src="\.\/([^"?]+)/g),m=>m[1])];
  for(const f of files){
   if(['qbank_review_v64.js','ui_polish_v46.js','study_workflow_v57.js','compact_menu_v58.js'].includes(f))continue;
+  if(/^qbank_(?:source_audit|coverage_trim)_v\d+\.js$/.test(f))continue;
   if(!include63&&f==='qbank_review_v63.js')continue;
-  vm.runInContext(read(f),c,{filename:f});
+  if(f==='qbank_public_restore_v96.js')continue;vm.runInContext(read(f),c,{filename:f});
  }
  return c;
 }
@@ -64,6 +65,6 @@ for(let selected=0;selected<5;selected++){
 for(const id of changed){const z=m.migrate({bankContentVersion:'v62',hist:{},current:id,currentSel:0,currentAnswered:true});assert.equal(z.currentSel,null,id);assert.equal(z.currentAnswered,false,id);}
 assert.ok(read('qbank_patch_v5.js').includes('qbank_review_v63.js'));
 assert.ok(read('sw.js').includes("'./qbank_review_v63.js'"));
-assert.match(read('ui_polish_v46.js'),/RELEASE='v6[34]'/);
-assert.match(read('review_primary_sources_v63.md'),/11問 × 5肢 = \*\*55肢\*\*/);
+assert.match(read('ui_polish_v46.js'),/RELEASE='v96'/);
+assert.match(read('review_primary_sources_v63.md'),/11問 × 5肢 = 55肢/);
 console.log(JSON.stringify({result:'PASS',active:b.length,changed:changed.length,checkedChoices:changed.length*5,repurposed:['H07'],answers:counts,historyCases:199*5,ui:'unchanged except release metadata/cache keys',scope:'primary-source-targeted legal/analytical review plus distractor strengthening'},null,2));

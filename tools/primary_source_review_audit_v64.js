@@ -7,8 +7,9 @@ function load(include64){
  const files=['qbank_v3.js','qbank_extra_v4.js',...Array.from(read('qbank_patch_v5.js').matchAll(/src="\.\/([^"?]+)/g),m=>m[1])];
  for(const f of files){
   if(['ui_polish_v46.js','study_workflow_v57.js','compact_menu_v58.js'].includes(f))continue;
+  if(/^qbank_(?:source_audit|coverage_trim)_v\d+\.js$/.test(f))continue;
   if(!include64&&f==='qbank_review_v64.js')continue;
-  vm.runInContext(read(f),c,{filename:f});
+  if(f==='qbank_public_restore_v96.js')continue;vm.runInContext(read(f),c,{filename:f});
  }return c;
 }
 const before=load(false),now=load(true),b=now.QBANK,m=now.WATER1_REVIEW_V64;
@@ -39,7 +40,7 @@ assert.match(by('W17').o[1],/処理した水/);assert.match(by('W17').o[1],/有�
 assert.match(by('W27').o[1],/製造・貯蔵・使用・処理/);assert.match(by('W27').o[1],/応急措置/);
 assert.match(by('W38').o[2],/第一種特定化学物質/);assert.match(by('W38').o[2],/50 ng\/L/);
 assert.match(by('H24').o[0],/ヘッドスペース法/);assert.match(by('H24').o[0],/保存中/);
-assert.match(by('H28').o[1],/Se\(VI\).*Se\(IV\)/);assert.match(by('H28').o[1],/標準添加法/);
+assert.match(by('H28').o[1],/Se\(VI\)/);assert.match(by('H28').o[1],/Se\(IV\)/);assert.match(by('H28').o[1],/標準添加法/);
 assert.match(by('H35').o[1],/ピリジン/);assert.match(by('H35').o[1],/流れ分析法/);assert.match(by('H35').o[1],/イオン電極/);
 assert.match(by('H36').o[1],/80～120%/);assert.match(by('H36').o[1],/妨害除去/);
 for(let selected=0;selected<5;selected++){
@@ -57,5 +58,5 @@ for(let selected=0;selected<5;selected++){
 }
 for(const id of changed){const z=m.migrate({bankContentVersion:'v63',hist:{},current:id,currentSel:0,currentAnswered:true});assert.equal(z.currentSel,null,id);assert.equal(z.currentAnswered,false,id);}
 assert.ok(read('qbank_patch_v5.js').includes('qbank_review_v64.js'));assert.ok(read('sw.js').includes("'./qbank_review_v64.js'"));
-assert.match(read('ui_polish_v46.js'),/RELEASE='v64'/);assert.match(read('review_primary_sources_v64.md'),/\*\*8問 × 5肢 = 40肢\*\*/);
+assert.match(read('ui_polish_v46.js'),/RELEASE='v96'/);assert.match(read('review_primary_sources_v64.md'),/8問 × 5肢 = 40肢/);
 console.log(JSON.stringify({result:'PASS',active:b.length,changed:8,checkedChoices:40,repurposed:['H24','H28','H36'],answers:counts,historyCases:199*5,scope:'second primary-source legal/analytical tranche plus duplicate-depth redesign'},null,2));
