@@ -98,6 +98,7 @@
     document.write('<script src="./qbank_source_audit_v94.js?v=192"><\/script>');
     document.write('<script src="./qbank_source_audit_v95.js?v=193"><\/script>');
     document.write('<script src="./qbank_public_restore_v96.js?v=194"><\/script>');
+    document.write('<script src="./qbank_scoring_fix_v97.js?v=195"><\/script>');
     document.write('<script src="./ui_polish_v46.js?v=160"><\/script>');
     document.write('<script src="./study_workflow_v57.js?v=155"><\/script>');
     document.write('<script src="./compact_menu_v58.js?v=156"><\/script>');
