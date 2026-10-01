@@ -32,5 +32,5 @@ for(const version of ['v61','v95','v96'])for(const id of Object.keys(fix.answers
 }
 const assets=Array.from(read('sw.js').matchAll(/'\.\/([^']+)'/g),m=>m[1]);
 assert.ok(assets.includes('qbank_scoring_fix_v97.js'));
-assert.match(read('ui_polish_v46.js'),/RELEASE='v98'/);
+assert.match(read('ui_polish_v46.js'),/RELEASE='v99'/);
 console.log(JSON.stringify({result:'PASS',checked:bank.length,corrected:Object.keys(fix.answers).length,historyCases:33,offlineAssets:assets.length}));

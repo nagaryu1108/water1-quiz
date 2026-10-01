@@ -1,8 +1,8 @@
 (function(){
 'use strict';
-var RELEASE='v98';
+var RELEASE='v99';
 var RELEASE_DATE='2026-10-02';
-var BUILD_ID='v98-20261002-valence-guide';
+var BUILD_ID='v99-20261002-precip-ph-guide';
 
 function ensureStyle(){
   if(document.getElementById('water1-ui-v46-style'))return;
