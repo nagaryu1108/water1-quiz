@@ -23,6 +23,7 @@ if(uiLoaderMatch){
 ok(ui.includes("問題バンク '+RELEASE+' / '+RELEASE_DATE"),'v45 release badge updater missing');
 ok(ui.includes("通常出題 '+active+'問 ｜ 安定ID '+stable+'件 ｜ アーカイブ '+archived+'問"),'199+1 pool status missing');
 ok(ui.includes('.audit,#regressionWarn{display:none!important}'),'learner-facing audit/warning is not hidden');
+ok(ui.includes('.source,.res .learn,.res .water1-aid-medium{overflow-wrap:anywhere;word-break:normal}'),'long source URLs may overflow the answer card');
 ok(ui.includes("audit.hidden=true"),'audit element hidden state missing');
 ok(ui.includes("regressionWarn.hidden=true"),'regression warning hidden state missing');
 ok(ui.includes('learnerAuditVisible:false'),'UI release metadata does not record hidden audit state');

@@ -47,7 +47,10 @@ assert.deepEqual(plain(m.migrate({hist:{x:null,y:{lastSel:-1}}}).hist),{x:null,y
 const uiBase=JSON.parse(read('ui_baseline_v61.json')),hash=s=>require('crypto').createHash('sha256').update(s).digest('hex');
 const stripScripts=s=>s.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g,'');
 assert.equal(hash(stripScripts(read('index.html'))),uiBase.htmlCss,'HTML/CSS changed');
-const uiNorm=s=>s.replace(/var (RELEASE|RELEASE_DATE|BUILD_ID)='[^']*';/g,'');
+// The source-wrap rules are a separately audited, narrowly scoped UI fix.
+const uiNorm=s=>s.replace(/var (RELEASE|RELEASE_DATE|BUILD_ID)='[^']*';/g,'')
+ .replace("    '.card,.res,.source{min-width:0}',\n",'')
+ .replace("    '.source,.res .learn,.res .water1-aid-medium{overflow-wrap:anywhere;word-break:normal}',\n",'');
 assert.equal(hash(uiNorm(read('ui_polish_v46.js'))),uiBase.uiCodeWithoutReleaseMetadata,'UI code changed');
 for(const f of ['study_workflow_v57.js','compact_menu_v58.js'])assert.equal(hash(read(f)),uiBase[f],f+' changed');
 const newCore=read('index.html');

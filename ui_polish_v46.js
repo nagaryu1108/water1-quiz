@@ -2,7 +2,7 @@
 'use strict';
 var RELEASE='v99';
 var RELEASE_DATE='2026-10-02';
-var BUILD_ID='v99-20261002-precip-ph-guide';
+var BUILD_ID='v99-20261002-source-wrap';
 
 function ensureStyle(){
   if(document.getElementById('water1-ui-v46-style'))return;
@@ -12,6 +12,8 @@ function ensureStyle(){
     '.tools button{min-height:44px;touch-action:manipulation}',
     '.ch,.next,.openall{min-height:44px;touch-action:manipulation}',
     '.audit,#regressionWarn{display:none!important}',
+    '.card,.res,.source{min-width:0}',
+    '.source,.res .learn,.res .water1-aid-medium{overflow-wrap:anywhere;word-break:normal}',
     '.poolStatus{margin-top:4px;font-size:11px;line-height:1.55;color:#bfdbfe}',
     '@media(max-width:600px){',
     '  .visual,.afterVisual{-webkit-overflow-scrolling:touch}',
