@@ -103,6 +103,8 @@ jobs:
         run: node tools/published_integration_audit_v96.js
       - name: Check v97 scoring against explanations across the active bank
         run: node tools/scoring_consistency_audit_v97.js
+      - name: Check v98 oxidation and reduction guide without changing answer keys
+        run: node tools/valence_guide_audit_v98.js
       - name: Run canonical gap audit
         run: node tools/canonical_audit_v22.js
       - name: Run Batch 12 final 200-question quality and UI regression audit

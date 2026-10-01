@@ -58,5 +58,5 @@ for(let selected=0;selected<5;selected++){
 }
 for(const id of changed){const z=m.migrate({bankContentVersion:'v63',hist:{},current:id,currentSel:0,currentAnswered:true});assert.equal(z.currentSel,null,id);assert.equal(z.currentAnswered,false,id);}
 assert.ok(read('qbank_patch_v5.js').includes('qbank_review_v64.js'));assert.ok(read('sw.js').includes("'./qbank_review_v64.js'"));
-assert.match(read('ui_polish_v46.js'),/RELEASE='v97'/);assert.match(read('review_primary_sources_v64.md'),/8問 × 5肢 = 40肢/);
+assert.match(read('ui_polish_v46.js'),/RELEASE='v98'/);assert.match(read('review_primary_sources_v64.md'),/8問 × 5肢 = 40肢/);
 console.log(JSON.stringify({result:'PASS',active:b.length,changed:8,checkedChoices:40,repurposed:['H24','H28','H36'],answers:counts,historyCases:199*5,scope:'second primary-source legal/analytical tranche plus duplicate-depth redesign'},null,2));

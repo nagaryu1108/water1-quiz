@@ -65,6 +65,6 @@ for(let selected=0;selected<5;selected++){
 for(const id of changed){const z=m.migrate({bankContentVersion:'v62',hist:{},current:id,currentSel:0,currentAnswered:true});assert.equal(z.currentSel,null,id);assert.equal(z.currentAnswered,false,id);}
 assert.ok(read('qbank_patch_v5.js').includes('qbank_review_v63.js'));
 assert.ok(read('sw.js').includes("'./qbank_review_v63.js'"));
-assert.match(read('ui_polish_v46.js'),/RELEASE='v97'/);
+assert.match(read('ui_polish_v46.js'),/RELEASE='v98'/);
 assert.match(read('review_primary_sources_v63.md'),/11問 × 5肢 = 55肢/);
 console.log(JSON.stringify({result:'PASS',active:b.length,changed:changed.length,checkedChoices:changed.length*5,repurposed:['H07'],answers:counts,historyCases:199*5,ui:'unchanged except release metadata/cache keys',scope:'primary-source-targeted legal/analytical review plus distractor strengthening'},null,2));
