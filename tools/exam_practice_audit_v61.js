@@ -54,7 +54,7 @@ const uiNorm=s=>s.replace(/var (RELEASE|RELEASE_DATE|BUILD_ID)='[^']*';/g,'')
 assert.equal(hash(uiNorm(read('ui_polish_v46.js'))),uiBase.uiCodeWithoutReleaseMetadata,'UI code changed');
 for(const f of ['study_workflow_v57.js','compact_menu_v58.js'])assert.equal(hash(read(f)),uiBase[f],f+' changed');
 const newCore=read('index.html');
-const coreNorm=s=>s.replace(/function load\(\)\{.*?function save\(\)/,'function save()').replace(/qbank_patch_v5.js\?v=\d+/g,'qbank_patch_v5.js').replace(/sw.js\?v=\d+/g,'sw.js');
+const coreNorm=s=>s.replace(/<script src="\.\/(?:qbank_choice_cue_revision_v100|focus_menu_v100)\.js\?v=\d+"><\/script>/g,'').replace(/function load\(\)\{.*?function save\(\)/,'function save()').replace(/qbank_patch_v5.js\?v=\d+/g,'qbank_patch_v5.js').replace(/sw.js\?v=\d+/g,'sw.js');
 assert.equal(hash(coreNorm(newCore)),uiBase.coreWithoutLoaderOrCacheKeys,'render/pick/navigation code changed');
 assert.ok(read('sw.js').includes("'./qbank_exam_practice_v61.js'"));
 assert.ok(read('index.html').includes("KEY='water1_bank_v3'"));

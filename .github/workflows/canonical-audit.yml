@@ -69,6 +69,10 @@ on:
       - 'package.json'
       - 'playwright.config.js'
       - 'index.html'
+      - 'qbank_choice_cue_revision_v100.js'
+      - 'focus_menu_v100.js'
+      - 'tools/choice_cue_focus_audit_v100.js'
+      - 'tools/focus_menu_interaction_audit_v100.js'
       - 'sw.js'
       - '.github/workflows/canonical-audit.yml'
   workflow_dispatch:
@@ -107,6 +111,10 @@ jobs:
         run: node tools/valence_guide_audit_v98.js
       - name: Check v99 precipitation pH guide without changing answer keys
         run: node tools/precipitation_ph_audit_v99.js
+      - name: Check v100 choice revisions and focus categories
+        run: |
+          node tools/choice_cue_focus_audit_v100.js
+          node tools/focus_menu_interaction_audit_v100.js
       - name: Run canonical gap audit
         run: node tools/canonical_audit_v22.js
       - name: Run Batch 12 final 200-question quality and UI regression audit
